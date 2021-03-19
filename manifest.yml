@@ -1,0 +1,15 @@
+applications:
+  - name: ((name))
+    path: .
+    command: npm run start
+    memory: ((memory))
+    env:
+      OPTIMIZE_MEMORY: true
+      EASEY_ALLOWANCE_API_TITLE: ((title))
+      EASEY_ALLOWANCE_API_HOST: ((host))
+      EASEY_ALLOWANCE_API_PATH: ((path))
+      EASEY_ALLOWANCE_API_ENV: ((environment))
+    routes:
+      - route: ((host))/((path))
+    services:
+      - camd-pg-db
