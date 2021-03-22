@@ -3,6 +3,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=US-EPA-CAMD_easey-allowance-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=US-EPA-CAMD_easey-allowance-api)
 [![Develop Branch Pipeline](https://github.com/US-EPA-CAMD/easey-allowance-api/workflows/Develop%20Branch%20Workflow/badge.svg)](https://github.com/US-EPA-CAMD/easey-allowance-api/actions)<br>
 Allowance data API for the EPA CAMD Business Systems EASEY Application
+
+The allowance API endpoints return allowance holdings and allowance transactions. 
 ​
 ## Getting Started
 ​
@@ -37,7 +39,7 @@ cf target -o epa-easey -s dev
 ```
 3. Open SSH tunnel
 ```bash
-cf ssh mdm-api -L <LOCAL_PORT>:<DB_HOST>:5432
+cf ssh allowance-api -L <LOCAL_PORT>:<DB_HOST>:5432
 ```
 4. Keep the SSH tunnel open while running the application
 
@@ -59,7 +61,7 @@ cf ssh mdm-api -L <LOCAL_PORT>:<DB_HOST>:5432
 3. Navigate to the root project directory
 
     ```
-    cd easey-mdm-api
+    cd easey-allowance-api
     ```
 
 4. Install dependencies 
@@ -76,7 +78,7 @@ From within the `easey-allowance-api` project directory, you can run:
 npm run start:dev
 ```
 
-Open [http://localhost:8080/api/allowance/swagger/](http://localhost:8080/api/master-data-mgmt/swagger/) to view swagger documentation.
+Open [http://localhost:8080/api/allowance-mgmt/swagger/](http://localhost:8080/api/allowance-mgmt/swagger/) to view swagger documentation.
 > NOTE: The port can be changed by setting the EASEY_ALLOWANCE_API_PORT environment variable
 
 The page will reload if you make edits via the use of nodemon.<br />
@@ -100,7 +102,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 ## API Endpoints
-</br>
+
+Please refer to the [Allowance Management API Swagger Documentation](https://easey-dev.app.cloud.gov/api/allowance-mgmt/swagger/) for descriptions of the endpoints.
 
 ## Built With
 ​

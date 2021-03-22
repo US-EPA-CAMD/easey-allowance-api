@@ -1,11 +1,12 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+
 import appConfig from '../config/app.config';
 import dbConfig from '../config/db.config';
 import { AllowanceController } from './allowance.controller';
 import { AllowanceService } from './allowance.service';
 
-describe('AllowanceController', () => {
+describe('-- Allowance Controller --', () => {
   let allowanceController: AllowanceController;
   let allowanceService: AllowanceService;
 
@@ -23,13 +24,16 @@ describe('AllowanceController', () => {
 
     allowanceController = module.get(AllowanceController);
     allowanceService = module.get(AllowanceService);
+
     allowanceService.getAllowanceHoldings = jest
       .fn()
       .mockReturnValue('Hello allowanceHoldings');
+
     allowanceService.getAllowanceTransactions = jest
       .fn()
       .mockReturnValue('Hello allowanceTransactions');
   });
+
   describe('getAllowanceHoldings', () => {
     it('should return "Hello allowanceHoldings"', () => {
       expect(allowanceController.getAllowanceHoldings()).toBe(
@@ -37,6 +41,7 @@ describe('AllowanceController', () => {
       );
     });
   });
+
   describe('getAllowanceTransactions', () => {
     it('should return "Hello allowanceTransactions"', () => {
       expect(allowanceController.getAllowanceTransactions()).toBe(

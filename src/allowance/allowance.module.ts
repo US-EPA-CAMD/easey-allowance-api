@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { AllowanceController } from './allowance.controller';
 import { AllowanceService } from './allowance.service';
 

@@ -1,11 +1,11 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+
 import appConfig from '../config/app.config';
 import dbConfig from '../config/db.config';
 import { AllowanceService } from './allowance.service';
 
-
-describe('AllowanceService', () => {
+describe('-- Allowance Service --', () => {
   let allowanceService;
 
   beforeEach(async () => {
@@ -16,7 +16,6 @@ describe('AllowanceService', () => {
           load: [dbConfig, appConfig],
         }),
       ],
-
       providers: [AllowanceService],
     }).compile();
 
@@ -25,12 +24,17 @@ describe('AllowanceService', () => {
 
   describe('getAllowanceHoldings', () => {
     it('should return "Hello allowanceHoldings"', async () => {
-      expect(allowanceService.getAllowanceHoldings()).toBe('Hello allowanceHoldings');
+      expect(allowanceService.getAllowanceHoldings()).toBe(
+        'Hello allowanceHoldings',
+      );
     });
   });
+
   describe('getAllowanceTransactions', () => {
     it('should return "Hello allowanceTransactions"', async () => {
-      expect(allowanceService.getAllowanceTransactions()).toBe('Hello allowanceTransactions');
+      expect(allowanceService.getAllowanceTransactions()).toBe(
+        'Hello allowanceTransactions',
+      );
     });
   });
 });
