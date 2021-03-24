@@ -1,10 +1,11 @@
-import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 
-import appConfig from '../config/app.config';
-import dbConfig from '../config/db.config';
 import { AllowanceController } from './allowance.controller';
 import { AllowanceService } from './allowance.service';
+import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
+import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
+import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
+import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 
 describe('-- Allowance Controller --', () => {
   let allowanceController: AllowanceController;
@@ -12,37 +13,40 @@ describe('-- Allowance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({
-          isGlobal: true,
-          load: [dbConfig, appConfig],
-        }),
-      ],
       controllers: [AllowanceController],
-      providers: [AllowanceService],
+      providers: [
+        AllowanceService,
+        AllowanceHoldingsMap,
+        AllowanceHoldingDimRepository,
+      ],
     }).compile();
 
     allowanceController = module.get(AllowanceController);
     allowanceService = module.get(AllowanceService);
-
-    allowanceService.getAllowanceHoldings = jest
-      .fn()
-      .mockReturnValue('Hello allowanceHoldings');
 
     allowanceService.getAllowanceTransactions = jest
       .fn()
       .mockReturnValue('Hello allowanceTransactions');
   });
 
-  describe('getAllowanceHoldings', () => {
-    it('should return "Hello allowanceHoldings"', () => {
-      expect(allowanceController.getAllowanceHoldings()).toBe(
-        'Hello allowanceHoldings',
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  describe('* getAllowanceHoldings', () => {
+    it('should call the service and return allowance holdings ', async () => {
+      const expectedResults: AllowanceHoldingsDTO[] = [];
+      const paramsDTO = new AllowanceHoldingsParamsDTO();
+      jest
+        .spyOn(allowanceService, 'getAllowanceHoldings')
+        .mockResolvedValue(expectedResults);
+      expect(await allowanceController.getAllowanceHoldings(paramsDTO)).toBe(
+        expectedResults,
       );
     });
   });
 
-  describe('getAllowanceTransactions', () => {
+  describe('* getAllowanceTransactions', () => {
     it('should return "Hello allowanceTransactions"', () => {
       expect(allowanceController.getAllowanceTransactions()).toBe(
         'Hello allowanceTransactions',
