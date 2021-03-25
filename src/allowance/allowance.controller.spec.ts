@@ -7,6 +7,15 @@ import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repositor
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 
+const mockRequest = (url: string) => {
+  return {
+    url,
+    res: {
+      setHeader: jest.fn(),
+    },
+  };
+};
+
 describe('-- Allowance Controller --', () => {
   let allowanceController: AllowanceController;
   let allowanceService: AllowanceService;
@@ -34,15 +43,18 @@ describe('-- Allowance Controller --', () => {
   });
 
   describe('* getAllowanceHoldings', () => {
+    const req: any = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+
     it('should call the service and return allowance holdings ', async () => {
       const expectedResults: AllowanceHoldingsDTO[] = [];
       const paramsDTO = new AllowanceHoldingsParamsDTO();
       jest
         .spyOn(allowanceService, 'getAllowanceHoldings')
         .mockResolvedValue(expectedResults);
-      expect(await allowanceController.getAllowanceHoldings(paramsDTO)).toBe(
-        expectedResults,
-      );
+      expect(
+        await allowanceController.getAllowanceHoldings(paramsDTO, req),
+      ).toBe(expectedResults);
     });
   });
 
