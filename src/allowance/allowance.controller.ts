@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
@@ -7,6 +7,8 @@ import {
 } from '@nestjs/swagger';
 
 import { AllowanceService } from './allowance.service';
+import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
 @ApiTags('Allowance')
 @Controller()
@@ -23,8 +25,12 @@ export class AllowanceController {
   @ApiNotFoundResponse({
     description: 'Resource Not Found',
   })
-  getAllowanceHoldings(): string {
-    return this.allowanceService.getAllowanceHoldings();
+  getAllowanceHoldings(
+    @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+  ): Promise<AllowanceHoldingsDTO[]> {
+    return this.allowanceService.getAllowanceHoldings(
+      allowanceHoldingsParamsDTO,
+    );
   }
 
   @Get('/transactions')
