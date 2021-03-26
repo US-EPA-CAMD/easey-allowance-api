@@ -1,4 +1,9 @@
 export class QueryBuilderHelper {
+  private static paginationHelper(query: any, page: number, perPage: number) {
+    query.skip((page - 1) * perPage).take(perPage);
+    return query;
+  }
+
   public static createAllowanceQuery(
     query: any,
     dto: any,
@@ -17,6 +22,10 @@ export class QueryBuilderHelper {
         vintageEndYear: dto.vintageEndYear,
       });
     }
+    if (dto.page && dto.perPage) {
+      query = this.paginationHelper(query, dto.page, dto.perPage);
+    }
+
     return query;
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Request } from 'express';
 
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
@@ -16,9 +17,11 @@ export class AllowanceService {
 
   async getAllowanceHoldings(
     allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
     const query = await this.allowanceHoldingsRepository.getAllowanceHoldings(
       allowanceHoldingsParamsDTO,
+      req,
     );
     return this.allowanceHoldingsMap.many(query);
   }

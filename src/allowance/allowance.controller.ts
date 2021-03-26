@@ -1,4 +1,5 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Req } from '@nestjs/common';
+import { Request } from 'express';
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
@@ -27,9 +28,11 @@ export class AllowanceController {
   })
   getAllowanceHoldings(
     @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    @Req() req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
     return this.allowanceService.getAllowanceHoldings(
       allowanceHoldingsParamsDTO,
+      req,
     );
   }
 
