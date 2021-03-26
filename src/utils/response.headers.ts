@@ -27,7 +27,6 @@ export class ResponseHeaders {
           break;
         }
       }
-      
       req.res.setHeader('Link', concatLinks);
       req.res.setHeader('X-Total-Count', totalCount);
     }
