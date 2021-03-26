@@ -1,7 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Request } from 'express';
 
-
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
@@ -48,7 +47,7 @@ export class AllowanceHoldingDimRepository extends Repository<
 
     if (page && perPage) {
       const totalCount = await query.getCount();
-      ResponseHeaders.setPagination(req, totalCount);
+      ResponseHeaders.setPagination(page, perPage, totalCount, req);
     }
 
     return query.getMany();

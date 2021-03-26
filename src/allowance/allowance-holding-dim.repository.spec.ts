@@ -4,7 +4,6 @@ import { SelectQueryBuilder } from 'typeorm';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
-import { ResponseHeaders } from '../utils/response.headers';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
@@ -17,6 +16,15 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
 });
+
+const mockRequest = (url: string) => {
+  return {
+    url,
+    res: {
+      setHeader: jest.fn(),
+    },
+  };
+};
 
 let filters: AllowanceHoldingsParamsDTO = {
   vintageBeginYear: 2019,
@@ -74,21 +82,37 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       expect(result).toEqual('mockAllowanceHoldings');
     });
 
-    it('calls createQueryBuilder and gets all AllowanceHoldingDim paginated results from the repository', async () => {
-      ResponseHeaders.setPagination = jest
-        .fn()
-        .mockReturnValue('paginated results');
-
+    it('calls createQueryBuilder and gets page 1 of AllowanceHoldingDim paginated results from the repository', async () => {
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
-
+      let req: any = mockRequest(
+        `/holdings?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
+      );
+      req.res.setHeader.mockReturnValue();
       let paginatedResult = await allowanceHoldingDimRepository.getAllowanceHoldings(
         paginatedFilters,
+        req,
       );
-      expect(ResponseHeaders.setPagination).toHaveBeenCalled();
+      expect(req.res.setHeader).toHaveBeenCalled();
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockAllowanceHoldings');
     });
+  });
+  it('calls createQueryBuilder and gets page 2 of AllowanceHoldingDim paginated results from the repository', async () => {
+    let paginatedFilters = filters;
+    paginatedFilters.page = 2;
+    paginatedFilters.perPage = 5;
+    let req: any = mockRequest(
+      `/holdings?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
+    );
+    req.res.setHeader.mockReturnValue();
+    let paginatedResult = await allowanceHoldingDimRepository.getAllowanceHoldings(
+      paginatedFilters,
+      req,
+    );
+    expect(req.res.setHeader).toHaveBeenCalled();
+    expect(queryBuilder.getMany).toHaveBeenCalled();
+    expect(paginatedResult).toEqual('mockAllowanceHoldings');
   });
 });

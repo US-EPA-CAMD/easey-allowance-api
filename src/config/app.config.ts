@@ -6,7 +6,7 @@ const port = process.env.EASEY_ALLOWANCE_API_PORT || 8080;
 
 let uri = `https://${host}/${path}`;
 
-if (host == 'localhost') {
+if (host === 'localhost') {
   uri = `http://localhost:${port}/${path}`;
 }
 
