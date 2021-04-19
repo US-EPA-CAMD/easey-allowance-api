@@ -27,8 +27,7 @@ const mockRequest = (url: string) => {
 };
 
 let filters: AllowanceHoldingsParamsDTO = {
-  vintageBeginYear: 2019,
-  vintageEndYear: 2019,
+  vintageYear: [2019, 2020],
   page: undefined,
   perPage: undefined,
 };

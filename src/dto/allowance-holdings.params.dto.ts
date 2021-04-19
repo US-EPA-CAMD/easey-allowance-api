@@ -5,5 +5,5 @@ import { PaginationDTO } from './pagination.dto';
 export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  vintageYear?: number [];
+  vintageYear?: number[];
 }

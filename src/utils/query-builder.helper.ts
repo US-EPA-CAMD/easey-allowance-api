@@ -12,8 +12,8 @@ export class QueryBuilderHelper {
     accountAlias: string,
   ) {
     if (param.includes('vintageYear') && dto.vintageYear) {
-      query.andWhere(`${allowanceAlias}.vintageYear IN (:vintageYear)`, {
-        vintageYear: dto.vintageYear,
+      query.andWhere(`${allowanceAlias}.vintageYear IN (:...vintageYears)`, {
+        vintageYears: dto.vintageYear,
       });
     }
 
