@@ -4,6 +4,7 @@ import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -26,6 +27,7 @@ export class AllowanceController {
   @ApiNotFoundResponse({
     description: 'Resource Not Found',
   })
+  @ApiQuery({ style: 'pipeDelimited', name: 'vintageYear', required: false, explode: false })
   getAllowanceHoldings(
     @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
     @Req() req: Request,

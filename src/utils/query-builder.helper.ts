@@ -11,17 +11,12 @@ export class QueryBuilderHelper {
     allowanceAlias: string,
     accountAlias: string,
   ) {
-    if (param.includes('vintageBeginYear') && dto.vintageBeginYear) {
-      query.andWhere(`${allowanceAlias}.vintageYear >= :vintageBeginYear`, {
-        vintageBeginYear: dto.vintageBeginYear,
+    if (param.includes('vintageYear') && dto.vintageYear) {
+      query.andWhere(`${allowanceAlias}.vintageYear IN (:...vintageYears)`, {
+        vintageYears: dto.vintageYear,
       });
     }
 
-    if (param.includes('vintageEndYear') && dto.vintageEndYear) {
-      query.andWhere(`${allowanceAlias}.vintageYear <= :vintageEndYear`, {
-        vintageEndYear: dto.vintageEndYear,
-      });
-    }
     if (dto.page && dto.perPage) {
       query = this.paginationHelper(query, dto.page, dto.perPage);
     }
