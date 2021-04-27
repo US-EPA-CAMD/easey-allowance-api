@@ -7,10 +7,6 @@ import { State } from 'src/enum/state.enum';
 export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  vintageYear?: number[];
-
-  @IsOptional()
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
   accountNumber: string[];
 
   @IsOptional()
@@ -24,6 +20,10 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   state: State[];
+
+  @IsOptional()
+  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  vintageYear?: number[];
 
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
