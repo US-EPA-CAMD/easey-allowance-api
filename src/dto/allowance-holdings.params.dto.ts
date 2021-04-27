@@ -1,8 +1,9 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+
 import { PaginationDTO } from './pagination.dto';
 import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
-import { State } from 'src/enum/state.enum';
+import { State } from '../enum/state.enum';
 
 export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
