@@ -34,7 +34,14 @@ export class AllowanceHoldingDimRepository extends Repository<
     query = QueryBuilderHelper.createAllowanceQuery(
       query,
       allowanceHoldingsParamsDTO,
-      ['vintageYear', 'page', 'perPage'],
+      [
+        'vintageYear',
+        'accountNumber',
+        'orisCode',
+        'ownerOperator',
+        'state',
+        'program',
+      ],
       'ahd',
       'af',
     );

@@ -28,6 +28,11 @@ export class AllowanceController {
     description: 'Resource Not Found',
   })
   @ApiQuery({ style: 'pipeDelimited', name: 'vintageYear', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'accountNumber', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'orisCode', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'ownerOperator', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'state', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'program', required: false, explode: false })
   getAllowanceHoldings(
     @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
     @Req() req: Request,
