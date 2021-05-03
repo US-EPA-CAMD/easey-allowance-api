@@ -1,7 +1,7 @@
 #THIS FILE SHOULD CONTAIN DEV SETTINGS AND CI/CD WORKFLOW WILL CHANGE SETTINGS BASED ON ENV
-name: allowance-api
-title: Allowance Management
-path: api/allowance-mgmt
+name: account-api
+title: Account Management
+path: api/account-mgmt
 environment: development
 host: easey-dev.app.cloud.gov
 memory: 2048M
