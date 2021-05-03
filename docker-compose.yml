@@ -9,7 +9,7 @@ services:
       #- ../devops/db:/docker-entrypoint-initdb.d
     ports:
       - '5432:5432'
-  allowance-api:
+  account-api:
     depends_on:
       - database
     build:
