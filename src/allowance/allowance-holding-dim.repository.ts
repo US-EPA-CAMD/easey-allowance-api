@@ -41,6 +41,7 @@ export class AllowanceHoldingDimRepository extends Repository<
         'ownerOperator',
         'state',
         'program',
+        'accountType',
       ],
       'ahd',
       'af',

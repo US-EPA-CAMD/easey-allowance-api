@@ -6,6 +6,7 @@ import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repositor
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { State } from '../enum/state.enum';
 import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
+import { AccountType } from '../enum/account-type.enum';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
@@ -29,6 +30,7 @@ const mockRequest = (url: string) => {
 };
 
 let filters: AllowanceHoldingsParamsDTO = {
+  accountType: [AccountType.GENERAL],
   vintageYear: [2019, 2020],
   page: undefined,
   perPage: undefined,

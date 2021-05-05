@@ -27,6 +27,7 @@ export class AllowanceController {
   @ApiNotFoundResponse({
     description: 'Resource Not Found',
   })
+  @ApiQuery({ style: 'pipeDelimited', name: 'accountType', required: false, explode: false })
   @ApiQuery({ style: 'pipeDelimited', name: 'vintageYear', required: false, explode: false })
   @ApiQuery({ style: 'pipeDelimited', name: 'accountNumber', required: false, explode: false })
   @ApiQuery({ style: 'pipeDelimited', name: 'orisCode', required: false, explode: false })
