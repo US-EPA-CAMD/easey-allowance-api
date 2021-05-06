@@ -4,8 +4,13 @@ import { IsOptional } from 'class-validator';
 import { PaginationDTO } from './pagination.dto';
 import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
 import { State } from '../enum/state.enum';
+import { AccountType } from '../enum/account-type.enum';
 
 export class AllowanceHoldingsParamsDTO extends PaginationDTO {
+  @IsOptional()
+  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  accountType: AccountType[];
+
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   accountNumber: string[];

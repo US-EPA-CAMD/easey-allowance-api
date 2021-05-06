@@ -69,6 +69,17 @@ export class QueryBuilderHelper {
       });
     }
 
+    if (param.includes('accountType') && dto.accountType) {
+      query.andWhere(
+        `UPPER(${accountAlias}.accountType) IN (:...accountTypes)`,
+        {
+          accountTypes: dto.accountType.map(accountType => {
+            return accountType.toUpperCase();
+          }),
+        },
+      );
+    }
+
     if (dto.page && dto.perPage) {
       query = this.paginationHelper(query, dto.page, dto.perPage);
     }
