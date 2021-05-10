@@ -1,7 +1,7 @@
 export enum AccountType {
   COMPLIANCE_ASSURANCE_SURRENDER = 'Compliance Assurance Surrender Account',
   ENFORCEMENT_SURRENDER = 'Enforcement Surrender Account',
-  PLANT = 'Plant Account',
+  FACILITY = 'Facility Account',
   GENERAL = 'General Account',
   OVERDRAFT = 'Overdraft Account',
   EPA_RESERVE = 'EPA Reserve Account',
