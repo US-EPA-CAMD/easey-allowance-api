@@ -5,10 +5,10 @@ export class ErrorMessages {
     plural: boolean,
     parameter: string,
   ): string {
-    let grammar = plural
+    const grammar = plural
       ? `One or more ${parameter}s are`
       : `The ${parameter} is`;
-    let referList =
+    const referList =
       parameter === 'state'
         ? 'Use the two letter postal abbreviation (use TX, not Texas)'
         : `Refer to the list of available ${parameter}s for valid values`;
