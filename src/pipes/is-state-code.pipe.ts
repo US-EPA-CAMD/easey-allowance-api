@@ -3,7 +3,6 @@ import {
   ValidationOptions,
   ValidationArguments,
 } from 'class-validator';
-
 import { getManager } from 'typeorm';
 
 import { StateCode } from '../entities/state-code.entity';

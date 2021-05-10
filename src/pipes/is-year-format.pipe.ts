@@ -2,19 +2,24 @@ import {
   registerDecorator,
   ValidationOptions,
   ValidationArguments,
-  isAlphanumeric,
+  isNumberString,
 } from 'class-validator';
 
-export function IsAccountNumber(validationOptions?: ValidationOptions) {
+export function IsYearFormat(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
-      name: 'isAccountNumber',
+      name: 'IsYearFormat',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          return isAlphanumeric(value) && value.length === 12;
+          if (value) {
+            return (
+              isNumberString(value, { no_symbols: true }) && value.length === 4
+            );
+          }
+          return true;
         },
       },
     });

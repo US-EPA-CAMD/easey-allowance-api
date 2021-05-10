@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'camdmd.account_type_code' })
-export class AccountType extends BaseEntity {
+export class AccountTypeCode extends BaseEntity {
   @PrimaryColumn({
     name: 'account_type_cd',
   })

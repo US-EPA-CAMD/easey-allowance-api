@@ -11,4 +11,14 @@ export class ProgramCode extends BaseEntity {
     name: 'prg_description',
   })
   programDescription: string;
+
+  @Column({
+    name: 'allow_comp_ind',
+  })
+  allowCompInd: number;
+
+  @Column({
+    name: 'trading_end_date',
+  })
+  tradingEndDate: Date;
 }
