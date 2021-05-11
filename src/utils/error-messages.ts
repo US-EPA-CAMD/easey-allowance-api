@@ -42,6 +42,8 @@ export class ErrorMessages {
         return `${ApiConfigService.getFacApi()}facilities`;
       case 'accountType':
         return `${mdm}account-types`;
+      case 'program':
+        return `${mdm}programs?allowanceOnly=true&isActive=true`
       default:
         return `${mdm}${parameter}s`;
     }
