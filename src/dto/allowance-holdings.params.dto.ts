@@ -66,7 +66,9 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
   @IsActiveAllowanceProgram({
     each: true,
-    message: ErrorMessages.AccountCharacteristics(true, 'program'),
+    message:
+      ErrorMessages.AccountCharacteristics(true, 'program') +
+      '?allowanceOnly=true&isActive=true',
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   program: ActiveAllowanceProgram[];

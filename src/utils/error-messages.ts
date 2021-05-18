@@ -31,7 +31,7 @@ export class ErrorMessages {
   }
 
   public static DateFormat(parameter: string, format: string) {
-    return `One or more ${parameter}s is not in the ${format} format. Ensure all ${parameter}s are in the ${format} format`;
+    return `One or more ${parameter}s are not in the ${format} format. Ensure all ${parameter}s are in the ${format} format`;
   }
 
   static ApiConfigLink(parameter: string) {
@@ -42,8 +42,6 @@ export class ErrorMessages {
         return `${ApiConfigService.getFacApi()}facilities`;
       case 'accountType':
         return `${mdm}account-types`;
-      case 'program':
-        return `${mdm}programs?allowanceOnly=true&isActive=true`
       default:
         return `${mdm}${parameter}s`;
     }
