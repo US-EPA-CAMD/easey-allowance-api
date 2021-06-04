@@ -12,7 +12,7 @@ import { AllowanceService } from './allowance.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
-@ApiTags('Allowance')
+@ApiTags('Allowances')
 @Controller()
 export class AllowanceController {
   constructor(private readonly allowanceService: AllowanceService) {}
