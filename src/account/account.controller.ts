@@ -3,6 +3,7 @@ import {
   ApiOkResponse,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
+  ApiExtraModels,
 } from '@nestjs/swagger';
 import { Get, Controller } from '@nestjs/common';
 
@@ -15,6 +16,7 @@ export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Get()
+  @ApiExtraModels(AccountDTO)
   @ApiOkResponse({
     description: 'Retrieved All Valid Accounts',
   })
