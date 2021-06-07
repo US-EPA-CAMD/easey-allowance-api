@@ -19,4 +19,8 @@ export class ApiConfigService {
   public static getFacApi(): string {
     return `https://${this.getHost()}/api/facility-mgmt/`;
   }
+
+  public static getAcctApi(): string {
+    return `https://${this.getHost()}/api/account-mgmt/`;
+  }
 }

@@ -13,10 +13,6 @@ export class ErrorMessages {
         ? 'Use the two letter postal abbreviation (use TX, not Texas)'
         : `Refer to the list of available ${parameter}s for valid values`;
 
-    if (parameter === 'accountNumber') {
-      return `${grammar} not valid. ${referList} [placeholder for link to endpoint]`;
-    }
-
     if (parameter === 'state') {
       return `${grammar} not valid. ${referList}`;
     }
@@ -42,6 +38,8 @@ export class ErrorMessages {
         return `${ApiConfigService.getFacApi()}facilities`;
       case 'accountType':
         return `${mdm}account-types`;
+      case 'accountNumber':
+        return `${ApiConfigService.getAcctApi()}accounts`;
       default:
         return `${mdm}${parameter}s`;
     }
