@@ -2,6 +2,7 @@ import { Controller, Get, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 import {
   ApiBadRequestResponse,
+  ApiExtraModels,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
@@ -12,12 +13,13 @@ import { AllowanceService } from './allowance.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
-@ApiTags('Allowance')
+@ApiTags('Allowances')
 @Controller()
 export class AllowanceController {
   constructor(private readonly allowanceService: AllowanceService) {}
 
   @Get('/holdings')
+  @ApiExtraModels(AllowanceHoldingsDTO)
   @ApiOkResponse({
     description: 'Retrieved All Allowance Holdings',
   })
