@@ -2,8 +2,10 @@ import { Controller, Get, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 import {
   ApiBadRequestResponse,
+  ApiExtraModels,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -11,12 +13,13 @@ import { AllowanceService } from './allowance.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
-@ApiTags('Allowance')
+@ApiTags('Allowances')
 @Controller()
 export class AllowanceController {
   constructor(private readonly allowanceService: AllowanceService) {}
 
   @Get('/holdings')
+  @ApiExtraModels(AllowanceHoldingsDTO)
   @ApiOkResponse({
     description: 'Retrieved All Allowance Holdings',
   })
@@ -26,6 +29,13 @@ export class AllowanceController {
   @ApiNotFoundResponse({
     description: 'Resource Not Found',
   })
+  @ApiQuery({ style: 'pipeDelimited', name: 'accountType', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'vintageYear', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'accountNumber', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'orisCode', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'ownerOperator', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'state', required: false, explode: false })
+  @ApiQuery({ style: 'pipeDelimited', name: 'program', required: false, explode: false })
   getAllowanceHoldings(
     @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
     @Req() req: Request,

@@ -4,6 +4,9 @@ import { SelectQueryBuilder } from 'typeorm';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
+import { State } from '../enum/state.enum';
+import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
+import { AccountType } from '../enum/account-type.enum';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
@@ -27,10 +30,15 @@ const mockRequest = (url: string) => {
 };
 
 let filters: AllowanceHoldingsParamsDTO = {
-  vintageBeginYear: 2019,
-  vintageEndYear: 2019,
+  accountType: [AccountType.GENERAL],
+  vintageYear: [2019, 2020],
   page: undefined,
   perPage: undefined,
+  accountNumber: ['000127FACLTY'],
+  orisCode: [0],
+  ownerOperator: [''],
+  state: [State.AK],
+  program: [ActiveAllowanceProgram.ARP],
 };
 
 describe('-- AllowanceHoldingDimRepository --', () => {

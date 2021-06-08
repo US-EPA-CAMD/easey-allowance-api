@@ -1,10 +1,8 @@
-# EASEY Allowance API
-[![GitHub](https://img.shields.io/github/license/US-EPA-CAMD/easey-allowance-api)](https://github.com/US-EPA-CAMD/easey-allowance-api/blob/develop/LICENSE)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=US-EPA-CAMD_easey-allowance-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=US-EPA-CAMD_easey-allowance-api)
-[![Develop Branch Pipeline](https://github.com/US-EPA-CAMD/easey-allowance-api/workflows/Develop%20Branch%20Workflow/badge.svg)](https://github.com/US-EPA-CAMD/easey-allowance-api/actions)<br>
-Allowance data API for the EPA CAMD Business Systems EASEY Application
-
-The allowance API endpoints return allowance holdings and allowance transactions. 
+# EASEY Account API
+[![GitHub](https://img.shields.io/github/license/US-EPA-CAMD/easey-account-api)](https://github.com/US-EPA-CAMD/easey-account-api/blob/develop/LICENSE)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=US-EPA-CAMD_easey-account-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=US-EPA-CAMD_easey-account-api)
+[![Develop Branch Pipeline](https://github.com/US-EPA-CAMD/easey-account-api/workflows/Develop%20Branch%20Workflow/badge.svg)](https://github.com/US-EPA-CAMD/easey-account-api/actions)<br>
+Account data API for the EPA CAMD Business Systems EASEY Application
 ​
 ## Getting Started
 ​
@@ -39,7 +37,7 @@ cf target -o epa-easey -s dev
 ```
 3. Open SSH tunnel
 ```bash
-cf ssh allowance-api -L <LOCAL_PORT>:<DB_HOST>:5432
+cf ssh account-api -L <LOCAL_PORT>:<DB_HOST>:5432
 ```
 4. Keep the SSH tunnel open while running the application
 
@@ -52,16 +50,16 @@ cf ssh allowance-api -L <LOCAL_PORT>:<DB_HOST>:5432
 
     ```shell
     # If using SSH
-    git clone git@github.com:US-EPA-CAMD/easey-allowance-api.git
+    git clone git@github.com:US-EPA-CAMD/easey-account-api.git
     
     # If using HTTPS
-    git clone https://github.com/US-EPA-CAMD/easey-allowance-api.git
+    git clone https://github.com/US-EPA-CAMD/easey-account-api.git
     ```
 
 3. Navigate to the root project directory
 
     ```
-    cd easey-allowance-api
+    cd easey-account-api
     ```
 
 4. Install dependencies 
@@ -71,15 +69,15 @@ cf ssh allowance-api -L <LOCAL_PORT>:<DB_HOST>:5432
     ```
 ### Run the appication 
 
-From within the `easey-allowance-api` project directory, you can run:
+From within the `easey-account-api` project directory, you can run:
 
 ```bash
 # Runs the api in the development mode
 npm run start:dev
 ```
 
-Open [http://localhost:8080/api/allowance-mgmt/swagger/](http://localhost:8080/api/allowance-mgmt/swagger/) to view swagger documentation.
-> NOTE: The port can be changed by setting the EASEY_ALLOWANCE_API_PORT environment variable
+Open [http://localhost:8080/api/account-mgmt/swagger/](http://localhost:8080/api/account-mgmt/swagger/) to view swagger documentation.
+> NOTE: The port can be changed by setting the EASEY_ACCOUNT_API_PORT environment variable
 
 The page will reload if you make edits via the use of nodemon.<br />
 You will also see any lint errors in the console.
@@ -103,7 +101,7 @@ $ npm run test:cov
 ```
 ## API Endpoints
 
-Please refer to the [Allowance Management API Swagger Documentation](https://easey-dev.app.cloud.gov/api/allowance-mgmt/swagger/) for descriptions of the endpoints.
+Please refer to the [Account Management API Swagger Documentation](https://easey-dev.app.cloud.gov/api/account-mgmt/swagger/) for descriptions of the endpoints.
 
 ## Built With
 ​

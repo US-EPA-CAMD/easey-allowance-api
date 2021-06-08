@@ -9,6 +9,7 @@ import appConfig from './config/app.config';
 import { TypeOrmConfigService } from './config/typeorm.config';
 
 import { AllowanceModule } from './allowance/allowance.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AllowanceModule } from './allowance/allowance.module';
       useClass: TypeOrmConfigService,
     }),
     AllowanceModule,
+    AccountModule,
   ],
 })
 export class AppModule {}
