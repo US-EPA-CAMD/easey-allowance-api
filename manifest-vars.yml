@@ -4,4 +4,4 @@ title: Account Management
 path: api/account-mgmt
 environment: development
 host: easey-dev.app.cloud.gov
-memory: 2048M
+memory: 512M
