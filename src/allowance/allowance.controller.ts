@@ -1,41 +1,48 @@
-import { Controller, Get, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
+import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import {
-  ApiBadRequestResponse,
-  ApiExtraModels,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiQuery,
   ApiTags,
+  ApiOkResponse,
+  getSchemaPath,
+  ApiExtraModels,
 } from '@nestjs/swagger';
+import {
+  BadRequestResponse,
+  NotFoundResponse,
+  ApiQueryMultiSelect,
+} from '../utils/swagger-decorator.const';
 
 import { AllowanceService } from './allowance.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
-@ApiTags('Allowances')
 @Controller()
+@ApiTags('Allowances')
+@UseInterceptors(Json2CsvInterceptor)
 export class AllowanceController {
   constructor(private readonly allowanceService: AllowanceService) {}
 
   @Get('/holdings')
-  @ApiExtraModels(AllowanceHoldingsDTO)
   @ApiOkResponse({
-    description: 'Retrieved All Allowance Holdings',
+    description: 'Retrieve Allowance Holdings per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AllowanceHoldingsDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+        },
+      },
+    },
   })
-  @ApiBadRequestResponse({
-    description: 'Invalid Request',
-  })
-  @ApiNotFoundResponse({
-    description: 'Resource Not Found',
-  })
-  @ApiQuery({ style: 'pipeDelimited', name: 'accountType', required: false, explode: false })
-  @ApiQuery({ style: 'pipeDelimited', name: 'vintageYear', required: false, explode: false })
-  @ApiQuery({ style: 'pipeDelimited', name: 'accountNumber', required: false, explode: false })
-  @ApiQuery({ style: 'pipeDelimited', name: 'orisCode', required: false, explode: false })
-  @ApiQuery({ style: 'pipeDelimited', name: 'ownerOperator', required: false, explode: false })
-  @ApiQuery({ style: 'pipeDelimited', name: 'state', required: false, explode: false })
-  @ApiQuery({ style: 'pipeDelimited', name: 'program', required: false, explode: false })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  @ApiExtraModels(AllowanceHoldingsDTO)
   getAllowanceHoldings(
     @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
     @Req() req: Request,
@@ -48,14 +55,10 @@ export class AllowanceController {
 
   @Get('/transactions')
   @ApiOkResponse({
-    description: 'Retrieved All Allowance Transactions',
+    description: 'Retrieve Allowance Transactions per filter criteria',
   })
-  @ApiBadRequestResponse({
-    description: 'Invalid Request',
-  })
-  @ApiNotFoundResponse({
-    description: 'Resource Not Found',
-  })
+  @BadRequestResponse()
+  @NotFoundResponse()
   getAllowanceTransactions(): string {
     return this.allowanceService.getAllowanceTransactions();
   }
