@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { PaginationDTO } from './pagination.dto';
 import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
@@ -21,7 +22,7 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'accountType'),
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  accountType: AccountType[];
+  accountType?: AccountType[];
 
   @IsOptional()
   @IsAccountNumber({
@@ -29,7 +30,7 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'accountNumber'),
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  accountNumber: string[];
+  accountNumber?: string[];
 
   @IsOptional()
   @IsOrisCode({
@@ -37,11 +38,11 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'orisCode'),
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  orisCode: number[];
+  orisCode?: number[];
 
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  ownerOperator: string[];
+  ownerOperator?: string[];
 
   @IsOptional()
   @IsStateCode({
@@ -49,7 +50,7 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'state'),
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  state: State[];
+  state?: State[];
 
   @IsOptional()
   @IsYearFormat({
@@ -71,5 +72,10 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
       '?allowanceOnly=true&isActive=true',
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  program: ActiveAllowanceProgram[];
+  program?: ActiveAllowanceProgram[];
+
+  @ApiProperty({
+    description: 'Attaches a file with data in the format specified by the Accept header',
+  })
+  attachFile?: boolean;
 }
