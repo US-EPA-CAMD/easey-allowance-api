@@ -13,10 +13,19 @@ const mockAllowanceHoldingsMap = () => ({
   many: jest.fn(),
 });
 
+const mockRequest = () => {
+  return {
+    res: {
+      setHeader: jest.fn(),
+    },
+  };
+};
+
 describe('-- Allowance Service --', () => {
   let allowanceService;
   let allowanceHoldingDimRepository;
   let allowanceHoldingsMap;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -33,6 +42,8 @@ describe('-- Allowance Service --', () => {
     allowanceService = module.get(AllowanceService);
     allowanceHoldingDimRepository = module.get(AllowanceHoldingDimRepository);
     allowanceHoldingsMap = module.get(AllowanceHoldingsMap);
+    req = mockRequest();
+    req.res.setHeader.mockReturnValue();
   });
 
   describe('getAllowanceHoldings', () => {
@@ -44,7 +55,7 @@ describe('-- Allowance Service --', () => {
 
       let filters = new AllowanceHoldingsParamsDTO();
 
-      let result = await allowanceService.getAllowanceHoldings(filters);
+      let result = await allowanceService.getAllowanceHoldings(filters, req);
       expect(allowanceHoldingsMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
     });

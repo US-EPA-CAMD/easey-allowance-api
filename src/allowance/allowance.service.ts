@@ -6,6 +6,7 @@ import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
+import { fieldMappings } from '../constants/field-mappings';
 
 @Injectable()
 export class AllowanceService {
@@ -23,6 +24,12 @@ export class AllowanceService {
       allowanceHoldingsParamsDTO,
       req,
     );
+
+    req.res.setHeader(
+      'X-Field-Mappings',
+      JSON.stringify(fieldMappings.allowances.holdings),
+    );
+
     return this.allowanceHoldingsMap.many(query);
   }
 
