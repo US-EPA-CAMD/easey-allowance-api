@@ -41,7 +41,7 @@ export const allowanceFields = {
   },
   ownerOperator: {
     label: 'Owner/Operator',
-    value: 'ownerOperator',
+    value: 'ownDisplay',
   },
   accountType: {
     label: 'Account Type',
