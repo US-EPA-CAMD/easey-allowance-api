@@ -9,7 +9,7 @@ import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { fieldMappings } from '../constants/field-mappings';
 
 @Injectable()
-export class AllowanceService {
+export class AllowanceHoldingsService {
   constructor(
     @InjectRepository(AllowanceHoldingDimRepository)
     private readonly allowanceHoldingsRepository: AllowanceHoldingDimRepository,
@@ -31,9 +31,5 @@ export class AllowanceService {
     );
 
     return this.allowanceHoldingsMap.many(query);
-  }
-
-  getAllowanceTransactions(): string {
-    return 'Hello allowanceTransactions';
   }
 }

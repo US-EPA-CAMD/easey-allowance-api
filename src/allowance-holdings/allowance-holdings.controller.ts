@@ -1,29 +1,29 @@
 import { Request } from 'express';
 import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
-import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import {
   ApiTags,
   ApiOkResponse,
   getSchemaPath,
   ApiExtraModels,
 } from '@nestjs/swagger';
+
 import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryMultiSelect,
 } from '../utils/swagger-decorator.const';
-
-import { AllowanceService } from './allowance.service';
+import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
+import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
 @Controller()
-@ApiTags('Allowances')
+@ApiTags('Allowance Holdings')
 @UseInterceptors(Json2CsvInterceptor)
-export class AllowanceController {
-  constructor(private readonly allowanceService: AllowanceService) {}
+export class AllowanceHoldingsController {
+  constructor(private readonly allowanceService: AllowanceHoldingsService) {}
 
-  @Get('/holdings')
+  @Get()
   @ApiOkResponse({
     description: 'Retrieve Allowance Holdings per filter criteria',
     content: {
@@ -51,15 +51,5 @@ export class AllowanceController {
       allowanceHoldingsParamsDTO,
       req,
     );
-  }
-
-  @Get('/transactions')
-  @ApiOkResponse({
-    description: 'Retrieve Allowance Transactions per filter criteria',
-  })
-  @BadRequestResponse()
-  @NotFoundResponse()
-  getAllowanceTransactions(): string {
-    return this.allowanceService.getAllowanceTransactions();
   }
 }

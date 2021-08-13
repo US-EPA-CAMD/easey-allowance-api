@@ -12,6 +12,7 @@ export class QueryBuilderHelper {
     param: string[],
     allowanceAlias: string,
     accountAlias: string,
+    additionalQuery: boolean,
   ) {
     if (param.includes('vintageYear') && dto.vintageYear) {
       query.andWhere(`${allowanceAlias}.vintageYear IN (:...vintageYears)`, {
@@ -80,10 +81,104 @@ export class QueryBuilderHelper {
       );
     }
 
-    if (dto.page && dto.perPage) {
+    if (!additionalQuery && dto.page && dto.perPage) {
       query = this.paginationHelper(query, dto.page, dto.perPage);
     }
 
+    return query;
+  }
+
+  public static createTransactionQuery(
+    query: any,
+    dto: any,
+    param: string[],
+    alias: string,
+  ) {
+    if (param.includes('accountType') && dto.accountType) {
+      query.andWhere(
+        `(UPPER(${alias}.buyAccountType) IN (:...accountTypes) OR UPPER(${alias}.sellAccountType) IN (:...accountTypes))`,
+        {
+          accountTypes: dto.accountType.map(accountType => {
+            return accountType.toUpperCase();
+          }),
+        },
+      );
+    }
+
+    if (param.includes('accountNumber') && dto.accountNumber) {
+      query.andWhere(
+        `(UPPER(${alias}.buyAccountNumber) IN (:...accountNumbers) OR UPPER(${alias}.sellAccountNumber) IN (:...accountNumbers))`,
+        {
+          accountNumbers: dto.accountNumber.map(accountNumber => {
+            return accountNumber.toUpperCase();
+          }),
+        },
+      );
+    }
+
+    if (param.includes('orisCode') && dto.orisCode) {
+      query.andWhere(
+        `(${alias}.buyOrisplCode IN (:...orisCodes) OR ${alias}.sellOrisplCode IN (:...orisCodes))`,
+        {
+          orisCodes: dto.orisCode,
+        },
+      );
+    }
+
+    if (param.includes('ownerOperator') && dto.ownerOperator) {
+      let string = '(';
+
+      for (let i = 0; i < dto.ownerOperator.length; i++) {
+        const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
+
+        if (i === 0) {
+          string += `(UPPER(${alias}.buyOwnDisplayName) ~* ${regex} OR UPPER(${alias}.sellOwnDisplayName)  ~* ${regex} ) `;
+        } else {
+          string += `OR (UPPER(${alias}.buyOwnDisplayName) ~* ${regex} OR UPPER(${alias}.sellOwnDisplayName)  ~* ${regex}) `;
+        }
+      }
+
+      string += ')';
+      query.andWhere(string);
+    }
+
+    if (param.includes('state') && dto.state) {
+      query.andWhere(
+        `(UPPER(${alias}.buyState) IN (:...states) OR UPPER(${alias}.sellState) IN (:...states))`,
+        {
+          states: dto.state.map(state => {
+            return state.toUpperCase();
+          }),
+        },
+      );
+    }
+
+    if (param.includes('transactionBeginDate') && dto.transactionBeginDate) {
+      query.andWhere(`${alias}.transactionDate >= (:transactionBeginDate)`, {
+        transactionBeginDate: dto.transactionBeginDate,
+      });
+    }
+
+    if (param.includes('transactionEndDate') && dto.transactionEndDate) {
+      query.andWhere(`${alias}.transactionDate <= (:transactionEndDate)`, {
+        transactionEndDate: dto.transactionEndDate,
+      });
+    }
+
+    if (param.includes('transactionType') && dto.transactionType) {
+      query.andWhere(
+        `UPPER(${alias}.transactionType) IN (:...transactionTypes)`,
+        {
+          transactionTypes: dto.transactionType.map(transactionType => {
+            return transactionType.toUpperCase();
+          }),
+        },
+      );
+    }
+
+    if (dto.page && dto.perPage) {
+      query = this.paginationHelper(query, dto.page, dto.perPage);
+    }
     return query;
   }
 }

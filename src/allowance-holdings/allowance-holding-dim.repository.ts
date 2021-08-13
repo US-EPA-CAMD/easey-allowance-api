@@ -45,6 +45,7 @@ export class AllowanceHoldingDimRepository extends Repository<
       ],
       'ahd',
       'af',
+      false,
     );
 
     query

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AllowanceController } from './allowance.controller';
-import { AllowanceService } from './allowance.service';
+import { AllowanceHoldingsController } from './allowance-holdings.controller';
+import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AllowanceHoldingDimRepository])],
-  controllers: [AllowanceController],
-  providers: [AllowanceHoldingsMap, AllowanceService],
+  controllers: [AllowanceHoldingsController],
+  providers: [AllowanceHoldingsMap, AllowanceHoldingsService],
 })
-export class AllowanceModule {}
+export class AllowanceHoldingsModule {}

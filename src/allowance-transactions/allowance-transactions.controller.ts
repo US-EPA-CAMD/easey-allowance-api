@@ -1,0 +1,64 @@
+import { Request } from 'express';
+import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOkResponse,
+  getSchemaPath,
+  ApiExtraModels,
+  ApiQuery,
+} from '@nestjs/swagger';
+
+import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
+import { AllowanceTransactionsService } from './allowance-transactions.service';
+import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
+import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import {
+  BadRequestResponse,
+  NotFoundResponse,
+  ApiQueryMultiSelect,
+} from '../utils/swagger-decorator.const';
+
+@Controller()
+@ApiTags('Allowance Transactions')
+@UseInterceptors(Json2CsvInterceptor)
+export class AllowanceTransactionsController {
+  constructor(
+    private readonly allowanceTransactionsService: AllowanceTransactionsService,
+  ) {}
+
+  @Get()
+  @ApiOkResponse({
+    description: 'Retrieve Allowance Transactions per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AllowanceTransactionsDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'transactionType',
+    required: false,
+    explode: false,
+  })
+  @ApiExtraModels(AllowanceTransactionsDTO)
+  getAllowanceTransactions(
+    @Query() allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    @Req() req: Request,
+  ): Promise<AllowanceTransactionsDTO[]> {
+    return this.allowanceTransactionsService.getAllowanceTransactions(
+      allowanceTransactionsParamsDTO,
+      req,
+    );
+  }
+}

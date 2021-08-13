@@ -95,7 +95,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
       let req: any = mockRequest(
-        `/holdings?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
+        `/allowance-holdings?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
       );
       req.res.setHeader.mockReturnValue();
       let paginatedResult = await allowanceHoldingDimRepository.getAllowanceHoldings(
@@ -112,7 +112,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     paginatedFilters.page = 2;
     paginatedFilters.perPage = 5;
     let req: any = mockRequest(
-      `/holdings?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
+      `/allowance-holdings?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
     );
     req.res.setHeader.mockReturnValue();
     let paginatedResult = await allowanceHoldingDimRepository.getAllowanceHoldings(
