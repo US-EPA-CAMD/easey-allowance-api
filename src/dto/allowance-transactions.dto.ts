@@ -1,0 +1,29 @@
+export class AllowanceTransactionsDTO {
+  prgCode: string;
+  transactionId: number;
+  transactionTotal: number;
+  transactionType: string;
+  sellAccountNumber: string;
+  sellAccountName: string;
+  sellAccountType: string;
+  sellFacilityName: string;
+  sellOrisplCode: number;
+  sellState: string;
+  sellEpaRegion: number;
+  sellSourceCat: string;
+  sellOwnDisplayName: string;
+  buyAccountNumber: string;
+  buyAccountName: string;
+  buyAccountType: string;
+  buyFacilityName: string;
+  buyOrisplCode: number;
+  buyState: string;
+  buyEpaRegion: number;
+  buySourceCat: string;
+  buyOwnDisplayName: string;
+  transactionDate: string;
+  vintageYear: number;
+  startBlock: number;
+  endBlock: number;
+  totalBlock: number;
+}

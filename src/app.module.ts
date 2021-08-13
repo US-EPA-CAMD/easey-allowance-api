@@ -7,9 +7,9 @@ import routes from './routes';
 import dbConfig from './config/db.config';
 import appConfig from './config/app.config';
 import { TypeOrmConfigService } from './config/typeorm.config';
-
-import { AllowanceModule } from './allowance/allowance.module';
+import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 import { AccountModule } from './account/account.module';
+import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 
 @Module({
   imports: [
@@ -21,7 +21,8 @@ import { AccountModule } from './account/account.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    AllowanceModule,
+    AllowanceHoldingsModule,
+    AllowanceTransactionsModule,
     AccountModule,
   ],
 })

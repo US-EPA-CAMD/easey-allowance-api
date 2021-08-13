@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 
-import { AllowanceService } from './allowance.service';
+import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
@@ -21,8 +21,8 @@ const mockRequest = () => {
   };
 };
 
-describe('-- Allowance Service --', () => {
-  let allowanceService;
+describe('-- Allowance Holdings Service --', () => {
+  let allowanceHoldingsService;
   let allowanceHoldingDimRepository;
   let allowanceHoldingsMap;
   let req: any;
@@ -30,7 +30,7 @@ describe('-- Allowance Service --', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        AllowanceService,
+        AllowanceHoldingsService,
         {
           provide: AllowanceHoldingDimRepository,
           useFactory: mockAllowanceHoldingDimRepository,
@@ -39,7 +39,7 @@ describe('-- Allowance Service --', () => {
       ],
     }).compile();
 
-    allowanceService = module.get(AllowanceService);
+    allowanceHoldingsService = module.get(AllowanceHoldingsService);
     allowanceHoldingDimRepository = module.get(AllowanceHoldingDimRepository);
     allowanceHoldingsMap = module.get(AllowanceHoldingsMap);
     req = mockRequest();
@@ -55,17 +55,12 @@ describe('-- Allowance Service --', () => {
 
       let filters = new AllowanceHoldingsParamsDTO();
 
-      let result = await allowanceService.getAllowanceHoldings(filters, req);
+      let result = await allowanceHoldingsService.getAllowanceHoldings(
+        filters,
+        req,
+      );
       expect(allowanceHoldingsMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
-    });
-  });
-
-  describe('getAllowanceTransactions', () => {
-    it('should return "Hello allowanceTransactions"', async () => {
-      expect(allowanceService.getAllowanceTransactions()).toBe(
-        'Hello allowanceTransactions',
-      );
     });
   });
 });
