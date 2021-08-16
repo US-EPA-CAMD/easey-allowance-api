@@ -13,9 +13,9 @@ export class ProgramCode extends BaseEntity {
   programDescription: string;
 
   @Column({
-    name: 'allow_comp_ind',
+    name: 'allowance_ui_filter',
   })
-  allowCompInd: number;
+  allowanceUIFilter: number;
 
   @Column({
     name: 'trading_end_date',
