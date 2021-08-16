@@ -13,9 +13,18 @@ import { ErrorMessages } from '../utils/error-messages';
 import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { TransactionType } from '../enum/transaction-type.enum';
 import { AllowanceProgram } from '../enum/allowance-programs.enum';
+import { IsYearGreater } from '../pipes/is-year-greater.pipe';
+import { BeginDate, EndDate } from '../utils/validator.const';
+import { IsAllowanceProgram } from '../pipes/is-allowance-program';
 
 export class AllowanceTransactionsParamsDTO extends PaginationDTO {
   @IsOptional()
+  @IsAllowanceProgram(false, {
+    each: true,
+    message:
+      ErrorMessages.AccountCharacteristics(true, 'program') +
+      '?allowanceUIFilter=true',
+  })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   program?: AllowanceProgram[];
 
@@ -58,15 +67,19 @@ export class AllowanceTransactionsParamsDTO extends PaginationDTO {
   @IsOptional()
   @IsYearFormat({
     each: true,
-    message: ErrorMessages.DateFormat('vintageYear', 'YYYY'),
+    message: ErrorMessages.MultipleFormat('vintageYear', 'YYYY'),
+  })
+  @IsYearGreater(1995, {
+    each: true,
+    message: ErrorMessages.YearRange('vintageYear', '1995'),
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   vintageYear?: number[];
 
-  @IsDefined()
+  @BeginDate()
   transactionBeginDate: Date;
 
-  @IsDefined()
+  @EndDate()
   transactionEndDate: Date;
 
   @IsOptional()

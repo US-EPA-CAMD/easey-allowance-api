@@ -11,9 +11,9 @@ import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsAccountType } from '../pipes/is-account-type.pipe';
 import { IsAccountNumber } from '../pipes/is-account-number.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
-import { IsActiveAllowanceProgram } from '../pipes/is-active-allowance-program.pipe';
 import { ErrorMessages } from '../utils/error-messages';
 import { IsYearFormat } from '../pipes/is-year-format.pipe';
+import { IsAllowanceProgram } from '../pipes/is-allowance-program';
 
 export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
@@ -55,7 +55,7 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
   @IsYearFormat({
     each: true,
-    message: ErrorMessages.DateFormat('vintageYear', 'YYYY'),
+    message: ErrorMessages.MultipleFormat('vintageYear', 'YYYY'),
   })
   @IsYearGreater(1995, {
     each: true,
@@ -65,11 +65,11 @@ export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   vintageYear?: number[];
 
   @IsOptional()
-  @IsActiveAllowanceProgram({
+  @IsAllowanceProgram(true, {
     each: true,
     message:
       ErrorMessages.AccountCharacteristics(true, 'program') +
-      '?allowanceOnly=true&isActive=true',
+      '?allowanceUIFilter=true&isActive=true',
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   program?: ActiveAllowanceProgram[];

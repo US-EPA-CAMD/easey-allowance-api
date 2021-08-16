@@ -26,8 +26,31 @@ export class ErrorMessages {
     return `Update one or more ${parameter}s to a year greater than or equal to ${minYear}`;
   }
 
-  public static DateFormat(parameter: string, format: string) {
+  public static SingleFormat(parameter: string, format: string) {
+    return `Ensure that ${parameter} is in the ${format}.`;
+  }
+
+  public static MultipleFormat(parameter: string, format: string) {
     return `One or more ${parameter}s are not in the ${format} format. Ensure all ${parameter}s are in the ${format} format`;
+  }
+
+  public static DateRange(
+    parameter: string,
+    validRange: string,
+  ) {
+    return `Update the ${parameter} to ${validRange}`;
+  }
+
+  public static DateValidity() {
+    return `The provided $property $value is not a valid date.`;
+  }
+
+  public static BeginEndDate(constraint: string) {
+    return `Enter an $property that is greater than or equal to the ${constraint}`;
+  }
+
+  public static RequiredProperty() {
+    return `$property should not be null or undefined`;
   }
 
   static ApiConfigLink(parameter: string) {
