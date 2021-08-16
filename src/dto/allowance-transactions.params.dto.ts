@@ -15,7 +15,7 @@ import { TransactionType } from '../enum/transaction-type.enum';
 import { AllowanceProgram } from '../enum/allowance-programs.enum';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { BeginDate, EndDate } from '../utils/validator.const';
-import { IsAllowanceProgram } from '../pipes/is-allowance-program';
+import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 
 export class AllowanceTransactionsParamsDTO extends PaginationDTO {
   @IsOptional()

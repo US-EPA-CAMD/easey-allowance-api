@@ -8,7 +8,8 @@ import { IsOrisCode } from '../pipes/is-oris-code.pipe';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
-import { IsActiveAllowanceProgram } from '../pipes/is-active-allowance-program.pipe';
+import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
+
 
 describe('-- Allowance Holdings Params DTO --', () => {
   describe('getAllowanceHoldings with query parameters', () => {
@@ -44,7 +45,7 @@ describe('-- Allowance Holdings Params DTO --', () => {
       @IsYearGreater(1995)
       vintageYear: string;
 
-      @IsActiveAllowanceProgram()
+      @IsAllowanceProgram(true)
       program: string;
     }
 

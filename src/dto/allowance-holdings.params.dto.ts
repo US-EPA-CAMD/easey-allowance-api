@@ -13,7 +13,7 @@ import { IsAccountNumber } from '../pipes/is-account-number.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { ErrorMessages } from '../utils/error-messages';
 import { IsYearFormat } from '../pipes/is-year-format.pipe';
-import { IsAllowanceProgram } from '../pipes/is-allowance-program';
+import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 
 export class AllowanceHoldingsParamsDTO extends PaginationDTO {
   @IsOptional()
