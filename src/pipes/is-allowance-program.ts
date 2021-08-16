@@ -24,13 +24,13 @@ export function IsAllowanceProgram(
           if (isActiveOnly) {
             found = await manager.findOne(ProgramCode, {
               programCode: value.toUpperCase(),
-              allowanceUiFilter: 1,
+              allowanceUIFilter: 1,
               tradingEndDate: null,
             });
           } else {
             found = await manager.findOne(ProgramCode, {
               programCode: value.toUpperCase(),
-              allowanceUiFilter: 1,
+              allowanceUIFilter: 1,
             });
           }
           return found != null;

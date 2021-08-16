@@ -11,7 +11,7 @@ export function BeginDate() {
   return applyDecorators(
     IsInDateRange([new Date('1993-03-23'), new Date()], {
       message: ErrorMessages.DateRange(
-        'transactionBeginDate ',
+        'transactionBeginDate',
         `a date between 03/23/1993 and the current date`,
       ),
     }),
@@ -29,12 +29,12 @@ export function BeginDate() {
 
 export function EndDate() {
   return applyDecorators(
-    IsDateGreaterThanEqualTo('beginDate', {
-      message: ErrorMessages.BeginEndDate('beginDate'),
+    IsDateGreaterThanEqualTo('transactionBeginDate', {
+      message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
     IsInDateRange([new Date('1993-03-23'), new Date()], {
       message: ErrorMessages.DateRange(
-        'transactionEndDate ',
+        'transactionEndDate',
         `a date between 03/23/1993 and the current date`,
       ),
     }),

@@ -15,7 +15,7 @@ export class ProgramCode extends BaseEntity {
   @Column({
     name: 'allowance_ui_filter',
   })
-  allowanceUiFilter: number;
+  allowanceUIFilter: number;
 
   @Column({
     name: 'trading_end_date',
