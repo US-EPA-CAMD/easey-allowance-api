@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AccountFactRepository } from './account-fact.repository';
-import { AccountMap } from '../maps/account.map';
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
+import { AccountFactRepository } from './account-fact.repository';
+import { AccountOwnerDimRepository } from './account-owner-dim.repository';
+import { AccountMap } from '../maps/account.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AccountFactRepository])],
+  imports: [TypeOrmModule.forFeature([AccountFactRepository, AccountOwnerDimRepository])],
   controllers: [AccountController],
-  providers: [AccountMap, AccountService],
+  providers: [AccountService, AccountMap, OwnerOperatorsMap],
 })
 export class AccountModule {}

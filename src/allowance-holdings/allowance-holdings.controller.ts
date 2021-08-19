@@ -14,14 +14,19 @@ import {
 } from '../utils/swagger-decorator.const';
 import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
+import { AccountService } from '../account/account.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 
 @Controller()
 @ApiTags('Allowance Holdings')
 @UseInterceptors(Json2CsvInterceptor)
 export class AllowanceHoldingsController {
-  constructor(private readonly allowanceService: AllowanceHoldingsService) {}
+  constructor(
+    private readonly allowanceService: AllowanceHoldingsService,
+    private readonly accountService: AccountService,
+  ) {}
 
   @Get()
   @ApiOkResponse({
@@ -51,5 +56,16 @@ export class AllowanceHoldingsController {
       allowanceHoldingsParamsDTO,
       req,
     );
+  }
+
+  @Get('owner-operators')
+  @ApiOkResponse({
+    description: 'Retrieved All Valid Owner Operators',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(OwnerOperatorsDTO)
+  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
+    return this.accountService.getAllOwnerOperators();
   }
 }
