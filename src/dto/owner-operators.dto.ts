@@ -1,6 +1,5 @@
 export class OwnerOperatorsDTO {
-    ownId: number;
-    ownerOperator: string;
-    ownType: string;
-  }
-  
+  ownId: number;
+  ownerOperator: string;
+  ownType: string;
+}

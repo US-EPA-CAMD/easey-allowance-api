@@ -16,7 +16,7 @@ export class AccountService {
     private readonly accountFactMap: AccountMap,
     @InjectRepository(AccountOwnerDimRepository)
     private readonly accountOwnerDimRepository: AccountOwnerDimRepository,
-    private readonly OwnerOperatorsMap: OwnerOperatorsMap,
+    private readonly ownerOperatorsMap: OwnerOperatorsMap,
   ) {}
 
   async getAllAccounts(): Promise<AccountDTO[]> {
@@ -26,6 +26,6 @@ export class AccountService {
 
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
     const query = await this.accountOwnerDimRepository.getAllOwnerOperators();
-    return this.OwnerOperatorsMap.many(query);
+    return this.ownerOperatorsMap.many(query);
   }
 }

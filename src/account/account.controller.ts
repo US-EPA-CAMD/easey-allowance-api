@@ -1,8 +1,6 @@
 import {
   ApiTags,
   ApiOkResponse,
-  ApiBadRequestResponse,
-  ApiNotFoundResponse,
   ApiExtraModels,
 } from '@nestjs/swagger';
 import { Get, Controller } from '@nestjs/common';
