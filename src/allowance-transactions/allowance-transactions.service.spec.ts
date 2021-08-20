@@ -4,6 +4,10 @@ import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import { TransactionOwnerDim } from '../entities/transaction-owner-dim.entity';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 
 const mockTransactionBlockDimRepository = () => ({
   getAllowanceTransactions: jest.fn(),
@@ -11,6 +15,10 @@ const mockTransactionBlockDimRepository = () => ({
 
 const mockAllowanceTransactionsMap = () => ({
   many: jest.fn(),
+});
+
+const mockTransactionOwnerDimRepository = () => ({
+  getAllOwnerOperators: jest.fn(),
 });
 
 const mockRequest = () => {
@@ -24,6 +32,7 @@ const mockRequest = () => {
 describe('-- Allowance Transactions Service --', () => {
   let allowanceTransactionsService;
   let transactionBlockDimRepository;
+  let transactionOwnerDimRepository;
   let allowanceTransactionsMap;
   let req: any;
 
@@ -36,14 +45,20 @@ describe('-- Allowance Transactions Service --', () => {
           useFactory: mockTransactionBlockDimRepository,
         },
         {
+          provide: TransactionOwnerDimRepository,
+          useFactory: mockTransactionOwnerDimRepository,
+        },
+        {
           provide: AllowanceTransactionsMap,
           useFactory: mockAllowanceTransactionsMap,
         },
+        OwnerOperatorsMap,
       ],
     }).compile();
 
     allowanceTransactionsService = module.get(AllowanceTransactionsService);
     transactionBlockDimRepository = module.get(TransactionBlockDimRepository);
+    transactionOwnerDimRepository = module.get(TransactionOwnerDimRepository)
     allowanceTransactionsMap = module.get(AllowanceTransactionsMap);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
@@ -64,6 +79,30 @@ describe('-- Allowance Transactions Service --', () => {
       );
       expect(allowanceTransactionsMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
+    });
+  });
+
+  describe('getAllOwnerOperators', () => {
+    it('repository.getAllOwnerOperators() and returns all valid owner/operators', async () => {
+      let transactionOwnerDimEntity: TransactionOwnerDim = new TransactionOwnerDim();
+      transactionOwnerDimEntity.ownId = 0;
+      transactionOwnerDimEntity.ownerOperator = '';
+      transactionOwnerDimEntity.ownType = '';
+
+      const ownerOperatorsDTO: OwnerOperatorsDTO = {
+        ownId: 0,
+        ownerOperator: '',
+        ownType: '',
+      };
+
+      transactionOwnerDimRepository.getAllOwnerOperators.mockResolvedValue([
+        transactionOwnerDimEntity,
+      ]);
+
+      let result = await allowanceTransactionsService.getAllOwnerOperators();
+
+      expect(transactionOwnerDimRepository.getAllOwnerOperators).toHaveBeenCalled();
+      expect(result).toEqual([ownerOperatorsDTO]);
     });
   });
 });

@@ -6,6 +6,9 @@ import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,6 +30,8 @@ describe('-- Allowance Transactions Controller --', () => {
         AllowanceTransactionsService,
         AllowanceTransactionsMap,
         TransactionBlockDimRepository,
+        TransactionOwnerDimRepository,
+        OwnerOperatorsMap,
       ],
     }).compile();
 
@@ -56,6 +61,18 @@ describe('-- Allowance Transactions Controller --', () => {
           req,
         ),
       ).toBe(expectedResults);
+    });
+  });
+
+  describe('* getAllOwnerOperators', () => {
+    it('should call the service and return owner operators ', async () => {
+      const expectedResults: OwnerOperatorsDTO[] = [];
+      jest
+        .spyOn(allowanceTransactionsService, 'getAllOwnerOperators')
+        .mockResolvedValue(expectedResults);
+      expect(await allowanceTransactionsController.getAllOwnerOperators()).toBe(
+        expectedResults,
+      );
     });
   });
 });
