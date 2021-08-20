@@ -5,10 +5,21 @@ import { TransactionBlockDimRepository } from './transaction-block-dim.repositor
 import { AllowanceTransactionsController } from './allowance-transactions.controller';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TransactionBlockDimRepository])],
+  imports: [
+    TypeOrmModule.forFeature([
+      TransactionBlockDimRepository,
+      TransactionOwnerDimRepository,
+    ]),
+  ],
   controllers: [AllowanceTransactionsController],
-  providers: [AllowanceTransactionsMap, AllowanceTransactionsService],
+  providers: [
+    AllowanceTransactionsService,
+    AllowanceTransactionsMap,
+    OwnerOperatorsMap,
+  ],
 })
 export class AllowanceTransactionsModule {}

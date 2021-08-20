@@ -12,6 +12,7 @@ import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import {
   BadRequestResponse,
   NotFoundResponse,
@@ -60,5 +61,16 @@ export class AllowanceTransactionsController {
       allowanceTransactionsParamsDTO,
       req,
     );
+  }
+
+  @Get('owner-operators')
+  @ApiOkResponse({
+    description: 'Retrieved All Valid Owner Operators',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(OwnerOperatorsDTO)
+  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
+    return this.allowanceTransactionsService.getAllOwnerOperators();
   }
 }
