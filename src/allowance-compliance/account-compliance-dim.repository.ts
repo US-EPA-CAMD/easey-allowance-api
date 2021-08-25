@@ -16,7 +16,7 @@ export class AccountComplianceDimRepository extends Repository<
     req: Request,
   ): Promise<AccountComplianceDim[]> {
     const { page, perPage, program } = allowanceComplianceParamsDTO;
-    let selectList = [
+    const selectList = [
       'acd.prgCode',
       'acd.year',
       'acd.accountNumber',
