@@ -31,7 +31,7 @@ export class AllowanceHoldingDimRepository extends Repository<
         'af.accountType',
       ])
       .innerJoin('ahd.accountFact', 'af');
-    query = QueryBuilderHelper.createAllowanceQuery(
+    query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceHoldingsParamsDTO,
       [

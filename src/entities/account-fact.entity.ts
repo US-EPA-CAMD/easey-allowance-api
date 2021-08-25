@@ -1,6 +1,7 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { AllowanceHoldingDim } from './allowance-holding-dim.entity';
+import { AccountComplianceDim } from './account-compliance-dim.entity';
 
 @Entity({ name: 'camddmw.account_fact' })
 export class AccountFact extends BaseEntity {
@@ -23,6 +24,11 @@ export class AccountFact extends BaseEntity {
     name: 'orispl_code',
   })
   orisCode: number;
+
+  @Column({
+    name: 'facility_name',
+  })
+  facilityName: string;
 
   @Column()
   state: string;
@@ -47,4 +53,10 @@ export class AccountFact extends BaseEntity {
     ahd => ahd.accountFact,
   )
   allowanceHoldingDim: AllowanceHoldingDim[];
+
+  @OneToMany(
+    () => AccountComplianceDim,
+    acd => acd.accountFact,
+  )
+  accountComplianceDim: AccountComplianceDim[];
 }

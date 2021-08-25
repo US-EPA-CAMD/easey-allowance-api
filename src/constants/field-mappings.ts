@@ -1,4 +1,5 @@
 import { allowanceFields } from './allowance-fields';
+import { complianceFields } from './compliance-fields';
 
 const holdings = [
   { ...allowanceFields.accountNumber },
@@ -59,10 +60,58 @@ const accountInfo = [
   { ...allowanceFields.nercRegion },
 ];
 
+const allowanceComplianceNbpOtc = [
+  { ...complianceFields.programCodeInfo },
+  { ...complianceFields.year },
+  { ...complianceFields.accountNumber },
+  { ...complianceFields.accountName },
+  { ...complianceFields.facilityName },
+  { ...complianceFields.facilityId },
+  { ...complianceFields.unitsAffected },
+  { ...complianceFields.allocated },
+  { ...complianceFields.bankedHeld },
+  { ...complianceFields.currentHeld },
+  { ...complianceFields.totalAllowancesHeld },
+  { ...complianceFields.complianceYearEmissions },
+  { ...complianceFields.otherDeductions },
+  { ...complianceFields.totalRequiredDeductions },
+  { ...complianceFields.currentDeductions },
+  { ...complianceFields.deductOneToOne },
+  { ...complianceFields.deductTwoToOne },
+  { ...complianceFields.totalAllowancesDeducted },
+  { ...complianceFields.carriedOver },
+  { ...complianceFields.excessEmissions },
+  { ...complianceFields.ownerOperator },
+  { ...complianceFields.state },
+];
+
+const allowanceCompliance = [
+  { ...complianceFields.programCodeInfo },
+  { ...complianceFields.year },
+  { ...complianceFields.accountNumber },
+  { ...complianceFields.accountName },
+  { ...complianceFields.facilityName },
+  { ...complianceFields.facilityId },
+  { ...complianceFields.unitsAffected },
+  { ...complianceFields.allocated },
+  { ...complianceFields.totalAllowancesHeld },
+  { ...complianceFields.complianceYearEmissions },
+  { ...complianceFields.otherDeductions },
+  { ...complianceFields.totalAllowancesDeducted },
+  { ...complianceFields.carriedOver },
+  { ...complianceFields.excessEmissions },
+  { ...complianceFields.ownerOperator },
+  { ...complianceFields.state },
+];
+
 export const fieldMappings = {
   allowances: {
     holdings: holdings,
     transactions: transactions,
     accountInfo: accountInfo,
+  },
+  compliance: {
+    allowance: allowanceCompliance,
+    allowanceNbpOtc: allowanceComplianceNbpOtc,
   },
 };

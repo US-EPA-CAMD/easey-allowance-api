@@ -6,10 +6,10 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AccountService } from '../account/account.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AccountOwnerDimRepository } from '../account/account-owner-dim.repository';
-import { AccountFactRepository } from 'src/account/account-fact.repository';
+import { AccountFactRepository } from '../account/account-fact.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { AccountMap } from 'src/maps/account.map';
+import { AccountMap } from '../maps/account.map';
 
 @Module({
   imports: [
