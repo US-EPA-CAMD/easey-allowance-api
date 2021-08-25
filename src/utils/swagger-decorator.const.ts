@@ -26,3 +26,13 @@ export const ApiQueryMultiSelect = () => {
     ApiQuery({ style: 'pipeDelimited', name: 'program', required: false, explode: false }),
   );
 }
+
+
+export const ApiQueryComplianceMultiSelect = () => {
+  return applyDecorators(
+    ApiQuery({ style: 'pipeDelimited', name: 'orisCode', required: false, explode: false }),
+    ApiQuery({ style: 'pipeDelimited', name: 'ownerOperator', required: false, explode: false }),
+    ApiQuery({ style: 'pipeDelimited', name: 'state', required: false, explode: false }),
+    ApiQuery({ style: 'pipeDelimited', name: 'year', required: false, explode: false }),
+  );
+}

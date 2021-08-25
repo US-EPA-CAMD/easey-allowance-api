@@ -6,23 +6,23 @@ export class QueryBuilderHelper {
     return query;
   }
 
-  public static createAllowanceQuery(
+  public static createAccountQuery(
     query: any,
     dto: any,
     param: string[],
-    allowanceAlias: string,
-    accountAlias: string,
+    dataAlias: string,
+    characteristicAlias: string,
     additionalQuery: boolean,
   ) {
     if (param.includes('vintageYear') && dto.vintageYear) {
-      query.andWhere(`${allowanceAlias}.vintageYear IN (:...vintageYears)`, {
+      query.andWhere(`${dataAlias}.vintageYear IN (:...vintageYears)`, {
         vintageYears: dto.vintageYear,
       });
     }
 
     if (param.includes('accountNumber') && dto.accountNumber) {
       query.andWhere(
-        `UPPER(${allowanceAlias}.accountNumber) IN (:...accountNumber)`,
+        `UPPER(${dataAlias}.accountNumber) IN (:...accountNumber)`,
         {
           accountNumber: dto.accountNumber.map(accountNumber => {
             return accountNumber.toUpperCase();
@@ -32,7 +32,7 @@ export class QueryBuilderHelper {
     }
 
     if (param.includes('orisCode') && dto.orisCode) {
-      query.andWhere(`${accountAlias}.orisCode IN (:...orisCodes)`, {
+      query.andWhere(`${characteristicAlias}.orisCode IN (:...orisCodes)`, {
         orisCodes: dto.orisCode,
       });
     }
@@ -44,9 +44,9 @@ export class QueryBuilderHelper {
         const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
-          string += `(UPPER(${accountAlias}.ownDisplay) ~* ${regex}) `;
+          string += `(UPPER(${characteristicAlias}.ownDisplay) ~* ${regex}) `;
         } else {
-          string += `OR (UPPER(${accountAlias}.ownDisplay) ~* ${regex}) `;
+          string += `OR (UPPER(${characteristicAlias}.ownDisplay) ~* ${regex}) `;
         }
       }
 
@@ -55,7 +55,7 @@ export class QueryBuilderHelper {
     }
 
     if (param.includes('state') && dto.state) {
-      query.andWhere(`UPPER(${accountAlias}.state) IN (:...states)`, {
+      query.andWhere(`UPPER(${characteristicAlias}.state) IN (:...states)`, {
         states: dto.state.map(state => {
           return state.toUpperCase();
         }),
@@ -63,7 +63,7 @@ export class QueryBuilderHelper {
     }
 
     if (param.includes('program') && dto.program) {
-      query.andWhere(`UPPER(${allowanceAlias}.prgCode) IN (:...programs)`, {
+      query.andWhere(`UPPER(${dataAlias}.prgCode) IN (:...programs)`, {
         programs: dto.program.map(program => {
           return program.toUpperCase();
         }),
@@ -72,7 +72,7 @@ export class QueryBuilderHelper {
 
     if (param.includes('accountType') && dto.accountType) {
       query.andWhere(
-        `UPPER(${accountAlias}.accountType) IN (:...accountTypes)`,
+        `UPPER(${characteristicAlias}.accountType) IN (:...accountTypes)`,
         {
           accountTypes: dto.accountType.map(accountType => {
             return accountType.toUpperCase();
@@ -174,6 +174,24 @@ export class QueryBuilderHelper {
           }),
         },
       );
+    }
+
+    if (dto.page && dto.perPage) {
+      query = this.paginationHelper(query, dto.page, dto.perPage);
+    }
+    return query;
+  }
+
+  public static createComplianceQuery(
+    query: any,
+    dto: any,
+    param: string[],
+    complianceAlias: string,
+  ) {
+    if (param.includes('year') && dto.year) {
+      query.andWhere(`${complianceAlias}.year IN (:...years)`, {
+        years: dto.year,
+      });
     }
 
     if (dto.page && dto.perPage) {

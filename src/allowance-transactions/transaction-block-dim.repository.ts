@@ -47,7 +47,7 @@ export class TransactionBlockDimRepository extends Repository<
         'tbd.totalBlock',
       ])
       .innerJoin('tbd.transactionFact', 'tf');
-    query = QueryBuilderHelper.createAllowanceQuery(
+    query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceTransactionsParamsDTO,
       ['vintageYear', 'program'],

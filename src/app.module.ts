@@ -10,6 +10,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
 import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 import { AccountModule } from './account/account.module';
 import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
+import { AllowanceComplianceModule } from './allowance-compliance/allowance-compliance.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AllowanceTransactionsModule } from './allowance-transactions/allowance-
     AllowanceHoldingsModule,
     AllowanceTransactionsModule,
     AccountModule,
+    AllowanceComplianceModule,
   ],
 })
 export class AppModule {}
