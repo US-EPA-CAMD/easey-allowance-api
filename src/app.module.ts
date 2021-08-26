@@ -11,6 +11,7 @@ import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings
 import { AccountModule } from './account/account.module';
 import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 import { AllowanceComplianceModule } from './allowance-compliance/allowance-compliance.module';
+import { EmissionsComplianceModule } from './emissions-compliance/emissions-compliance.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AllowanceComplianceModule } from './allowance-compliance/allowance-comp
     AllowanceTransactionsModule,
     AccountModule,
     AllowanceComplianceModule,
+    EmissionsComplianceModule,
   ],
 })
 export class AppModule {}
