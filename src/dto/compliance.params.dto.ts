@@ -4,17 +4,24 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { PaginationDTO } from './pagination.dto';
 import { State } from '../enum/state.enum';
+import { IsStateCode } from '../pipes/is-state-code.pipe';
+import { ErrorMessages } from '../utils/error-messages';
+import { IsOrisCode } from '../pipes/is-oris-code.pipe';
 
 export class ComplianceParamsDTO extends PaginationDTO {
   @IsOptional()
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
-  year?: number[];
-
-  @IsOptional()
+  @IsStateCode({
+    each: true,
+    message: ErrorMessages.AccountCharacteristics(true, 'state'),
+  })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   state?: State[];
 
   @IsOptional()
+  @IsOrisCode({
+    each: true,
+    message: ErrorMessages.AccountCharacteristics(true, 'orisCode'),
+  })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   orisCode?: number[];
 
