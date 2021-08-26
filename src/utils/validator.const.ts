@@ -12,6 +12,7 @@ export function BeginDate() {
     IsInDateRange([new Date('1993-03-23'), new Date()], {
       message: ErrorMessages.DateRange(
         'transactionBeginDate',
+        false,
         `a date between 03/23/1993 and the current date`,
       ),
     }),
@@ -19,7 +20,10 @@ export function BeginDate() {
       message: ErrorMessages.DateValidity(),
     }),
     IsIsoFormat({
-      message: ErrorMessages.SingleFormat('transactionBeginDate', 'YYYY-MM-DD format'),
+      message: ErrorMessages.SingleFormat(
+        'transactionBeginDate',
+        'YYYY-MM-DD format',
+      ),
     }),
     IsDefined({
       message: ErrorMessages.RequiredProperty(),
@@ -35,6 +39,7 @@ export function EndDate() {
     IsInDateRange([new Date('1993-03-23'), new Date()], {
       message: ErrorMessages.DateRange(
         'transactionEndDate',
+        false,
         `a date between 03/23/1993 and the current date`,
       ),
     }),
@@ -42,7 +47,10 @@ export function EndDate() {
       message: ErrorMessages.DateValidity(),
     }),
     IsIsoFormat({
-      message: ErrorMessages.SingleFormat('transactionEndDate', 'YYYY-MM-DD format'),
+      message: ErrorMessages.SingleFormat(
+        'transactionEndDate',
+        'YYYY-MM-DD format',
+      ),
     }),
     IsDefined({ message: ErrorMessages.RequiredProperty() }),
   );

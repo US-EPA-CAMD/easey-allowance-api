@@ -36,9 +36,14 @@ export class ErrorMessages {
 
   public static DateRange(
     parameter: string,
+    plural: boolean,
     validRange: string,
   ) {
-    return `Update the ${parameter} to ${validRange}`;
+    const grammar = plural
+      ? `Update one or more ${parameter}s to`
+      : `Update the ${parameter} to`;
+
+    return `${grammar} ${validRange}`;
   }
 
   public static DateValidity() {
