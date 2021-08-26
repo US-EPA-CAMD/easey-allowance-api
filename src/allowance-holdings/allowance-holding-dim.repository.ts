@@ -49,8 +49,8 @@ export class AllowanceHoldingDimRepository extends Repository<
     );
 
     query
-      .orderBy('ahd.accountNumber')
-      .addOrderBy('ahd.prgCode')
+      .orderBy('ahd.prgCode')
+      .addOrderBy('ahd.accountNumber')
       .addOrderBy('ahd.vintageYear')
       .addOrderBy('ahd.startBlock');
 
