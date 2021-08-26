@@ -1,4 +1,4 @@
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiExtraModels } from '@nestjs/swagger';
 
 import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
