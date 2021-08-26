@@ -6,6 +6,10 @@ import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { State } from '../enum/state.enum';
 import { AllowanceProgram } from '../enum/allowance-programs.enum';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { OwnerYearDimRepository } from './owner-year-dim.repository';
+import { OwnerYearDim } from '../entities/owner-year-dim.entity';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 
 const mockAccountComplianceDimRepository = () => ({
   getAllowanceCompliance: jest.fn(),
@@ -13,6 +17,10 @@ const mockAccountComplianceDimRepository = () => ({
 
 const mockAllowanceComplianceMap = () => ({
   many: jest.fn(),
+});
+
+const mockOwnerYearDimRepository = () => ({
+  getAllOwnerOperators: jest.fn(),
 });
 
 const mockRequest = () => {
@@ -26,6 +34,7 @@ const mockRequest = () => {
 describe('-- Allowance Compliance Service --', () => {
   let allowanceComplianceService;
   let accountComplianceDimRepository;
+  let ownerYearDimRepository;
   let allowanceComplianceMap;
   let req: any;
 
@@ -41,11 +50,17 @@ describe('-- Allowance Compliance Service --', () => {
           provide: AllowanceComplianceMap,
           useFactory: mockAllowanceComplianceMap,
         },
+        {
+          provide: OwnerYearDimRepository,
+          useFactory: mockOwnerYearDimRepository,
+        },
+        OwnerOperatorsMap,
       ],
     }).compile();
 
     allowanceComplianceService = module.get(AllowanceComplianceService);
     accountComplianceDimRepository = module.get(AccountComplianceDimRepository);
+    ownerYearDimRepository = module.get(OwnerYearDimRepository);
     allowanceComplianceMap = module.get(AllowanceComplianceMap);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
@@ -90,6 +105,30 @@ describe('-- Allowance Compliance Service --', () => {
 
       expect(allowanceComplianceMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
+    });
+  });
+
+  describe('getAllOwnerOperators', () => {
+    it('repository.getAllOwnerOperators() and returns all valid owner/operators', async () => {
+      let ownerDimEntity: OwnerYearDim = new OwnerYearDim();
+      ownerDimEntity.ownId = 0;
+      ownerDimEntity.ownerOperator = '';
+      ownerDimEntity.ownType = '';
+
+      const ownerOperatorsDTO: OwnerOperatorsDTO = {
+        ownId: 0,
+        ownerOperator: '',
+        ownType: '',
+      };
+
+      ownerYearDimRepository.getAllOwnerOperators.mockResolvedValue([
+        ownerDimEntity,
+      ]);
+
+      let result = await allowanceComplianceService.getAllOwnerOperators();
+
+      expect(ownerYearDimRepository.getAllOwnerOperators).toHaveBeenCalled();
+      expect(result).toEqual([ownerOperatorsDTO]);
     });
   });
 });

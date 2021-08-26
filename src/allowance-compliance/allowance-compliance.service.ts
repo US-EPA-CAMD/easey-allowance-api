@@ -6,7 +6,7 @@ import { fieldMappings } from '../constants/field-mappings';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
-import { OwnerOperatorsMap } from 'src/maps/owner-operators.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';

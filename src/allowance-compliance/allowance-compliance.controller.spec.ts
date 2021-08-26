@@ -8,6 +8,9 @@ import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { State } from '../enum/state.enum';
 import { AllowanceProgram } from '../enum/allowance-programs.enum';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { OwnerYearDimRepository } from './owner-year-dim.repository';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 
 const mockRequest = (url: string) => {
   return {
@@ -29,6 +32,8 @@ describe('-- Allowance Compliance Controller --', () => {
         AllowanceComplianceService,
         AllowanceComplianceMap,
         AccountComplianceDimRepository,
+        OwnerYearDimRepository,
+        OwnerOperatorsMap,
       ],
     }).compile();
 
@@ -64,6 +69,18 @@ describe('-- Allowance Compliance Controller --', () => {
           req,
         ),
       ).toBe(expectedResults);
+    });
+  });
+
+  describe('* getAllOwnerOperators', () => {
+    it('should call the service and return owner operators ', async () => {
+      const expectedResults: OwnerOperatorsDTO[] = [];
+      jest
+        .spyOn(allowanceComplianceService, 'getAllOwnerOperators')
+        .mockResolvedValue(expectedResults);
+      expect(await allowanceComplianceController.getAllOwnerOperators()).toBe(
+        expectedResults,
+      );
     });
   });
 });
