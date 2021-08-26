@@ -17,6 +17,7 @@ import {
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 
 @Controller()
 @ApiTags('Allowance Compliance')
@@ -60,5 +61,16 @@ export class AllowanceComplianceController {
       allowanceComplianceParamsDTO,
       req,
     );
+  }
+
+  @Get('owner-operators')
+  @ApiOkResponse({
+    description: 'Retrieved All Valid Owner Operators',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(OwnerOperatorsDTO)
+  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
+    return this.allowanceComplianceService.getAllOwnerOperators();
   }
 }
