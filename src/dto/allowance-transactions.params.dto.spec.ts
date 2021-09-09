@@ -10,7 +10,7 @@ import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { BeginDate, EndDate } from '../utils/validator.const';
-import { IsTransactionType } from 'src/pipes/is-transaction-type.pipe';
+import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 
 
 describe('-- Allowance Transactions Params DTO --', () => {
@@ -131,7 +131,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
       const results = await validate(
         new MyClass('general', '00001', 'oris', 'state', '1945', 'program', 'transactionType', 'beginDate', 'endDate'),
       );
-      expect(results.length).toBe(8);
+      expect(results.length).toBe(9);
     });
     mock.close;
   });

@@ -7,7 +7,7 @@ import { TransactionType } from '../enum/transaction-type.enum';
 import { AllowanceProgram } from '../enum/allowance-programs.enum';
 import { BeginDate, EndDate } from '../utils/validator.const';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-import { IsTransactionType } from 'src/pipes/is-transaction-type.pipe';
+import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @IsOptional()
