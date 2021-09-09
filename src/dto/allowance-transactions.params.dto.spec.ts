@@ -10,6 +10,7 @@ import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { BeginDate, EndDate } from '../utils/validator.const';
+import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 
 
 describe('-- Allowance Transactions Params DTO --', () => {
@@ -22,6 +23,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
         state: string,
         vintageYear: string,
         program: string,
+        transactionType: string,
         transactionBeginDate: string,
         transactionEndDate: string,
       ) {
@@ -31,6 +33,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
         this.state = state;
         this.vintageYear = vintageYear;
         this.program = program;
+        this.transactionType = transactionType
         this.transactionBeginDate = transactionBeginDate;
         this.transactionEndDate = transactionEndDate;
 
@@ -53,6 +56,9 @@ describe('-- Allowance Transactions Params DTO --', () => {
 
       @IsAllowanceProgram(false)
       program: string;
+
+      @IsTransactionType()
+      transactionType: string;
 
       @BeginDate()
       transactionBeginDate: string;
@@ -95,6 +101,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
           'TX',
           '2019',
           'ARP',
+          'Activate Conditional Allowances',
           '2019-01-01',
           '2019-01-01',
         ),
@@ -111,6 +118,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
           'TX',
           '1945',
           'ARP',
+          'Activate Conditional Allowances',
           '2019-01-01',
           '2019-01-01',
         ),
@@ -121,9 +129,9 @@ describe('-- Allowance Transactions Params DTO --', () => {
     it('should fail all of the validation pipes', async () => {
       fakeManager.findOne.resolves(null);
       const results = await validate(
-        new MyClass('general', '00001', 'oris', 'state', '1945', 'program', 'beginDate', 'endDate'),
+        new MyClass('general', '00001', 'oris', 'state', '1945', 'program', 'transactionType', 'beginDate', 'endDate'),
       );
-      expect(results.length).toBe(8);
+      expect(results.length).toBe(9);
     });
     mock.close;
   });

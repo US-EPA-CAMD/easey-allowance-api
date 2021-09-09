@@ -7,6 +7,7 @@ import { TransactionType } from '../enum/transaction-type.enum';
 import { AllowanceProgram } from '../enum/allowance-programs.enum';
 import { BeginDate, EndDate } from '../utils/validator.const';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
+import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @IsOptional()
@@ -30,6 +31,10 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   transactionEndDate: Date;
 
   @IsOptional()
+  @IsTransactionType({
+    each: true,
+    message: ErrorMessages.AccountCharacteristics(true, 'transactionType'),
+  })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   transactionType?: TransactionType[];
 }
