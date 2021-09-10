@@ -10,6 +10,7 @@ const mockQueryBuilder = () => ({
   distinctOn: jest.fn(),
   orderBy: jest.fn(),
   getMany: jest.fn(),
+  where: jest.fn(),
 });
 
 describe('OwnerYearDimRepository', () => {
@@ -40,6 +41,7 @@ describe('OwnerYearDimRepository', () => {
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue(ownerOperatorsDTO);
+    queryBuilder.where.mockReturnValue(queryBuilder);
   });
 
   describe('getAllOwnerOperators', () => {

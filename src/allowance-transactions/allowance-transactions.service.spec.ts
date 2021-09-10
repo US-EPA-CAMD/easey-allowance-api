@@ -58,7 +58,7 @@ describe('-- Allowance Transactions Service --', () => {
 
     allowanceTransactionsService = module.get(AllowanceTransactionsService);
     transactionBlockDimRepository = module.get(TransactionBlockDimRepository);
-    transactionOwnerDimRepository = module.get(TransactionOwnerDimRepository)
+    transactionOwnerDimRepository = module.get(TransactionOwnerDimRepository);
     allowanceTransactionsMap = module.get(AllowanceTransactionsMap);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
@@ -90,7 +90,6 @@ describe('-- Allowance Transactions Service --', () => {
       transactionOwnerDimEntity.ownType = '';
 
       const ownerOperatorsDTO: OwnerOperatorsDTO = {
-        ownId: 0,
         ownerOperator: '',
         ownType: '',
       };
@@ -101,7 +100,9 @@ describe('-- Allowance Transactions Service --', () => {
 
       let result = await allowanceTransactionsService.getAllOwnerOperators();
 
-      expect(transactionOwnerDimRepository.getAllOwnerOperators).toHaveBeenCalled();
+      expect(
+        transactionOwnerDimRepository.getAllOwnerOperators,
+      ).toHaveBeenCalled();
       expect(result).toEqual([ownerOperatorsDTO]);
     });
   });

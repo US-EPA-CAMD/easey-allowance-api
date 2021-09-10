@@ -116,7 +116,6 @@ describe('-- Allowance Compliance Service --', () => {
       ownerDimEntity.ownType = '';
 
       const ownerOperatorsDTO: OwnerOperatorsDTO = {
-        ownId: 0,
         ownerOperator: '',
         ownType: '',
       };
