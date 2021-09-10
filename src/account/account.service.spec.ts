@@ -21,7 +21,7 @@ const mockAccountOwnerDimRepository = () => ({
 describe('-- Account Service --', () => {
   let accountService;
   let accountFactRepository;
-  let accountOwnerDimRepository
+  let accountOwnerDimRepository;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -33,7 +33,7 @@ describe('-- Account Service --', () => {
         },
         {
           provide: AccountOwnerDimRepository,
-          useFactory: mockAccountOwnerDimRepository
+          useFactory: mockAccountOwnerDimRepository,
         },
         AccountMap,
         OwnerOperatorsMap,
@@ -42,7 +42,7 @@ describe('-- Account Service --', () => {
 
     accountService = module.get(AccountService);
     accountFactRepository = module.get(AccountFactRepository);
-    accountOwnerDimRepository = module.get(AccountOwnerDimRepository)
+    accountOwnerDimRepository = module.get(AccountOwnerDimRepository);
   });
 
   describe('getAllAccounts', () => {
@@ -75,7 +75,6 @@ describe('-- Account Service --', () => {
       accountOwnerDimEntity.ownType = '';
 
       const ownerOperatorsDTO: OwnerOperatorsDTO = {
-        ownId: 0,
         ownerOperator: '',
         ownType: '',
       };
