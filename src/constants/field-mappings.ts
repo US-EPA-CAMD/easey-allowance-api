@@ -104,6 +104,20 @@ const allowanceCompliance = [
   { ...complianceFields.state },
 ];
 
+const emissionsCompliance = [
+  { ...complianceFields.year },
+  { ...complianceFields.facilityName },
+  { ...complianceFields.facilityId },
+  { ...complianceFields.unitId },
+  { ...complianceFields.ownerOperator },
+  { ...complianceFields.state },
+  { ...complianceFields.complianceApproach },
+  { ...complianceFields.avgPlanId },
+  { ...complianceFields.emissionsLimitDisplay },
+  { ...complianceFields.actualEmissionsRate },
+  { ...complianceFields.avgPlanActual },
+  { ...complianceFields.inCompliance },
+];
 export const fieldMappings = {
   allowances: {
     holdings: holdings,
@@ -113,5 +127,6 @@ export const fieldMappings = {
   compliance: {
     allowance: allowanceCompliance,
     allowanceNbpOtc: allowanceComplianceNbpOtc,
+    emissions: emissionsCompliance,
   },
 };

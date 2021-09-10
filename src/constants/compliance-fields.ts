@@ -107,4 +107,39 @@ export const complianceFields = {
     label: 'State',
     value: 'state',
   },
+
+  unitId: {
+    label: 'Unit ID',
+    value: 'unitId',
+  },
+
+  complianceApproach: {
+    label: 'Compliance Approach',
+    value: 'complianceApproach',
+  },
+
+  avgPlanId: {
+    label: 'Averaging Plan ID',
+    value: 'avgPlanId',
+  },
+
+  emissionsLimitDisplay: {
+    label: 'Emissions Limit (lb/mmBtu)',
+    value: 'emissionsLimitDisplay',
+  },
+
+  avgPlanActual: {
+    label: 'Averaging Plan Actual Rate (lb/mmBtu)',
+    value: 'avgPlanActual',
+  },
+
+  actualEmissionsRate: {
+    label: 'Actual Emissions Rate (lb/mmBtu)',
+    value: 'actualEmissionsRate',
+  },
+
+  inCompliance: {
+    label: 'In Compliance',
+    value: 'inCompliance',
+  },
 };
