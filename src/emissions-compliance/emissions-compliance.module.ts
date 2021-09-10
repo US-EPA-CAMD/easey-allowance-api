@@ -7,19 +7,25 @@ import { AllowanceComplianceService } from '../allowance-compliance/allowance-co
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AccountComplianceDimRepository } from '../allowance-compliance/account-compliance-dim.repository';
 import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.repository';
+import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
+import { EmissionsComplianceService } from './emissions-compliance.service';
+import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       AccountComplianceDimRepository,
       OwnerYearDimRepository,
+      UnitComplianceDimRepository,
     ]),
   ],
   controllers: [EmissionsComplianceController],
   providers: [
     AllowanceComplianceService,
+    EmissionsComplianceService,
     AllowanceComplianceMap,
     OwnerOperatorsMap,
+    EmissionsComplianceMap,
   ],
 })
 export class EmissionsComplianceModule {}

@@ -187,11 +187,28 @@ export class QueryBuilderHelper {
     dto: any,
     param: string[],
     complianceAlias: string,
+    ownerAlias: string = 'odf',
   ) {
     if (param.includes('year') && dto.year) {
       query.andWhere(`${complianceAlias}.year IN (:...years)`, {
         years: dto.year,
       });
+    }
+
+    if (param.includes('ownerOperator') && dto.ownerOperator) {
+      let string = '(';
+
+      for (let i = 0; i < dto.ownerOperator.length; i++) {
+        const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
+
+        if (i === 0) {
+          string += `(UPPER(${ownerAlias}.ownDisplay) ~* ${regex}) `;
+        } else {
+          string += `OR (UPPER(${ownerAlias}.oprDisplay) ~* ${regex}) `;
+        }
+      }
+      string += ')';
+      query.andWhere(string);
     }
 
     if (dto.page && dto.perPage) {
