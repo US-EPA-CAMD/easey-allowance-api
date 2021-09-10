@@ -139,7 +139,7 @@ export const complianceFields = {
   },
 
   inCompliance: {
-    label: 'In Compliance',
+    label: 'In Compliance?',
     value: 'inCompliance',
   },
 };
