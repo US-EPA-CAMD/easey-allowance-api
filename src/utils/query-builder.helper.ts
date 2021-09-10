@@ -187,7 +187,7 @@ export class QueryBuilderHelper {
     dto: any,
     param: string[],
     complianceAlias: string,
-    ownerAlias: string = 'odf',
+    ownerAlias = 'odf',
   ) {
     if (param.includes('year') && dto.year) {
       query.andWhere(`${complianceAlias}.year IN (:...years)`, {

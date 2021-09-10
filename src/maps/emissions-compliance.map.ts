@@ -10,8 +10,7 @@ export class EmissionsComplianceMap extends BaseMap<
   EmissionsComplianceDTO
 > {
   public async one(entity: UnitComplianceDim): Promise<EmissionsComplianceDTO> {
-    let ownerOperator;
-    let array = [
+    const array = [
       entity.ownerDisplayFact.ownDisplay,
       entity.ownerDisplayFact.oprDisplay,
     ];
@@ -21,7 +20,7 @@ export class EmissionsComplianceMap extends BaseMap<
       .slice(0, -1)
       .split('),');
     const ownOprUniqueList = [...new Set(ownOprList)];
-    ownerOperator = ownOprUniqueList.join('),');
+    const ownerOperator = ownOprUniqueList.join('),');
     return {
       year: entity.year,
       facilityName: entity.unitFact.facilityName,
