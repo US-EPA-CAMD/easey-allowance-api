@@ -8,9 +8,10 @@ export class TransactionOwnerDimRepository extends Repository<
 > {
   async getAllOwnerOperators(): Promise<TransactionOwnerDim[]> {
     const query = this.createQueryBuilder('tod')
-      .select(['tod.ownId', 'tod.ownerOperator', 'tod.ownType'])
-      .distinctOn(['tod.ownId', 'tod.ownType'])
-      .orderBy('tod.ownId');
+      .select(['tod.ownerOperator', 'tod.ownType'])
+      .where('tod.ownerOperator IS NOT NULL')
+      .distinctOn(['tod.ownerOperator', 'tod.ownType'])
+      .orderBy('tod.ownerOperator');
     return query.getMany();
   }
 }

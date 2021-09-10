@@ -6,9 +6,10 @@ import { AccountOwnerDim } from '../entities/account-owner-dim.entity';
 export class AccountOwnerDimRepository extends Repository<AccountOwnerDim> {
   async getAllOwnerOperators(): Promise<AccountOwnerDim[]> {
     const query = this.createQueryBuilder('aod')
-      .select(['aod.ownId', 'aod.ownerOperator', 'aod.ownType'])
-      .distinctOn(['aod.ownId', 'aod.ownType'])
-      .orderBy('aod.ownId');
+      .select(['aod.ownerOperator', 'aod.ownType'])
+      .where('aod.ownerOperator IS NOT NULL')
+      .distinctOn(['aod.ownerOperator', 'aod.ownType'])
+      .orderBy('aod.ownerOperator');
     return query.getMany();
   }
 }
