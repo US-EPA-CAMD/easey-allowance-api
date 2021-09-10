@@ -68,6 +68,8 @@ export class ErrorMessages {
         return `${mdm}account-types`;
       case 'accountNumber':
         return `${ApiConfigService.getAcctApi()}accounts`;
+        case 'transactionType':
+          return `${mdm}transaction-types`;
       default:
         return `${mdm}${parameter}s`;
     }
