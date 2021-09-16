@@ -46,15 +46,14 @@ const transactions = [
   { ...allowanceFields.totalBlock },
 ];
 
-const accountInfo = [
+const accountAttributes = [
   { ...allowanceFields.accountNumber },
   { ...allowanceFields.accountName },
   { ...allowanceFields.prgCode },
   { ...allowanceFields.accountType },
   { ...allowanceFields.orisCode },
   { ...allowanceFields.unitId },
-  { ...allowanceFields.owner },
-  { ...allowanceFields.operator },
+  { ...allowanceFields.ownerOperator },
   { ...allowanceFields.state },
   { ...allowanceFields.epaRegion },
   { ...allowanceFields.nercRegion },
@@ -122,7 +121,7 @@ export const fieldMappings = {
   allowances: {
     holdings: holdings,
     transactions: transactions,
-    accountInfo: accountInfo,
+    accountAttributes: accountAttributes,
   },
   compliance: {
     allowance: allowanceCompliance,

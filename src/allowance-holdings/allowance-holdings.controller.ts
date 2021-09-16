@@ -5,6 +5,7 @@ import {
   ApiOkResponse,
   getSchemaPath,
   ApiExtraModels,
+  ApiQuery,
 } from '@nestjs/swagger';
 
 import {
@@ -47,6 +48,12 @@ export class AllowanceHoldingsController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryMultiSelect()
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'vintageYear',
+    required: false,
+    explode: false,
+  })
   @ApiExtraModels(AllowanceHoldingsDTO)
   getAllowanceHoldings(
     @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,

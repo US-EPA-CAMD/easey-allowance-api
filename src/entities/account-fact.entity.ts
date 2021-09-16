@@ -30,6 +30,11 @@ export class AccountFact extends BaseEntity {
   })
   facilityName: string;
 
+  @Column({
+    name: 'unitid',
+  })
+  unitId: string;
+
   @Column()
   state: string;
 
@@ -37,6 +42,11 @@ export class AccountFact extends BaseEntity {
     name: 'epa_region',
   })
   epaRegion: number;
+
+  @Column({
+    name: 'nerc_region',
+  })
+  nercRegion: number;
 
   @Column({
     name: 'own_display',
