@@ -9,19 +9,35 @@ import { AccountOwnerDim } from '../entities/account-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 
 const mockAccountFactRepository = () => ({
   getAllAccounts: jest.fn(),
+  getAllAccountAttributes: jest.fn()
+});
+
+const mockAccountMap = () => ({
+  many: jest.fn(),
 });
 
 const mockAccountOwnerDimRepository = () => ({
   getAllOwnerOperators: jest.fn(),
 });
 
+const mockRequest = () => {
+  return {
+    res: {
+      setHeader: jest.fn(),
+    },
+  };
+};
+
 describe('-- Account Service --', () => {
   let accountService;
   let accountFactRepository;
   let accountOwnerDimRepository;
+  let accountMap;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -35,7 +51,10 @@ describe('-- Account Service --', () => {
           provide: AccountOwnerDimRepository,
           useFactory: mockAccountOwnerDimRepository,
         },
-        AccountMap,
+        {
+          provide: AccountMap,
+          useFactory: mockAccountMap,
+        },
         OwnerOperatorsMap,
       ],
     }).compile();
@@ -43,6 +62,9 @@ describe('-- Account Service --', () => {
     accountService = module.get(AccountService);
     accountFactRepository = module.get(AccountFactRepository);
     accountOwnerDimRepository = module.get(AccountOwnerDimRepository);
+    accountMap = module.get(AccountMap)
+    req = mockRequest();
+    req.res.setHeader.mockReturnValue();
   });
 
   describe('getAllAccounts', () => {
@@ -51,19 +73,33 @@ describe('-- Account Service --', () => {
       accountFactEntity.accountNumber = '';
       accountFactEntity.accountName = '';
 
-      const accoutNumberDTO: AccountDTO = {
-        accountNumber: '',
-        accountName: '',
-      };
-
       accountFactRepository.getAllAccounts.mockResolvedValue([
         accountFactEntity,
       ]);
+      accountMap.many.mockReturnValue('mapped DTOs');
 
       let result = await accountService.getAllAccounts();
 
       expect(accountFactRepository.getAllAccounts).toHaveBeenCalled();
-      expect(result).toEqual([accoutNumberDTO]);
+      expect(result).toEqual('mapped DTOs');
+    });
+  });
+
+  describe('getAllAccountAttributes', () => {
+    it('calls AcountFactRepository.getAllAccountAttributes() and gets all allowance holdings from the repository', async () => {
+      accountFactRepository.getAllAccountAttributes.mockResolvedValue(
+        'list of account attributes',
+      );
+      accountMap.many.mockReturnValue('mapped DTOs');
+
+      let filters = new AccountAttributesParamsDTO();
+
+      let result = await accountService.getAllAccountAttributes(
+        filters,
+        req,
+      );
+      expect(accountMap.many).toHaveBeenCalled();
+      expect(result).toEqual('mapped DTOs');
     });
   });
 

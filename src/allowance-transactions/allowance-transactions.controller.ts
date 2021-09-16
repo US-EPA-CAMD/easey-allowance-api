@@ -52,6 +52,12 @@ export class AllowanceTransactionsController {
     required: false,
     explode: false,
   })
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'vintageYear',
+    required: false,
+    explode: false,
+  })
   @ApiExtraModels(AllowanceTransactionsDTO)
   getAllowanceTransactions(
     @Query() allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,

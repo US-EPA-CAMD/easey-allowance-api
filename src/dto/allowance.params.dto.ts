@@ -10,8 +10,6 @@ import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsAccountType } from '../pipes/is-account-type.pipe';
 import { IsAccountNumber } from '../pipes/is-account-number.pipe';
 import { ErrorMessages } from '../utils/error-messages';
-import { IsYearFormat } from '../pipes/is-year-format.pipe';
-import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 
 export class AllowanceParamsDTO extends PaginationDTO {
   @IsOptional()
@@ -45,18 +43,6 @@ export class AllowanceParamsDTO extends PaginationDTO {
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   state?: State[];
-
-  @IsOptional()
-  @IsYearFormat({
-    each: true,
-    message: ErrorMessages.MultipleFormat('vintageYear', 'YYYY'),
-  })
-  @IsYearGreater(1995, {
-    each: true,
-    message: ErrorMessages.YearRange('vintageYear', '1995'),
-  })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
-  vintageYear?: number[];
 
   @ApiProperty({
     description:
