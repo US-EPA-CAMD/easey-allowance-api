@@ -5,7 +5,7 @@ import { AccountFact } from '../entities/account-fact.entity';
 
 @Injectable()
 export class AccountMap extends BaseMap<AccountFact, any> {
-  public async one(entity: AccountFact): Promise<any> {  
+  public async one(entity: AccountFact): Promise<any> {
     let attributes = {};
     if (entity.prgCode) {
       attributes = {

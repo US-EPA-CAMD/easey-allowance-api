@@ -11,13 +11,13 @@ import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import {
   BadRequestResponse,
   NotFoundResponse,
+  ApiQueryMultiSelect,
 } from '../utils/swagger-decorator.const';
 import { AccountService } from './account.service';
 import { AccountDTO } from '../dto/account.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
-import { ApiQueryMultiSelect } from '../utils/swagger-decorator.const';
 
 @ApiTags('Accounts')
 @UseInterceptors(Json2CsvInterceptor)
