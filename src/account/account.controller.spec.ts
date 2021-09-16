@@ -8,6 +8,17 @@ import { AccountService } from './account.service';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { AccountAttributesDTO } from '../dto/account-attributes.dto';
+import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+
+const mockRequest = (url: string) => {
+  return {
+    url,
+    res: {
+      setHeader: jest.fn(),
+    },
+  };
+};
 
 describe('-- Account Controller --', () => {
   let accountController;
@@ -40,6 +51,22 @@ describe('-- Account Controller --', () => {
         .spyOn(accountService, 'getAllAccounts')
         .mockResolvedValue(expectedResult);
       expect(await accountController.getAllAccounts()).toBe(expectedResult);
+    });
+  });
+
+  describe('* getAllAccountAttributes', () => {
+    const req: any = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+
+    it('should call the service and return allowance attributes ', async () => {
+      const expectedResults: AccountAttributesDTO[] = [];
+      const paramsDTO = new AccountAttributesParamsDTO();
+      jest
+        .spyOn(accountService, 'getAllAccountAttributes')
+        .mockResolvedValue(expectedResults);
+      expect(
+        await accountController.getAllAccountAttributes(paramsDTO, req),
+      ).toBe(expectedResults);
     });
   });
 
