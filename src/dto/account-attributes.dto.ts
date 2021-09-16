@@ -7,6 +7,6 @@ export class AccountAttributesDTO {
   unitId: string;
   ownDisplay: string;
   state: string;
-  epaRegion: number;
+  epaRegion?: number;
   nercRegion: string;
 }
