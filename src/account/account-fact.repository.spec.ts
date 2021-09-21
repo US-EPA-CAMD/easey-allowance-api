@@ -1,13 +1,12 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
 
-import { AccountDTO } from '../dto/account.dto';
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { State } from '../enum/state.enum';
-import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
 import { AccountType } from '../enum/account-type.enum';
+import { AllowanceProgram } from '../enum/allowance-programs.enum';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -39,7 +38,7 @@ let filters: AccountAttributesParamsDTO = {
   orisCode: [0],
   ownerOperator: [''],
   state: [State.AK],
-  program: [ActiveAllowanceProgram.ARP],
+  program: [AllowanceProgram.ARP],
 };
 
 describe('AccountFactRepository', () => {
@@ -93,9 +92,7 @@ describe('AccountFactRepository', () => {
         emptyFilters,
       );
 
-      result = await accountFactRepository.getAllAccountAttributes(
-        filters,
-      );
+      result = await accountFactRepository.getAllAccountAttributes(filters);
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(result).toEqual('mockAccount');
