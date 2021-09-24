@@ -46,7 +46,7 @@ export class AccountFact extends BaseEntity {
   @Column({
     name: 'nerc_region',
   })
-  nercRegion: number;
+  nercRegion: string;
 
   @Column({
     name: 'own_display',
