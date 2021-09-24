@@ -18,7 +18,9 @@ export class AccountMap extends BaseMap<AccountFact, any> {
         epaRegion: entity.epaRegion
           ? Number(entity.epaRegion)
           : entity.epaRegion,
-        nercRegion: entity.nercRegion,
+        nercRegion: entity.nercRegion
+          ? Number(entity.nercRegion)
+          : entity.nercRegion,
       };
     }
     return {
