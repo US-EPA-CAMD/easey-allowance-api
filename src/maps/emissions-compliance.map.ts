@@ -22,7 +22,7 @@ export class EmissionsComplianceMap extends BaseMap<
     const ownOprUniqueList = [...new Set(ownOprList)];
     const ownerOperator = ownOprUniqueList.join('),');
     return {
-      year: entity.year,
+      year: Number(entity.year),
       facilityName: entity.unitFact.facilityName,
       facilityId: entity.unitFact.orisCode
         ? Number(entity.unitFact.orisCode)

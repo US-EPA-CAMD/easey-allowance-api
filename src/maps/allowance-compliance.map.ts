@@ -14,7 +14,7 @@ export class AllowanceComplianceMap extends BaseMap<
   ): Promise<AllowanceComplianceDTO> {
     return {
       programCodeInfo: entity.prgCode,
-      year: entity.year ? Number(entity.year) : entity.year,
+      year: Number(entity.year),
       accountNumber: entity.accountNumber,
       accountName: entity.accountFact.accountName,
       facilityName: entity.accountFact.facilityName,
