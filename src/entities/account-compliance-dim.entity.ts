@@ -19,7 +19,7 @@ export class AccountComplianceDim extends BaseEntity {
   @PrimaryColumn({
     name: 'prg_code',
   })
-  prgCode: string;
+  programCodeInfo: string;
 
   @PrimaryColumn({
     name: 'op_year',
@@ -105,7 +105,7 @@ export class AccountComplianceDim extends BaseEntity {
     },
     {
       name: 'prg_code',
-      referencedColumnName: 'prgCode',
+      referencedColumnName: 'programCodeInfo',
     },
   ])
   accountFact: AccountFact;

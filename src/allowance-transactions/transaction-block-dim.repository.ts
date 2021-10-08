@@ -17,7 +17,7 @@ export class TransactionBlockDimRepository extends Repository<
     const { page, perPage } = allowanceTransactionsParamsDTO;
     let query = this.createQueryBuilder('tbd')
       .select([
-        'tbd.prgCode',
+        'tbd.programCodeInfo',
         'tbd.transactionBlockId', //primarykey
         'tbd.transactionId',
         'tf.transactionTotal',
@@ -26,20 +26,20 @@ export class TransactionBlockDimRepository extends Repository<
         'tf.sellAccountName',
         'tf.sellAccountType',
         'tf.sellFacilityName',
-        'tf.sellOrisplCode',
+        'tf.sellFacilityId',
         'tf.sellState',
         'tf.sellEpaRegion',
-        'tf.sellSourceCat',
-        'tf.sellOwnDisplayName',
+        'tf.sellSourceCategory',
+        'tf.sellOwner',
         'tf.buyAccountNumber',
         'tf.buyAccountName',
         'tf.buyAccountType',
         'tf.buyFacilityName',
-        'tf.buyOrisplCode',
+        'tf.buyFacilityId',
         'tf.buyState',
         'tf.buyEpaRegion',
-        'tf.buySourceCat',
-        'tf.buyOwnDisplayName',
+        'tf.buySourceCategory',
+        'tf.buyOwner',
         'tf.transactionDate',
         'tbd.vintageYear',
         'tbd.startBlock',
@@ -50,7 +50,7 @@ export class TransactionBlockDimRepository extends Repository<
     query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceTransactionsParamsDTO,
-      ['vintageYear', 'program'],
+      ['vintageYear', 'programCodeInfo'],
       'tbd',
       'tf',
       true,
@@ -62,7 +62,7 @@ export class TransactionBlockDimRepository extends Repository<
       [
         'accountType',
         'accountNumber',
-        'orisCode',
+        'facilityId',
         'ownerOperator',
         'state',
         'transactionBeginDate',
@@ -73,7 +73,7 @@ export class TransactionBlockDimRepository extends Repository<
     );
 
     query
-      .orderBy('tbd.prgCode')
+      .orderBy('tbd.programCodeInfo')
       .addOrderBy('tbd.transactionId')
       .addOrderBy('tbd.vintageYear')
       .addOrderBy('tbd.startBlock');

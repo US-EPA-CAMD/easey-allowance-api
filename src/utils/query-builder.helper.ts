@@ -31,9 +31,9 @@ export class QueryBuilderHelper {
       );
     }
 
-    if (param.includes('orisCode') && dto.orisCode) {
-      query.andWhere(`${characteristicAlias}.orisCode IN (:...orisCodes)`, {
-        orisCodes: dto.orisCode,
+    if (param.includes('facilityId') && dto.facilityId) {
+      query.andWhere(`${characteristicAlias}.facilityId IN (:...facilityIds)`, {
+        facilityIds: dto.facilityId,
       });
     }
 
@@ -44,9 +44,9 @@ export class QueryBuilderHelper {
         const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
-          string += `(UPPER(${characteristicAlias}.ownDisplay) ~* ${regex}) `;
+          string += `(UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
         } else {
-          string += `OR (UPPER(${characteristicAlias}.ownDisplay) ~* ${regex}) `;
+          string += `OR (UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
         }
       }
 
@@ -62,9 +62,9 @@ export class QueryBuilderHelper {
       });
     }
 
-    if (param.includes('program') && dto.program) {
-      query.andWhere(`UPPER(${dataAlias}.prgCode) IN (:...programs)`, {
-        programs: dto.program.map(program => {
+    if (param.includes('programCodeInfo') && dto.programCodeInfo) {
+      query.andWhere(`UPPER(${dataAlias}.programCodeInfo) IN (:...programs)`, {
+        programs: dto.programCodeInfo.map(program => {
           return program.toUpperCase();
         }),
       });
@@ -116,11 +116,11 @@ export class QueryBuilderHelper {
       );
     }
 
-    if (param.includes('orisCode') && dto.orisCode) {
+    if (param.includes('facilityId') && dto.facilityId) {
       query.andWhere(
-        `(${alias}.buyOrisplCode IN (:...orisCodes) OR ${alias}.sellOrisplCode IN (:...orisCodes))`,
+        `(${alias}.buyFacilityId IN (:...facilityIds) OR ${alias}.sellFacilityId IN (:...facilityIds))`,
         {
-          orisCodes: dto.orisCode,
+          facilityIds: dto.facilityId,
         },
       );
     }
@@ -132,9 +132,9 @@ export class QueryBuilderHelper {
         const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
-          string += `(UPPER(${alias}.buyOwnDisplayName) ~* ${regex} OR UPPER(${alias}.sellOwnDisplayName)  ~* ${regex} ) `;
+          string += `(UPPER(${alias}.buyOwner) ~* ${regex} OR UPPER(${alias}.sellOwner)  ~* ${regex} ) `;
         } else {
-          string += `OR (UPPER(${alias}.buyOwnDisplayName) ~* ${regex} OR UPPER(${alias}.sellOwnDisplayName)  ~* ${regex}) `;
+          string += `OR (UPPER(${alias}.buyOwner) ~* ${regex} OR UPPER(${alias}.sellOwner)  ~* ${regex}) `;
         }
       }
 
@@ -202,9 +202,9 @@ export class QueryBuilderHelper {
         const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
-          string += `(UPPER(${ownerAlias}.ownDisplay) ~* ${regex}) `;
+          string += `(UPPER(${ownerAlias}.owner) ~* ${regex}) `;
         } else {
-          string += `OR (UPPER(${ownerAlias}.oprDisplay) ~* ${regex}) `;
+          string += `OR (UPPER(${ownerAlias}.operator) ~* ${regex}) `;
         }
       }
       string += ')';

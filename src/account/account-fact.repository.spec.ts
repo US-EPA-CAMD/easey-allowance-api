@@ -35,10 +35,10 @@ let filters: AccountAttributesParamsDTO = {
   page: undefined,
   perPage: undefined,
   accountNumber: ['000127FACLTY'],
-  orisCode: [0],
+  facilityId: [0],
   ownerOperator: [''],
   state: [State.AK],
-  program: [AllowanceProgram.ARP],
+  programCodeInfo: [AllowanceProgram.ARP],
 };
 
 describe('AccountFactRepository', () => {

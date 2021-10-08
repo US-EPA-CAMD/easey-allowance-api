@@ -10,7 +10,7 @@ export class AccountOwnerDim extends BaseEntity {
   @PrimaryColumn({
     name: 'prg_code',
   })
-  prgCode: string;
+  programCodeInfo: string;
 
   @PrimaryColumn({
     name: 'account_owner_unique_id',

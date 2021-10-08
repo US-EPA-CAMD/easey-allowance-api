@@ -62,7 +62,7 @@ describe('-- Emissions Compliance Controller --', () => {
         year: [2019],
         page: undefined,
         perPage: undefined,
-        orisCode: [0],
+        facilityId: [0],
         ownerOperator: [''],
         state: [State.AK],
       };

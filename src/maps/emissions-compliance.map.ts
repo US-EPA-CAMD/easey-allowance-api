@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
 
 import { BaseMap } from './base.map';
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
@@ -9,10 +10,10 @@ export class EmissionsComplianceMap extends BaseMap<
   UnitComplianceDim,
   EmissionsComplianceDTO
 > {
-  public async one(entity: UnitComplianceDim): Promise<EmissionsComplianceDTO> {
+  public async one(entity: UnitComplianceDim): Promise<any> {
     const array = [
-      entity.ownerDisplayFact.ownDisplay,
-      entity.ownerDisplayFact.oprDisplay,
+      entity.ownerDisplayFact.owner,
+      entity.ownerDisplayFact.operator,
     ];
     const ownOprList = array
       .filter(e => e)
@@ -22,26 +23,34 @@ export class EmissionsComplianceMap extends BaseMap<
     const ownOprUniqueList = [...new Set(ownOprList)];
     const ownerOperator = ownOprUniqueList.join('),');
     return {
-      year: Number(entity.year),
-      facilityName: entity.unitFact.facilityName,
-      facilityId: entity.unitFact.orisCode
-        ? Number(entity.unitFact.orisCode)
-        : entity.unitFact.orisCode,
-      unitId: entity.unitFact.unitId,
-      ownerOperator: ownerOperator.length > 0 ? `${ownerOperator})` : null,
-      state: entity.unitFact.state,
-      complianceApproach: entity.complianceApproach,
-      avgPlanId: entity.avgPlanId ? Number(entity.avgPlanId) : entity.avgPlanId,
-      emissionsLimitDisplay: entity.emissionsLimitDisplay
+      [propertyMetadata.year.fieldLabels.value]: Number(entity.year),
+      [propertyMetadata.facilityName.fieldLabels.value]:
+        entity.unitFact.facilityName,
+      [propertyMetadata.facilityId.fieldLabels.value]: entity.unitFact
+        .facilityId
+        ? Number(entity.unitFact.facilityId)
+        : entity.unitFact.facilityId,
+      [propertyMetadata.unitId.fieldLabels.value]: entity.unitFact.unitId,
+      [propertyMetadata.ownerOperator.fieldLabels.value]:
+        ownerOperator.length > 0 ? `${ownerOperator})` : null,
+      [propertyMetadata.state.fieldLabels.value]: entity.unitFact.state,
+      [propertyMetadata.complianceApproach.fieldLabels.value]:
+        entity.complianceApproach,
+      [propertyMetadata.avgPlanId.fieldLabels.value]: entity.avgPlanId
+        ? Number(entity.avgPlanId)
+        : entity.avgPlanId,
+      [propertyMetadata.emissionsLimitDisplay.fieldLabels
+        .value]: entity.emissionsLimitDisplay
         ? Number(entity.emissionsLimitDisplay)
         : entity.emissionsLimitDisplay,
-      actualEmissionsRate: entity.actualEmissionsRate
+      [propertyMetadata.actualEmissionsRate.fieldLabels
+        .value]: entity.actualEmissionsRate
         ? Number(entity.actualEmissionsRate)
         : entity.actualEmissionsRate,
-      avgPlanActual: entity.avgPlanActual
+      [propertyMetadata.avgPlanActual.fieldLabels.value]: entity.avgPlanActual
         ? Number(entity.avgPlanActual)
         : entity.avgPlanActual,
-      inCompliance: entity.inCompliance,
+      [propertyMetadata.inCompliance.fieldLabels.value]: entity.inCompliance,
     };
   }
 }

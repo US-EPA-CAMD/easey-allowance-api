@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
 
 import { BaseMap } from './base.map';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
@@ -9,58 +10,70 @@ export class AllowanceComplianceMap extends BaseMap<
   AccountComplianceDim,
   AllowanceComplianceDTO
 > {
-  public async one(
-    entity: AccountComplianceDim,
-  ): Promise<AllowanceComplianceDTO> {
+  public async one(entity: AccountComplianceDim): Promise<any> {
     return {
-      programCodeInfo: entity.prgCode,
-      year: Number(entity.year),
-      accountNumber: entity.accountNumber,
-      accountName: entity.accountFact.accountName,
-      facilityName: entity.accountFact.facilityName,
-      facilityId: entity.accountFact.orisCode
-        ? Number(entity.accountFact.orisCode)
-        : entity.accountFact.orisCode,
-      unitsAffected: entity.unitsAffected,
-      allocated: entity.allocated ? Number(entity.allocated) : entity.allocated,
-      bankedHeld: entity.bankedHeld
+      [propertyMetadata.programCodeInfo.fieldLabels.value]:
+        entity.programCodeInfo,
+      [propertyMetadata.year.fieldLabels.value]: Number(entity.year),
+      [propertyMetadata.accountNumber.fieldLabels.value]: entity.accountNumber,
+      [propertyMetadata.accountName.fieldLabels.value]:
+        entity.accountFact.accountName,
+      [propertyMetadata.facilityName.fieldLabels.value]:
+        entity.accountFact.facilityName,
+      [propertyMetadata.facilityId.fieldLabels.value]: entity.accountFact
+        .facilityId
+        ? Number(entity.accountFact.facilityId)
+        : entity.accountFact.facilityId,
+      [propertyMetadata.unitsAffected.fieldLabels.value]: entity.unitsAffected,
+      [propertyMetadata.allocated.fieldLabels.value]: entity.allocated
+        ? Number(entity.allocated)
+        : entity.allocated,
+      [propertyMetadata.bankedHeld.fieldLabels.value]: entity.bankedHeld
         ? Number(entity.bankedHeld)
         : entity.bankedHeld,
-      currentHeld: entity.currentHeld
+      [propertyMetadata.currentHeld.fieldLabels.value]: entity.currentHeld
         ? Number(entity.currentHeld)
         : entity.currentHeld,
-      totalAllowancesHeld: entity.totalAllowancesHeld
+      [propertyMetadata.totalAllowancesHeld.fieldLabels
+        .value]: entity.totalAllowancesHeld
         ? Number(entity.totalAllowancesHeld)
         : entity.totalAllowancesHeld,
-      complianceYearEmissions: entity.complianceYearEmissions
+      [propertyMetadata.complianceYearEmissions.fieldLabels
+        .value]: entity.complianceYearEmissions
         ? Number(entity.complianceYearEmissions)
         : entity.complianceYearEmissions,
-      otherDeductions: entity.otherDeductions
+      [propertyMetadata.otherDeductions.fieldLabels
+        .value]: entity.otherDeductions
         ? Number(entity.otherDeductions)
         : entity.otherDeductions,
-      totalRequiredDeductions: entity.totalRequiredDeductions
+      [propertyMetadata.totalRequiredDeductions.fieldLabels
+        .value]: entity.totalRequiredDeductions
         ? Number(entity.totalRequiredDeductions)
         : entity.totalRequiredDeductions,
-      currentDeductions: entity.currentDeductions
+      [propertyMetadata.currentDeductions.fieldLabels
+        .value]: entity.currentDeductions
         ? Number(entity.currentDeductions)
         : entity.currentDeductions,
-      deductOneToOne: entity.deductOneToOne
+      [propertyMetadata.deductOneToOne.fieldLabels.value]: entity.deductOneToOne
         ? Number(entity.deductOneToOne)
         : entity.deductOneToOne,
-      deductTwoToOne: entity.deductTwoToOne
+      [propertyMetadata.deductTwoToOne.fieldLabels.value]: entity.deductTwoToOne
         ? Number(entity.deductTwoToOne)
         : entity.deductTwoToOne,
-      totalAllowancesDeducted: entity.totalAllowancesDeducted
+      [propertyMetadata.totalAllowancesDeducted.fieldLabels
+        .value]: entity.totalAllowancesDeducted
         ? Number(entity.totalAllowancesDeducted)
         : entity.totalAllowancesDeducted,
-      carriedOver: entity.carriedOver
+      [propertyMetadata.carriedOver.fieldLabels.value]: entity.carriedOver
         ? Number(entity.carriedOver)
         : entity.carriedOver,
-      excessEmissions: entity.excessEmissions
+      [propertyMetadata.excessEmissions.fieldLabels
+        .value]: entity.excessEmissions
         ? Number(entity.excessEmissions)
         : entity.excessEmissions,
-      ownerOperator: entity.accountFact.ownDisplay,
-      state: entity.accountFact.state,
+      [propertyMetadata.ownerOperator.fieldLabels.value]:
+        entity.accountFact.ownerOperator,
+      [propertyMetadata.state.fieldLabels.value]: entity.accountFact.state,
     };
   }
 }

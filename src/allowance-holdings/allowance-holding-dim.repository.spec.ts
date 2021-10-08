@@ -35,10 +35,10 @@ let filters: AllowanceHoldingsParamsDTO = {
   page: undefined,
   perPage: undefined,
   accountNumber: ['000127FACLTY'],
-  orisCode: [0],
+  facilityId: [0],
   ownerOperator: [''],
   state: [State.AK],
-  program: [ActiveAllowanceProgram.ARP],
+  programCodeInfo: [ActiveAllowanceProgram.ARP],
 };
 
 describe('-- AllowanceHoldingDimRepository --', () => {

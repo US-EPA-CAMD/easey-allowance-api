@@ -15,14 +15,14 @@ export class AccountComplianceDimRepository extends Repository<
     allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
     req: Request,
   ): Promise<AccountComplianceDim[]> {
-    const { page, perPage, program } = allowanceComplianceParamsDTO;
+    const { page, perPage, programCodeInfo } = allowanceComplianceParamsDTO;
     const selectList = [
-      'acd.prgCode',
+      'acd.programCodeInfo',
       'acd.year',
       'acd.accountNumber',
       'af.accountName',
       'af.facilityName',
-      'af.orisCode',
+      'af.facilityId',
       'acd.unitsAffected',
       'acd.allocated',
       'acd.totalAllowancesHeld',
@@ -32,12 +32,12 @@ export class AccountComplianceDimRepository extends Repository<
       'acd.carriedOver',
       'acd.excessEmissions',
       'af.state',
-      'af.ownDisplay',
+      'af.ownerOperator',
     ];
     if (
-      !program ||
-      program.includes(AllowanceProgram.OTC) ||
-      program.includes(AllowanceProgram.NBP)
+      !programCodeInfo ||
+      programCodeInfo.includes(AllowanceProgram.OTC) ||
+      programCodeInfo.includes(AllowanceProgram.NBP)
     ) {
       selectList.push(
         'acd.bankedHeld',
@@ -55,7 +55,7 @@ export class AccountComplianceDimRepository extends Repository<
     query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceComplianceParamsDTO,
-      ['orisCode', 'ownerOperator', 'state', 'program'],
+      ['facilityId', 'ownerOperator', 'state', 'programCodeInfo'],
       'acd',
       'af',
       true,
@@ -68,7 +68,7 @@ export class AccountComplianceDimRepository extends Repository<
     );
 
     query
-      .orderBy('acd.prgCode')
+      .orderBy('acd.programCodeInfo')
       .addOrderBy('acd.year')
       .addOrderBy('acd.accountNumber');
 

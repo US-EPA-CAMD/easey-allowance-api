@@ -61,7 +61,7 @@ describe('-- Emissions Compliance Service --', () => {
         year: [2019, 2020],
         page: undefined,
         perPage: undefined,
-        orisCode: [0],
+        facilityId: [0],
         ownerOperator: [''],
         state: [State.AK],
       };
@@ -75,7 +75,7 @@ describe('-- Emissions Compliance Service --', () => {
         year: [2019, 2020],
         page: undefined,
         perPage: undefined,
-        orisCode: [0],
+        facilityId: [0],
         ownerOperator: [''],
         state: [State.AK],
       };

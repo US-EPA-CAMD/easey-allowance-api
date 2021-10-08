@@ -24,11 +24,11 @@ export class AccountFactRepository extends Repository<AccountFact> {
     let query = this.createQueryBuilder('af').select([
       'af.accountNumber',
       'af.accountName',
-      'af.prgCode',
+      'af.programCodeInfo',
       'af.accountType',
-      'af.orisCode',
+      'af.facilityId',
       'af.unitId',
-      'af.ownDisplay',
+      'af.ownerOperator',
       'af.state',
       'af.epaRegion',
       'af.nercRegion',
@@ -39,8 +39,8 @@ export class AccountFactRepository extends Repository<AccountFact> {
       accountAttributesParamsDTO,
       [
         'accountNumber',
-        'program',
-        'orisCode',
+        'programCodeInfo',
+        'facilityId',
         'ownerOperator',
         'state',
         'accountType',
@@ -50,7 +50,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       false,
     );
 
-    query.orderBy('af.accountNumber').addOrderBy('af.prgCode');
+    query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');
 
     if (page && perPage) {
       const totalCount = await query.getCount();

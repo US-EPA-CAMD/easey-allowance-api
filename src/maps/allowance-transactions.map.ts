@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
 
 import { BaseMap } from './base.map';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
@@ -9,53 +10,77 @@ export class AllowanceTransactionsMap extends BaseMap<
   TransactionBlockDim,
   AllowanceTransactionsDTO
 > {
-  public async one(
-    entity: TransactionBlockDim,
-  ): Promise<AllowanceTransactionsDTO> {
+  public async one(entity: TransactionBlockDim): Promise<any> {
     return {
-      prgCode: entity.prgCode,
-      transactionId: Number(entity.transactionId),
-      transactionTotal: entity.transactionFact.transactionTotal
+      [propertyMetadata.programCodeInfo.fieldLabels.value]:
+        entity.programCodeInfo,
+      [propertyMetadata.transactionId.fieldLabels.value]: Number(
+        entity.transactionId,
+      ),
+      [propertyMetadata.transactionTotal.fieldLabels.value]: entity
+        .transactionFact.transactionTotal
         ? Number(entity.transactionFact.transactionTotal)
         : entity.transactionFact.transactionTotal,
-      transactionType: entity.transactionFact.transactionType,
-      sellAccountNumber: entity.transactionFact.sellAccountNumber,
-      sellAccountName: entity.transactionFact.sellAccountName,
-      sellAccountType: entity.transactionFact.sellAccountType,
-      sellFacilityName: entity.transactionFact.sellFacilityName,
-      sellOrisplCode: entity.transactionFact.sellOrisplCode
-        ? Number(entity.transactionFact.sellOrisplCode)
-        : entity.transactionFact.sellOrisplCode,
-      sellState: entity.transactionFact.sellState,
-      sellEpaRegion: entity.transactionFact.sellEpaRegion
+      [propertyMetadata.transactionType.fieldLabels.value]:
+        entity.transactionFact.transactionType,
+      [propertyMetadata.sellAccountNumber.fieldLabels.value]:
+        entity.transactionFact.sellAccountNumber,
+      [propertyMetadata.sellAccountName.fieldLabels.value]:
+        entity.transactionFact.sellAccountName,
+      [propertyMetadata.sellAccountType.fieldLabels.value]:
+        entity.transactionFact.sellAccountType,
+      [propertyMetadata.sellFacilityName.fieldLabels.value]:
+        entity.transactionFact.sellFacilityName,
+      [propertyMetadata.sellFacilityId.fieldLabels.value]: entity
+        .transactionFact.sellFacilityId
+        ? Number(entity.transactionFact.sellFacilityId)
+        : entity.transactionFact.sellFacilityId,
+      [propertyMetadata.sellState.fieldLabels.value]:
+        entity.transactionFact.sellState,
+      [propertyMetadata.sellEpaRegion.fieldLabels.value]: entity.transactionFact
+        .sellEpaRegion
         ? Number(entity.transactionFact.sellEpaRegion)
         : entity.transactionFact.sellEpaRegion,
-      sellSourceCat: entity.transactionFact.sellSourceCat,
-      sellOwnDisplayName: entity.transactionFact.sellOwnDisplayName,
-      buyAccountNumber: entity.transactionFact.buyAccountNumber,
-      buyAccountName: entity.transactionFact.buyAccountName,
-      buyAccountType: entity.transactionFact.buyAccountType,
-      buyFacilityName: entity.transactionFact.buyFacilityName,
-      buyOrisplCode: entity.transactionFact.buyOrisplCode
-        ? Number(entity.transactionFact.buyOrisplCode)
-        : entity.transactionFact.buyOrisplCode,
-      buyState: entity.transactionFact.buyState,
-      buyEpaRegion: entity.transactionFact.buyEpaRegion
+      [propertyMetadata.sellSourceCategory.fieldLabels.value]:
+        entity.transactionFact.sellSourceCategory,
+      [propertyMetadata.sellOwner.fieldLabels.value]:
+        entity.transactionFact.sellOwner,
+      [propertyMetadata.buyAccountNumber.fieldLabels.value]:
+        entity.transactionFact.buyAccountNumber,
+      [propertyMetadata.buyAccountName.fieldLabels.value]:
+        entity.transactionFact.buyAccountName,
+      [propertyMetadata.buyAccountType.fieldLabels.value]:
+        entity.transactionFact.buyAccountType,
+      [propertyMetadata.buyFacilityName.fieldLabels.value]:
+        entity.transactionFact.buyFacilityName,
+      [propertyMetadata.buyFacilityId.fieldLabels.value]: entity.transactionFact
+        .buyFacilityId
+        ? Number(entity.transactionFact.buyFacilityId)
+        : entity.transactionFact.buyFacilityId,
+      [propertyMetadata.buyState.fieldLabels.value]:
+        entity.transactionFact.buyState,
+      [propertyMetadata.buyEpaRegion.fieldLabels.value]: entity.transactionFact
+        .buyEpaRegion
         ? Number(entity.transactionFact.buyEpaRegion)
         : entity.transactionFact.buyEpaRegion,
-      buySourceCat: entity.transactionFact.buySourceCat,
-      buyOwnDisplayName: entity.transactionFact.buyOwnDisplayName,
-      transactionDate: entity.transactionFact.transactionDate
+      [propertyMetadata.buySourceCategory.fieldLabels.value]:
+        entity.transactionFact.buySourceCategory,
+      [propertyMetadata.buyOwner.fieldLabels.value]:
+        entity.transactionFact.buyOwner,
+      [propertyMetadata.transactionDate.fieldLabels
+        .value]: entity.transactionFact.transactionDate
         .toISOString()
         .split('T')[0],
-      vintageYear: entity.vintageYear
+      [propertyMetadata.vintageYear.fieldLabels.value]: entity.vintageYear
         ? Number(entity.vintageYear)
         : entity.vintageYear,
-      startBlock: entity.startBlock
+      [propertyMetadata.startBlock.fieldLabels.value]: entity.startBlock
         ? Number(entity.startBlock)
         : entity.startBlock,
-      endBlock: entity.endBlock ? Number(entity.endBlock) : entity.endBlock,
-      totalBlock: entity.totalBlock
+      [propertyMetadata.endBlock.fieldLabels.value]: entity.endBlock
+        ? Number(entity.endBlock)
+        : entity.endBlock,
+      [propertyMetadata.totalBlock.fieldLabels.value]: entity.totalBlock
         ? Number(entity.totalBlock)
         : entity.totalBlock,
     };

@@ -33,9 +33,9 @@ export class AllowanceComplianceService {
     );
 
     if (
-      !allowanceComplianceParamsDTO.program ||
-      allowanceComplianceParamsDTO.program.includes(AllowanceProgram.OTC) ||
-      allowanceComplianceParamsDTO.program.includes(AllowanceProgram.NBP)
+      !allowanceComplianceParamsDTO.programCodeInfo ||
+      allowanceComplianceParamsDTO.programCodeInfo.includes(AllowanceProgram.OTC) ||
+      allowanceComplianceParamsDTO.programCodeInfo.includes(AllowanceProgram.NBP)
     ) {
       req.res.setHeader(
         'X-Field-Mappings',

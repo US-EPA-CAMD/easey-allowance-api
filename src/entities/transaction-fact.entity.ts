@@ -11,7 +11,7 @@ export class TransactionFact extends BaseEntity {
   @PrimaryColumn({
     name: 'prg_code',
   })
-  prgCode: string;
+  programCodeInfo: string;
 
   @Column({
     name: 'transaction_total',
@@ -46,7 +46,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'sell_orispl_code',
   })
-  sellOrisplCode: number;
+  sellFacilityId: number;
 
   @Column({
     name: 'sell_state',
@@ -61,12 +61,12 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'sell_source_cat',
   })
-  sellSourceCat: string;
+  sellSourceCategory: string;
 
   @Column({
     name: 'sell_own_display_name',
   })
-  sellOwnDisplayName: string;
+  sellOwner: string;
 
   @Column({
     name: 'buy_acct_number',
@@ -91,7 +91,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'buy_orispl_code',
   })
-  buyOrisplCode: number;
+  buyFacilityId: number;
 
   @Column({
     name: 'buy_state',
@@ -106,12 +106,12 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'buy_source_cat',
   })
-  buySourceCat: string;
+  buySourceCategory: string;
 
   @Column({
     name: 'buy_own_display_name',
   })
-  buyOwnDisplayName: string;
+  buyOwner: string;
 
   @Column({
     name: 'transaction_date',

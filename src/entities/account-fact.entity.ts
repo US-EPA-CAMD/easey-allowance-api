@@ -13,7 +13,7 @@ export class AccountFact extends BaseEntity {
   @PrimaryColumn({
     name: 'prg_code',
   })
-  prgCode: string;
+  programCodeInfo: string;
 
   @Column({
     name: 'account_name',
@@ -23,7 +23,7 @@ export class AccountFact extends BaseEntity {
   @Column({
     name: 'orispl_code',
   })
-  orisCode: number;
+  facilityId: number;
 
   @Column({
     name: 'facility_name',
@@ -51,7 +51,7 @@ export class AccountFact extends BaseEntity {
   @Column({
     name: 'own_display',
   })
-  ownDisplay: string;
+  ownerOperator: string;
 
   @Column({
     name: 'account_type',

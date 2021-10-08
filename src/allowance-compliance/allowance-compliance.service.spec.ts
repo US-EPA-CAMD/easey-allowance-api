@@ -77,10 +77,10 @@ describe('-- Allowance Compliance Service --', () => {
         year: [2019, 2020],
         page: undefined,
         perPage: undefined,
-        orisCode: [0],
+        facilityId: [0],
         ownerOperator: [''],
         state: [State.AK],
-        program: [AllowanceProgram.ARP],
+        programCodeInfo: [AllowanceProgram.ARP],
       };
 
       let result = await allowanceComplianceService.getAllowanceCompliance(
@@ -92,10 +92,10 @@ describe('-- Allowance Compliance Service --', () => {
         year: [2019, 2020],
         page: undefined,
         perPage: undefined,
-        orisCode: [0],
+        facilityId: [0],
         ownerOperator: [''],
         state: [State.AK],
-        program: [AllowanceProgram.OTC],
+        programCodeInfo: [AllowanceProgram.OTC],
       };
 
       result = await allowanceComplianceService.getAllowanceCompliance(

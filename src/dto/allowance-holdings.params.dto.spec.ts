@@ -17,17 +17,17 @@ describe('-- Allowance Holdings Params DTO --', () => {
       constructor(
         accountType: string,
         accountNumber: string,
-        orisCode: string,
+        facilityId: string,
         state: string,
         vintageYear: string,
-        program: string,
+        programCodeInfo: string,
       ) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
-        this.orisCode = orisCode;
+        this.facilityId = facilityId;
         this.state = state;
         this.vintageYear = vintageYear;
-        this.program = program;
+        this.programCodeInfo = programCodeInfo;
       }
       @IsAccountType()
       accountType: string;
@@ -36,7 +36,7 @@ describe('-- Allowance Holdings Params DTO --', () => {
       accountNumber: string;
 
       @IsOrisCode()
-      orisCode: string;
+      facilityId: string;
 
       @IsStateCode()
       state: string;
@@ -46,7 +46,7 @@ describe('-- Allowance Holdings Params DTO --', () => {
       vintageYear: string;
 
       @IsAllowanceProgram(true)
-      program: string;
+      programCodeInfo: string;
     }
 
     /**
@@ -105,7 +105,7 @@ describe('-- Allowance Holdings Params DTO --', () => {
     it('should fail all of the validation pipes', async () => {
       fakeManager.findOne.resolves(null);
       const results = await validate(
-        new MyClass('general', '00001', 'oris', 'state', '1945', 'program'),
+        new MyClass('general', '00001', 'oris', 'state', '1945', 'programCodeInfo'),
       );
       expect(results.length).toBe(6);
     });
