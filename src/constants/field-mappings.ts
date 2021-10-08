@@ -11,7 +11,7 @@ const holdings = [
   { ...propertyMetadata.endBlock.fieldLabels },
   { ...propertyMetadata.state.fieldLabels },
   { ...propertyMetadata.epaRegion.fieldLabels },
-  { ...propertyMetadata.ownerOperator.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
   { ...propertyMetadata.accountType.fieldLabels },
 ];
 
@@ -52,7 +52,7 @@ const accountAttributes = [
   { ...propertyMetadata.accountType.fieldLabels },
   { ...propertyMetadata.facilityId.fieldLabels },
   { ...propertyMetadata.unitId.fieldLabels },
-  { ...propertyMetadata.ownerOperator.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
   { ...propertyMetadata.state.fieldLabels },
   { ...propertyMetadata.epaRegion.fieldLabels },
   { ...propertyMetadata.nercRegion.fieldLabels },
@@ -79,7 +79,7 @@ const allowanceComplianceNbpOtc = [
   { ...propertyMetadata.totalAllowancesDeducted.fieldLabels },
   { ...propertyMetadata.carriedOver.fieldLabels },
   { ...propertyMetadata.excessEmissions.fieldLabels },
-  { ...propertyMetadata.ownerOperator.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
   { ...propertyMetadata.state.fieldLabels },
 ];
 
@@ -98,7 +98,7 @@ const allowanceCompliance = [
   { ...propertyMetadata.totalAllowancesDeducted.fieldLabels },
   { ...propertyMetadata.carriedOver.fieldLabels },
   { ...propertyMetadata.excessEmissions.fieldLabels },
-  { ...propertyMetadata.ownerOperator.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
   { ...propertyMetadata.state.fieldLabels },
 ];
 
@@ -107,7 +107,7 @@ const emissionsCompliance = [
   { ...propertyMetadata.facilityName.fieldLabels },
   { ...propertyMetadata.facilityId.fieldLabels },
   { ...propertyMetadata.unitId.fieldLabels },
-  { ...propertyMetadata.ownerOperator.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
   { ...propertyMetadata.state.fieldLabels },
   { ...propertyMetadata.complianceApproach.fieldLabels },
   { ...propertyMetadata.avgPlanId.fieldLabels },
