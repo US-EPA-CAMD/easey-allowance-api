@@ -55,10 +55,10 @@ describe('-- Allowance Compliance Controller --', () => {
         year: [2019],
         page: undefined,
         perPage: undefined,
-        orisCode: [0],
+        facilityId: [0],
         ownerOperator: [''],
         state: [State.AK],
-        program: [AllowanceProgram.OTC],
+        programCodeInfo: [AllowanceProgram.OTC],
       };
       jest
         .spyOn(allowanceComplianceService, 'getAllowanceCompliance')

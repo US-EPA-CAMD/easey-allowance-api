@@ -18,7 +18,7 @@ export class TransactionBlockDim extends BaseEntity {
   @PrimaryColumn({
     name: 'prg_code',
   })
-  prgCode: string;
+  programCodeInfo: string;
 
   @Column({
     name: 'transaction_id',
@@ -56,7 +56,7 @@ export class TransactionBlockDim extends BaseEntity {
     },
     {
       name: 'prg_code',
-      referencedColumnName: 'prgCode',
+      referencedColumnName: 'programCodeInfo',
     },
   ])
   transactionFact: TransactionFact;

@@ -1,5 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { ErrorMessages } from '../utils/error-messages';
@@ -12,26 +14,44 @@ import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
+  @ApiProperty({
+    enum: AllowanceProgram,
+    description: propertyMetadata.programCodeInfo.description,
+  })
   @IsOptional()
   @IsAllowanceProgram(false, {
     each: true,
     message:
-      ErrorMessages.AccountCharacteristics(true, 'program') +
+      ErrorMessages.AccountCharacteristics(true, 'programCodeInfo') +
       '?allowanceUIFilter=true',
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  program?: AllowanceProgram[];
+  programCodeInfo?: AllowanceProgram[];
 
+  @ApiProperty({
+    isArray: true,
+    description: propertyMetadata.ownerOperatorInfo.description,
+  })
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   ownerOperator?: string[];
 
+  @ApiProperty({
+    description: propertyMetadata.transactionBeginDate.description,
+  })
   @BeginDate()
   transactionBeginDate: Date;
 
+  @ApiProperty({
+    description: propertyMetadata.transactionEndDate.description,
+  })
   @EndDate()
   transactionEndDate: Date;
 
+  @ApiProperty({
+    enum: TransactionType,
+    description: propertyMetadata.transactionType.description,
+  })
   @IsOptional()
   @IsTransactionType({
     each: true,
@@ -40,6 +60,10 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   transactionType?: TransactionType[];
 
+  @ApiProperty({
+    isArray: true,
+    description: propertyMetadata.vintageYear.description,
+  })
   @IsOptional()
   @IsYearFormat({
     each: true,

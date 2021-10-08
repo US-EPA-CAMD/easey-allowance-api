@@ -1,6 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
 
 import { PaginationDTO } from './pagination.dto';
 import { State } from '../enum/state.enum';
@@ -9,6 +10,10 @@ import { ErrorMessages } from '../utils/error-messages';
 import { IsOrisCode } from '../pipes/is-oris-code.pipe';
 
 export class ComplianceParamsDTO extends PaginationDTO {
+  @ApiProperty({
+    enum: State,
+    description: propertyMetadata.state.description,
+  })
   @IsOptional()
   @IsStateCode({
     each: true,
@@ -17,14 +22,22 @@ export class ComplianceParamsDTO extends PaginationDTO {
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   state?: State[];
 
+  @ApiProperty({
+    isArray: true,
+    description: propertyMetadata.facilityId.description,
+  })
   @IsOptional()
   @IsOrisCode({
     each: true,
-    message: ErrorMessages.AccountCharacteristics(true, 'orisCode'),
+    message: ErrorMessages.AccountCharacteristics(true, 'facilityId'),
   })
   @Transform((value: string) => value.split('|').map(item => item.trim()))
-  orisCode?: number[];
+  facilityId?: number[];
 
+  @ApiProperty({
+    isArray: true,
+    description: propertyMetadata.ownerOperatorInfo.description,
+  })
   @IsOptional()
   @Transform((value: string) => value.split('|').map(item => item.trim()))
   ownerOperator?: string[];

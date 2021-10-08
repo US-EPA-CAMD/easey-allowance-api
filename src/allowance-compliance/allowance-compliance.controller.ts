@@ -48,7 +48,7 @@ export class AllowanceComplianceController {
   @ApiQueryComplianceMultiSelect()
   @ApiQuery({
     style: 'pipeDelimited',
-    name: 'program',
+    name: 'programCodeInfo',
     required: false,
     explode: false,
   })

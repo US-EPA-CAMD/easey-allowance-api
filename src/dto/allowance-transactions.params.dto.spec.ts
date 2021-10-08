@@ -19,20 +19,20 @@ describe('-- Allowance Transactions Params DTO --', () => {
       constructor(
         accountType: string,
         accountNumber: string,
-        orisCode: string,
+        facilityId: string,
         state: string,
         vintageYear: string,
-        program: string,
+        programCodeInfo: string,
         transactionType: string,
         transactionBeginDate: string,
         transactionEndDate: string,
       ) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
-        this.orisCode = orisCode;
+        this.facilityId = facilityId;
         this.state = state;
         this.vintageYear = vintageYear;
-        this.program = program;
+        this.programCodeInfo = programCodeInfo;
         this.transactionType = transactionType
         this.transactionBeginDate = transactionBeginDate;
         this.transactionEndDate = transactionEndDate;
@@ -45,7 +45,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
       accountNumber: string;
 
       @IsOrisCode()
-      orisCode: string;
+      facilityId: string;
 
       @IsStateCode()
       state: string;
@@ -55,7 +55,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
       vintageYear: string;
 
       @IsAllowanceProgram(false)
-      program: string;
+      programCodeInfo: string;
 
       @IsTransactionType()
       transactionType: string;
@@ -129,7 +129,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
     it('should fail all of the validation pipes', async () => {
       fakeManager.findOne.resolves(null);
       const results = await validate(
-        new MyClass('general', '00001', 'oris', 'state', '1945', 'program', 'transactionType', 'beginDate', 'endDate'),
+        new MyClass('general', '00001', 'oris', 'state', '1945', 'programCodeInfo', 'transactionType', 'beginDate', 'endDate'),
       );
       expect(results.length).toBe(9);
     });

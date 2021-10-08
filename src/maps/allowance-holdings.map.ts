@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
 
 import { BaseMap } from './base.map';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
@@ -9,26 +10,37 @@ export class AllowanceHoldingsMap extends BaseMap<
   AllowanceHoldingDim,
   AllowanceHoldingsDTO
 > {
-  public async one(entity: AllowanceHoldingDim): Promise<AllowanceHoldingsDTO> {
+  public async one(entity: AllowanceHoldingDim): Promise<any> {
     return {
-      accountNumber: entity.accountNumber,
-      accountName: entity.accountName,
-      orisCode: entity.accountFact.orisCode
-        ? Number(entity.accountFact.orisCode)
-        : entity.accountFact.orisCode,
-      prgCode: entity.prgCode,
-      vintageYear: Number(entity.vintageYear),
-      totalBlock: entity.totalBlock
+      [propertyMetadata.accountNumber.fieldLabels.value]: entity.accountNumber,
+      [propertyMetadata.accountName.fieldLabels.value]: entity.accountName,
+      [propertyMetadata.facilityId.fieldLabels.value]: entity.accountFact
+        .facilityId
+        ? Number(entity.accountFact.facilityId)
+        : entity.accountFact.facilityId,
+      [propertyMetadata.programCodeInfo.fieldLabels.value]:
+        entity.programCodeInfo,
+      [propertyMetadata.vintageYear.fieldLabels.value]: Number(
+        entity.vintageYear,
+      ),
+      [propertyMetadata.totalBlock.fieldLabels.value]: entity.totalBlock
         ? Number(entity.totalBlock)
         : entity.totalBlock,
-      startBlock: Number(entity.startBlock),
-      endBlock: entity.endBlock ? Number(entity.endBlock) : entity.endBlock,
-      state: entity.accountFact.state,
-      epaRegion: entity.accountFact.epaRegion
+      [propertyMetadata.startBlock.fieldLabels.value]: Number(
+        entity.startBlock,
+      ),
+      [propertyMetadata.endBlock.fieldLabels.value]: entity.endBlock
+        ? Number(entity.endBlock)
+        : entity.endBlock,
+      [propertyMetadata.state.fieldLabels.value]: entity.accountFact.state,
+      [propertyMetadata.epaRegion.fieldLabels.value]: entity.accountFact
+        .epaRegion
         ? Number(entity.accountFact.epaRegion)
         : entity.accountFact.epaRegion,
-      ownDisplay: entity.accountFact.ownDisplay,
-      accountType: entity.accountFact.accountType,
+      [propertyMetadata.ownerOperator.fieldLabels.value]:
+        entity.accountFact.ownerOperator,
+      [propertyMetadata.accountType.fieldLabels.value]:
+        entity.accountFact.accountType,
     };
   }
 }

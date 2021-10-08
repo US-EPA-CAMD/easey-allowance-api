@@ -19,15 +19,15 @@ export class AllowanceHoldingDimRepository extends Repository<
       .select([
         'ahd.accountNumber',
         'ahd.accountName',
-        'ahd.prgCode',
+        'ahd.programCodeInfo',
         'ahd.vintageYear',
         'ahd.totalBlock',
         'ahd.startBlock',
         'ahd.endBlock',
-        'af.orisCode',
+        'af.facilityId',
         'af.state',
         'af.epaRegion',
-        'af.ownDisplay',
+        'af.ownerOperator',
         'af.accountType',
       ])
       .innerJoin('ahd.accountFact', 'af');
@@ -37,10 +37,10 @@ export class AllowanceHoldingDimRepository extends Repository<
       [
         'vintageYear',
         'accountNumber',
-        'orisCode',
+        'facilityId',
         'ownerOperator',
         'state',
-        'program',
+        'programCodeInfo',
         'accountType',
       ],
       'ahd',
@@ -49,7 +49,7 @@ export class AllowanceHoldingDimRepository extends Repository<
     );
 
     query
-      .orderBy('ahd.prgCode')
+      .orderBy('ahd.programCodeInfo')
       .addOrderBy('ahd.accountNumber')
       .addOrderBy('ahd.vintageYear')
       .addOrderBy('ahd.startBlock');

@@ -16,12 +16,12 @@ export class OwnerDisplayFact extends BaseEntity {
   @Column({
     name: 'own_display',
   })
-  ownDisplay: string;
+  owner: string;
 
   @Column({
     name: 'opr_display',
   })
-  oprDisplay: string;
+  operator: string;
 
   @OneToOne(
     () => UnitComplianceDim,

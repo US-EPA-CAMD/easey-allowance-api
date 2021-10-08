@@ -32,10 +32,10 @@ let filters: AllowanceComplianceParamsDTO = {
   year: [2019, 2020],
   page: undefined,
   perPage: undefined,
-  orisCode: [0],
+  facilityId: [0],
   ownerOperator: [''],
   state: [State.AK],
-  program: [AllowanceProgram.ARP],
+  programCodeInfo: [AllowanceProgram.ARP],
 };
 
 describe('-- AccountComplianceDimRepository --', () => {

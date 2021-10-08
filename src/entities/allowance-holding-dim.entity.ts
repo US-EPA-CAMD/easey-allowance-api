@@ -19,7 +19,7 @@ export class AllowanceHoldingDim extends BaseEntity {
   @PrimaryColumn({
     name: 'prg_code',
   })
-  prgCode: string;
+  programCodeInfo: string;
 
   @PrimaryColumn({
     name: 'start_block',
@@ -57,7 +57,7 @@ export class AllowanceHoldingDim extends BaseEntity {
     },
     {
       name: 'prg_code',
-      referencedColumnName: 'prgCode',
+      referencedColumnName: 'programCodeInfo',
     },
   ])
   accountFact: AccountFact;

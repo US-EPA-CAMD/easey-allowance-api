@@ -67,6 +67,7 @@ export class AccountController {
   }
 
   @Get('owner-operators')
+  @ApiExtraModels(OwnerOperatorsDTO)
   @ApiOkResponse({
     description: 'Retrieved All Valid Owner Operators',
   })

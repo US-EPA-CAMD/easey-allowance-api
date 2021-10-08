@@ -25,11 +25,11 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
         'ucd.inCompliance',
         'uf.state',
         'uf.facilityName',
-        'uf.orisCode',
+        'uf.facilityId',
         'uf.unitId',
         'uf.programCodeInfo',
-        'odf.ownDisplay',
-        'odf.oprDisplay',
+        'odf.owner',
+        'odf.operator',
       ])
       .innerJoin('ucd.unitFact', 'uf')
       .innerJoin('ucd.ownerDisplayFact', 'odf');
@@ -37,7 +37,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     query = QueryBuilderHelper.createAccountQuery(
       query,
       emissionsComplianceParamsDTO,
-      ['orisCode', 'state'],
+      ['facilityId', 'state'],
       'ucd',
       'uf',
       true,
@@ -52,7 +52,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     query
       .orderBy('uf.programCodeInfo')
       .addOrderBy('ucd.year')
-      .addOrderBy('uf.orisCode')
+      .addOrderBy('uf.facilityId')
       .addOrderBy('uf.unitId');
 
     if (page && perPage) {

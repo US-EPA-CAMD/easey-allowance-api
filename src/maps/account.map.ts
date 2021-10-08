@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { propertyMetadata } from '@us-epa-camd/easey-constants';
 
 import { BaseMap } from './base.map';
 import { AccountFact } from '../entities/account-fact.entity';
@@ -7,23 +8,25 @@ import { AccountFact } from '../entities/account-fact.entity';
 export class AccountMap extends BaseMap<AccountFact, any> {
   public async one(entity: AccountFact): Promise<any> {
     let attributes = {};
-    if (entity.prgCode) {
+    if (entity.programCodeInfo) {
       attributes = {
-        prgCode: entity.prgCode,
-        accountType: entity.accountType,
-        orisCode: entity.orisCode ? Number(entity.orisCode) : entity.orisCode,
-        unitId: entity.unitId,
-        ownDisplay: entity.ownDisplay,
-        state: entity.state,
-        epaRegion: entity.epaRegion
+        [propertyMetadata.programCodeInfo.fieldLabels.value]: entity.programCodeInfo,
+        [propertyMetadata.accountType.fieldLabels.value]: entity.accountType,
+        [propertyMetadata.facilityId.fieldLabels.value]: entity.facilityId
+          ? Number(entity.facilityId)
+          : entity.facilityId,
+        [propertyMetadata.unitId.fieldLabels.value]: entity.unitId,
+        [propertyMetadata.ownerOperator.fieldLabels.value]: entity.ownerOperator,
+        [propertyMetadata.state.fieldLabels.value]: entity.state,
+        [propertyMetadata.epaRegion.fieldLabels.value]: entity.epaRegion
           ? Number(entity.epaRegion)
           : entity.epaRegion,
-        nercRegion: entity.nercRegion,
+        [propertyMetadata.nercRegion.fieldLabels.value]: entity.nercRegion,
       };
     }
     return {
-      accountNumber: entity.accountNumber,
-      accountName: entity.accountName,
+      [propertyMetadata.accountNumber.fieldLabels.value]: entity.accountNumber,
+      [propertyMetadata.accountName.fieldLabels.value]: entity.accountName,
       ...attributes,
     };
   }
