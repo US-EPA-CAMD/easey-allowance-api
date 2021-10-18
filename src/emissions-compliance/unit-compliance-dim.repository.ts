@@ -31,8 +31,8 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
         'odf.owner',
         'odf.operator',
       ])
-      .innerJoin('ucd.unitFact', 'uf')
-      .innerJoin('ucd.ownerDisplayFact', 'odf');
+      .leftJoin('ucd.unitFact', 'uf')
+      .leftJoin('ucd.ownerDisplayFact', 'odf');
 
     query = QueryBuilderHelper.createAccountQuery(
       query,
