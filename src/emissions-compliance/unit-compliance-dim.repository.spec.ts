@@ -10,7 +10,7 @@ const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
   select: jest.fn(),
-  innerJoin: jest.fn(),
+  leftJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   getCount: jest.fn(),
@@ -59,7 +59,7 @@ describe('-- UnitComplianceDimRepository --', () => {
       .fn()
       .mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
-    queryBuilder.innerJoin.mockReturnValue(queryBuilder);
+    queryBuilder.leftJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);

@@ -11,10 +11,9 @@ export class EmissionsComplianceMap extends BaseMap<
   EmissionsComplianceDTO
 > {
   public async one(entity: UnitComplianceDim): Promise<any> {
-    const array = [
-      entity.ownerDisplayFact.owner,
-      entity.ownerDisplayFact.operator,
-    ];
+    const array = entity.ownerDisplayFact
+      ? [entity.ownerDisplayFact.owner, entity.ownerDisplayFact.operator]
+      : [];
     const ownOprList = array
       .filter(e => e)
       .join(',')
@@ -25,15 +24,15 @@ export class EmissionsComplianceMap extends BaseMap<
     return {
       [propertyMetadata.year.fieldLabels.value]: Number(entity.year),
       [propertyMetadata.facilityName.fieldLabels.value]:
-        entity.unitFact.facilityName,
-      [propertyMetadata.facilityId.fieldLabels.value]: entity.unitFact
-        .facilityId
-        ? Number(entity.unitFact.facilityId)
-        : entity.unitFact.facilityId,
-      [propertyMetadata.unitId.fieldLabels.value]: entity.unitFact.unitId,
+        entity.unitFact?.facilityName || null,
+      [propertyMetadata.facilityId.fieldLabels.value]:
+        Number(entity.unitFact?.facilityId) || null,
+      [propertyMetadata.unitId.fieldLabels.value]:
+        entity.unitFact?.unitId || null,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         ownerOperator.length > 0 ? `${ownerOperator})` : null,
-      [propertyMetadata.state.fieldLabels.value]: entity.unitFact.state,
+      [propertyMetadata.state.fieldLabels.value]:
+        entity.unitFact?.state || null,
       [propertyMetadata.complianceApproach.fieldLabels.value]:
         entity.complianceApproach,
       [propertyMetadata.avgPlanId.fieldLabels.value]: entity.avgPlanId
