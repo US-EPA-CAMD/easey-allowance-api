@@ -6,6 +6,8 @@ import { CorsOptionsService } from '@us-epa-camd/easey-common/cors-options/cors-
 
 import { AppModule } from './app.module';
 
+import * as helmet from 'helmet';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
@@ -29,6 +31,8 @@ async function bootstrap() {
         '.description .renderedMarkdown p { color: #FC0; padding: 10px; background: linear-gradient(to bottom,#520001 0%,#6c0810 100%); }',
     };
   }
+
+  app.use(helmet());
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.setGlobalPrefix(appPath);
