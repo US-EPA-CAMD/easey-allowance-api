@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 export class OwnerOperatorsDTO {
   @ApiProperty({

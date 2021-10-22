@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { ErrorMessages } from '../utils/error-messages';
 import { IsYearFormat } from '../pipes/is-year-format.pipe';
@@ -24,7 +24,7 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
     each: true,
     message: ErrorMessages.YearRange('vintageYear', '1995'),
   })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   vintageYear?: number[];
 
   @ApiProperty({
@@ -32,7 +32,7 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
     description: propertyMetadata.ownerOperatorInfo.description,
   })
   @IsOptional()
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   ownerOperator?: string[];
 
   @ApiProperty({
@@ -46,6 +46,6 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
       ErrorMessages.AccountCharacteristics(true, 'programCodeInfo') +
       '?allowanceUIFilter=true&isActive=true',
   })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: ActiveAllowanceProgram[];
 }

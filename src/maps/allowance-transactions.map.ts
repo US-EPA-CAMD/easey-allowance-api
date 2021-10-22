@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { BaseMap } from './base.map';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';

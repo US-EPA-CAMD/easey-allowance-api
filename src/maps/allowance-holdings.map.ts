@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { BaseMap } from './base.map';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';

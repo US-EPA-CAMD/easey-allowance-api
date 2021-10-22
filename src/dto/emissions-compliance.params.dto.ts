@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { IsInDateRange } from '../pipes/is-in-date-range.pipe';
 import { IsYearFormat } from '../pipes/is-year-format.pipe';
@@ -27,6 +27,6 @@ export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
       'a year between 1996 and this year',
     ),
   })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+    @Transform(({ value }) => value.split('|').map(item => item.trim()))
   year?: number[];
 }

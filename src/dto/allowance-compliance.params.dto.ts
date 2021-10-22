@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsInDateRange } from '../pipes/is-in-date-range.pipe';
@@ -22,7 +22,7 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
       ErrorMessages.AccountCharacteristics(true, 'programCodeInfo') +
       '?allowanceUIFilter=true',
   })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: AllowanceProgram[];
 
   @ApiProperty({
@@ -42,6 +42,6 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
       'a year between 1995 and this year',
     ),
   })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   year?: number[];
 }

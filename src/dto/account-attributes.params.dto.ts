@@ -1,7 +1,7 @@
 import { IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-constants/lib';
+import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
@@ -14,7 +14,7 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
     description: propertyMetadata.ownerOperatorInfo.description,
   })
   @IsOptional()
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   ownerOperator?: string[];
 
   @ApiProperty({
@@ -28,6 +28,6 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
       ErrorMessages.AccountCharacteristics(true, 'programCodeInfo') +
       '?allowanceUIFilter=true',
   })
-  @Transform((value: string) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: AllowanceProgram[];
 }
