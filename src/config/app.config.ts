@@ -11,6 +11,7 @@ if (host === 'localhost') {
 }
 
 export default registerAs('app', () => ({
+  name: 'account-api',
   title: process.env.EASEY_ACCOUNT_API_TITLE || 'Account Management',
   path,
   host,
