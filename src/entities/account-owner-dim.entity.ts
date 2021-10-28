@@ -1,7 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
 
 import { AccountFact } from './account-fact.entity';
-import { OneToMany } from 'typeorm';
 
 @Entity({ name: 'camddmw.account_owner_dim' })
 export class AccountOwnerDim extends BaseEntity {

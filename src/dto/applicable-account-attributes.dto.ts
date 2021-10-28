@@ -14,7 +14,7 @@ export class ApplicableAccountAttributesDTO {
     example: propertyMetadata.facilityId.example,
     name: propertyMetadata.facilityId.fieldLabels.value,
   })
-  facilityId: number;
+  facilityId?: number;
 
   @ApiProperty({
     description: propertyMetadata.state.description,
