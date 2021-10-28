@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
+
+import { AccountFact } from './account-fact.entity';
 
 @Entity({ name: 'camddmw.account_owner_dim' })
 export class AccountOwnerDim extends BaseEntity {
@@ -31,4 +33,10 @@ export class AccountOwnerDim extends BaseEntity {
     name: 'own_type',
   })
   ownType: string;
+
+  @OneToMany(
+    () => AccountFact,
+    af => af.accountOwnerDim,
+  )
+  accountFact: AccountFact[];
 }

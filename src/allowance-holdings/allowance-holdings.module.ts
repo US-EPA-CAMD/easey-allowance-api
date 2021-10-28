@@ -10,6 +10,7 @@ import { AccountFactRepository } from '../account/account-fact.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountMap } from '../maps/account.map';
+import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AccountMap } from '../maps/account.map';
     AccountService,
     AllowanceHoldingsMap,
     AccountMap,
+    ApplicableAccountAttributesMap,
     OwnerOperatorsMap,
   ],
 })
