@@ -12,6 +12,7 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountFactRepository } from '../account/account-fact.repository';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
+import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 
 const mockRequest = (url: string) => {
   return {
@@ -39,6 +40,7 @@ describe('-- Allowance Holdings Controller --', () => {
         OwnerOperatorsMap, 
         AccountFactRepository,
         AccountMap,
+        ApplicableAccountAttributesMap
       ],
     }).compile();
 

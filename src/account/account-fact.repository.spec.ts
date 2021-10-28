@@ -14,6 +14,7 @@ const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
   innerJoin: jest.fn(),
+  leftJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   getCount: jest.fn(),
@@ -67,6 +68,7 @@ describe('AccountFactRepository', () => {
     queryBuilder.select.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
+    queryBuilder.leftJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
@@ -130,5 +132,13 @@ describe('AccountFactRepository', () => {
     expect(req.res.setHeader).toHaveBeenCalled();
     expect(queryBuilder.getMany).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAccount');
+  });
+
+  describe('getAllApplicableAccountAttributes', () => {
+    it('calls createQueryBuilder and gets all applicable account attributes from the repository', async () => {
+      let result = await accountFactRepository.getAllApplicableAccountAttributes();
+      expect(queryBuilder.getMany).toHaveBeenCalled();
+      expect(result).toEqual('mockAccount');
+    });
   });
 });

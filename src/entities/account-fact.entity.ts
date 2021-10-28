@@ -1,7 +1,16 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 import { AllowanceHoldingDim } from './allowance-holding-dim.entity';
 import { AccountComplianceDim } from './account-compliance-dim.entity';
+import { AccountOwnerDim } from './account-owner-dim.entity';
 
 @Entity({ name: 'camddmw.account_fact' })
 export class AccountFact extends BaseEntity {
@@ -69,4 +78,20 @@ export class AccountFact extends BaseEntity {
     acd => acd.accountFact,
   )
   accountComplianceDim: AccountComplianceDim[];
+
+  @ManyToOne(
+    () => AccountOwnerDim,
+    aod => aod.accountFact,
+  )
+  @JoinColumn([
+    {
+      name: 'account_number',
+      referencedColumnName: 'accountNumber',
+    },
+    {
+      name: 'prg_code',
+      referencedColumnName: 'programCodeInfo',
+    },
+  ])
+  accountOwnerDim: AccountOwnerDim;
 }

@@ -59,7 +59,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
     return query.getMany();
   }
 
-  async getAllApplicableAccountAttributes(): Promise<AccountFact[]> {
+  async getAllApplicableAccountAttributes(): Promise<any> {
     let query = this.createQueryBuilder('af')
       .select([
         'af.accountNumber',
@@ -70,15 +70,11 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'af.state',
         'aod.ownerOperator',
       ])
-      .leftJoin(
-        'af.ownerOperator',
-        'aod',
-        'af.accountNumber = aod.accountNumber AND af.programCodeInfo = aod.programCodeInfo',
-      )
+      .leftJoin('af.accountOwnerDim', 'aod')
       .distinctOn([
         'af.account_number',
         'af.account_name',
-        'af.prg_info',
+        'af.prg_code',
         'af.account_type',
         'af.orispl_code',
         'af.state',
