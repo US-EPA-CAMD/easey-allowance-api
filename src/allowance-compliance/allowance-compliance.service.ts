@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 
 import { fieldMappings } from '../constants/field-mappings';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
@@ -10,7 +11,6 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
 
 @Injectable()
 export class AllowanceComplianceService {
@@ -20,7 +20,7 @@ export class AllowanceComplianceService {
     private readonly allowanceComplianceMap: AllowanceComplianceMap,
     @InjectRepository(OwnerYearDimRepository)
     private readonly ownerYearDimRepository: OwnerYearDimRepository,
-    private readonly ownerOperatorsMap: OwnerOperatorsMap
+    private readonly ownerOperatorsMap: OwnerOperatorsMap,
   ) {}
 
   async getAllowanceCompliance(
@@ -34,8 +34,12 @@ export class AllowanceComplianceService {
 
     if (
       !allowanceComplianceParamsDTO.programCodeInfo ||
-      allowanceComplianceParamsDTO.programCodeInfo.includes(AllowanceProgram.OTC) ||
-      allowanceComplianceParamsDTO.programCodeInfo.includes(AllowanceProgram.NBP)
+      allowanceComplianceParamsDTO.programCodeInfo.includes(
+        AllowanceProgram.OTC,
+      ) ||
+      allowanceComplianceParamsDTO.programCodeInfo.includes(
+        AllowanceProgram.NBP,
+      )
     ) {
       req.res.setHeader(
         'X-Field-Mappings',

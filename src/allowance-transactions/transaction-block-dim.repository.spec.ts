@@ -1,11 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
+import {
+  State,
+  AccountType,
+  AllowanceProgram,
+  TransactionType,
+} from '@us-epa-camd/easey-common/enums';
 
-import { State } from '../enum/state.enum';
-import { AccountType } from '../enum/account-type.enum';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
-import { TransactionType } from '../enum/transaction-type.enum';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 

@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Request } from 'express';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { ResponseHeaders } from '../utils/response.headers';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 

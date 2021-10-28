@@ -3,7 +3,6 @@ import { Test } from '@nestjs/testing';
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountMap } from '../maps/account.map';
 import { AccountFact } from '../entities/account-fact.entity';
-import { AccountDTO } from '../dto/account.dto';
 import { AccountService } from './account.service';
 import { AccountOwnerDim } from '../entities/account-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';

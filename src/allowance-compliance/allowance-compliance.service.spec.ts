@@ -1,11 +1,10 @@
 import { Test } from '@nestjs/testing';
+import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
-import { State } from '../enum/state.enum';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';

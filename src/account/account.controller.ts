@@ -6,8 +6,8 @@ import {
 } from '@nestjs/swagger';
 import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
 import { Request } from 'express';
+import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
-import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import {
   BadRequestResponse,
   NotFoundResponse,

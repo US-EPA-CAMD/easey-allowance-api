@@ -1,8 +1,9 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Request } from 'express';
 
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+
 import { AccountFact } from '../entities/account-fact.entity';
-import { ResponseHeaders } from '../utils/response.headers';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 
 @EntityRepository(AccountFact)

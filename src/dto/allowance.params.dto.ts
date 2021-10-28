@@ -1,16 +1,17 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import {
+  propertyMetadata,
+  ErrorMessages,
+} from '@us-epa-camd/easey-common/constants';
+import { State, AccountType } from '@us-epa-camd/easey-common/enums';
+import { IsOrisCode } from '@us-epa-camd/easey-common/pipes';
 
 import { PaginationDTO } from './pagination.dto';
-import { State } from '../enum/state.enum';
-import { AccountType } from '../enum/account-type.enum';
-import { IsOrisCode } from '../pipes/is-oris-code.pipe';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsAccountType } from '../pipes/is-account-type.pipe';
 import { IsAccountNumber } from '../pipes/is-account-number.pipe';
-import { ErrorMessages } from '../utils/error-messages';
 
 export class AllowanceParamsDTO extends PaginationDTO {
   @ApiProperty({
@@ -22,7 +23,7 @@ export class AllowanceParamsDTO extends PaginationDTO {
     each: true,
     message: ErrorMessages.AccountCharacteristics(true, 'accountType'),
   })
-    @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   accountType?: AccountType[];
 
   @ApiProperty({
@@ -34,7 +35,7 @@ export class AllowanceParamsDTO extends PaginationDTO {
     each: true,
     message: ErrorMessages.AccountCharacteristics(true, 'accountNumber'),
   })
-    @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   accountNumber?: string[];
 
   @ApiProperty({
@@ -46,7 +47,7 @@ export class AllowanceParamsDTO extends PaginationDTO {
     each: true,
     message: ErrorMessages.AccountCharacteristics(true, 'facilityId'),
   })
-    @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   facilityId?: number[];
 
   @ApiProperty({
@@ -58,7 +59,7 @@ export class AllowanceParamsDTO extends PaginationDTO {
     each: true,
     message: ErrorMessages.AccountCharacteristics(true, 'state'),
   })
-    @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   state?: State[];
 
   @ApiProperty({

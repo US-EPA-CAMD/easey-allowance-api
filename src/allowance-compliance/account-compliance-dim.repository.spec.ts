@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
 
-import { State } from '../enum/state.enum';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
+import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
