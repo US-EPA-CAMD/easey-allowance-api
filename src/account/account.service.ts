@@ -11,6 +11,7 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { ApplicableAccountAttributesDTO } from 'src/dto/applicable-account-attributes.dto';
 
 @Injectable()
 export class AccountService {
@@ -41,6 +42,14 @@ export class AccountService {
       'X-Field-Mappings',
       JSON.stringify(fieldMappings.allowances.accountAttributes),
     );
+
+    return this.accountFactMap.many(query);
+  }
+
+  async getAllApplicableAccountAttributes(): Promise<
+    ApplicableAccountAttributesDTO[]
+  > {
+    const query = await this.accountFactRepository.getAllApplicableAccountAttributes();
 
     return this.accountFactMap.many(query);
   }
