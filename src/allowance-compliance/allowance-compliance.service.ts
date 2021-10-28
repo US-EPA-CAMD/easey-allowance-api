@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
@@ -11,6 +11,7 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { Logger } from '@us-epa-camd/easey-common/logger';
 
 @Injectable()
 export class AllowanceComplianceService {
@@ -21,16 +22,23 @@ export class AllowanceComplianceService {
     @InjectRepository(OwnerYearDimRepository)
     private readonly ownerYearDimRepository: OwnerYearDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
+    private Logger: Logger,
   ) {}
 
   async getAllowanceCompliance(
     allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
     req: Request,
   ): Promise<AllowanceComplianceDTO[]> {
-    const query = await this.accountComplianceDimRepository.getAllowanceCompliance(
-      allowanceComplianceParamsDTO,
-      req,
-    );
+    this.Logger.info('Getting allowance compliance');
+    let query;
+    try {
+      query = await this.accountComplianceDimRepository.getAllowanceCompliance(
+        allowanceComplianceParamsDTO,
+        req,
+      );
+    } catch (e) {
+      this.Logger.error(InternalServerErrorException, e.message);
+    }
 
     if (
       !allowanceComplianceParamsDTO.programCodeInfo ||
@@ -41,17 +49,19 @@ export class AllowanceComplianceService {
         AllowanceProgram.NBP,
       )
     ) {
+      this.Logger.info('Setting header without program code info');
       req.res.setHeader(
         'X-Field-Mappings',
         JSON.stringify(fieldMappings.compliance.allowanceNbpOtc),
       );
     } else {
+      this.Logger.info('Setting header with program code info');
       req.res.setHeader(
         'X-Field-Mappings',
         JSON.stringify(fieldMappings.compliance.allowance),
       );
     }
-
+    this.Logger.info('Got allowance compliance');
     return this.allowanceComplianceMap.many(query);
   }
 

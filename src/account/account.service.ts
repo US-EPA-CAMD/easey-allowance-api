@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import { Logger } from '@us-epa-camd/easey-common/logger';
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
@@ -21,10 +22,18 @@ export class AccountService {
     @InjectRepository(AccountOwnerDimRepository)
     private readonly accountOwnerDimRepository: AccountOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
+    private Logger: Logger,
   ) {}
 
   async getAllAccounts(): Promise<AccountDTO[]> {
-    const query = await this.accountFactRepository.getAllAccounts();
+    this.Logger.info('Getting all accounts');
+    let query;
+    try {
+      query = await this.accountFactRepository.getAllAccounts();
+    } catch (e) {
+      this.Logger.error(InternalServerErrorException, e.message);
+    }
+    this.Logger.info('Got all accounts');
     return this.accountFactMap.many(query);
   }
 
