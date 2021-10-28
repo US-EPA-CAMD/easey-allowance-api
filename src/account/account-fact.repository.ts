@@ -60,7 +60,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   async getAllApplicableAccountAttributes(): Promise<any> {
-    let query = this.createQueryBuilder('af')
+    const query = this.createQueryBuilder('af')
       .select([
         'af.accountNumber',
         'af.accountName',
