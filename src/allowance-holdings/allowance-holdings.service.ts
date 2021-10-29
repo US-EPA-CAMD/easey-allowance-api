@@ -43,7 +43,6 @@ export class AllowanceHoldingsService {
     this.Logger.info('Got allowance holdings');
     return this.allowanceHoldingsMap.many(query);
   }
-
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<
     ApplicableAllowanceHoldingsAttributesDTO[]
   > {
