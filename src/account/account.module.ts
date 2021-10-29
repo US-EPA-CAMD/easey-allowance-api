@@ -7,8 +7,8 @@ import { AccountFactRepository } from './account-fact.repository';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { HttpModule } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
+import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 @Module({
   imports: [
@@ -16,9 +16,14 @@ import { ConfigService } from '@nestjs/config';
       AccountFactRepository,
       AccountOwnerDimRepository,
     ]),
-    HttpModule,
+    LoggerModule,
   ],
   controllers: [AccountController],
-  providers: [AccountService, AccountMap, OwnerOperatorsMap, ConfigService],
+  providers: [
+    AccountService,
+    AccountMap,
+    ApplicableAccountAttributesMap,
+    OwnerOperatorsMap,
+  ],
 })
 export class AccountModule {}

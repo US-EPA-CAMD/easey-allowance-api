@@ -59,4 +59,29 @@ export class AccountFactRepository extends Repository<AccountFact> {
     }
     return query.getMany();
   }
+
+  async getAllApplicableAccountAttributes(): Promise<any> {
+    const query = this.createQueryBuilder('af')
+      .select([
+        'af.accountNumber',
+        'af.accountName',
+        'af.programCodeInfo',
+        'af.accountType',
+        'af.facilityId',
+        'af.state',
+        'aod.ownerOperator',
+      ])
+      .leftJoin('af.accountOwnerDim', 'aod')
+      .distinctOn([
+        'af.account_number',
+        'af.account_name',
+        'af.prg_code',
+        'af.account_type',
+        'af.orispl_code',
+        'af.state',
+        'aod.own_display',
+      ]);
+
+    return query.getMany();
+  }
 }

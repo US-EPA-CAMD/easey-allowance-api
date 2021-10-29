@@ -12,6 +12,8 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { ApplicableAccountAttributesDTO } from 'src/dto/applicable-account-attributes.dto';
+import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 
 @Injectable()
 export class AccountService {
@@ -19,6 +21,7 @@ export class AccountService {
     @InjectRepository(AccountFactRepository)
     private readonly accountFactRepository: AccountFactRepository,
     private readonly accountFactMap: AccountMap,
+    private readonly applicableAccountAttributesMap: ApplicableAccountAttributesMap,
     @InjectRepository(AccountOwnerDimRepository)
     private readonly accountOwnerDimRepository: AccountOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
@@ -52,6 +55,13 @@ export class AccountService {
     );
 
     return this.accountFactMap.many(query);
+  }
+
+  async getAllApplicableAccountAttributes(): Promise<
+    ApplicableAccountAttributesDTO[]
+  > {
+    const query = await this.accountFactRepository.getAllApplicableAccountAttributes();
+    return this.applicableAccountAttributesMap.many(query);
   }
 
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {

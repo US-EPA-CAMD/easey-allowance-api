@@ -18,6 +18,7 @@ import { AccountDTO } from '../dto/account.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 
 @ApiTags('Accounts')
 @UseInterceptors(Json2CsvInterceptor)
@@ -64,6 +65,20 @@ export class AccountController {
       accountAttributesParamsDTO,
       req,
     );
+  }
+
+  @Get('attributes/applicable')
+  @ApiExtraModels(ApplicableAccountAttributesDTO)
+  @ApiOkResponse({
+    description: 'Retrieved All Applicable Account Attributes',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(ApplicableAccountAttributesDTO)
+  getAllApplicableAccountAttributes(): Promise<
+    ApplicableAccountAttributesDTO[]
+  > {
+    return this.accountService.getAllApplicableAccountAttributes();
   }
 
   @Get('owner-operators')

@@ -10,10 +10,14 @@ import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
+import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
+import { fn } from 'moment';
 
 const mockAccountFactRepository = () => ({
   getAllAccounts: jest.fn(),
   getAllAccountAttributes: jest.fn(),
+  getAllApplicableAccountAttributes: jest.fn(),
 });
 
 const mockAccountMap = () => ({
@@ -37,6 +41,7 @@ describe('-- Account Service --', () => {
   let accountFactRepository;
   let accountOwnerDimRepository;
   let accountMap;
+  let applicableAccountAttributesMap;
   let req: any;
 
   beforeEach(async () => {
@@ -56,6 +61,10 @@ describe('-- Account Service --', () => {
           provide: AccountMap,
           useFactory: mockAccountMap,
         },
+        {
+          provide: ApplicableAccountAttributesMap,
+          useFactory: mockAccountMap,
+        },
         OwnerOperatorsMap,
       ],
     }).compile();
@@ -64,6 +73,7 @@ describe('-- Account Service --', () => {
     accountFactRepository = module.get(AccountFactRepository);
     accountOwnerDimRepository = module.get(AccountOwnerDimRepository);
     accountMap = module.get(AccountMap);
+    applicableAccountAttributesMap = module.get(ApplicableAccountAttributesMap);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
@@ -98,6 +108,20 @@ describe('-- Account Service --', () => {
       let result = await accountService.getAllAccountAttributes(filters, req);
       expect(accountMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
+    });
+  });
+
+  describe('getAllApplicableAccountAttributes', () => {
+    it('calls AcountFactRepository.getAllApplicableAccountAttributes() and gets all applicable account attributes from the repository', async () => {
+      accountFactRepository.getAllApplicableAccountAttributes.mockResolvedValue(
+        'list of applicable account attributes',
+      );
+      const filters = new ApplicableAccountAttributesDTO();
+      applicableAccountAttributesMap.many.mockReturnValue(filters);
+
+      const result = await accountService.getAllApplicableAccountAttributes();
+      expect(applicableAccountAttributesMap.many).toHaveBeenCalled();
+      expect(result).toEqual(filters);
     });
   });
 
