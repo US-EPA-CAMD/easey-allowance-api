@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 
-import { BaseMap } from './base.map';
+import { BaseMap } from '@us-epa-camd/easey-common/maps';
 
 @Injectable()
 export class ApplicableAllowanceHoldingsAttributesMap extends BaseMap<
