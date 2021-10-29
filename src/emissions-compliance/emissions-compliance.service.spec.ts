@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
+import { State } from '@us-epa-camd/easey-common/enums';
 
-import { State } from '../enum/state.enum';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';

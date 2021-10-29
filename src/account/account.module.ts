@@ -8,6 +8,7 @@ import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attri
       AccountFactRepository,
       AccountOwnerDimRepository,
     ]),
+    LoggerModule,
   ],
   controllers: [AccountController],
   providers: [

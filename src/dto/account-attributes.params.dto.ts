@@ -2,11 +2,11 @@ import { IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-import { ErrorMessages } from '../utils/error-messages';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
 
 export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({

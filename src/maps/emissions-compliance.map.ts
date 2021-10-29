@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
-import { BaseMap } from './base.map';
+import { BaseMap } from '@us-epa-camd/easey-common/maps';
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 

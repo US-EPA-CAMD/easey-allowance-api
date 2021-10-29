@@ -1,10 +1,10 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Request } from 'express';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { ResponseHeaders } from '../utils/response.headers';
 
 @EntityRepository(AllowanceHoldingDim)
 export class AllowanceHoldingDimRepository extends Repository<

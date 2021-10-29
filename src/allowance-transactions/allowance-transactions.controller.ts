@@ -7,8 +7,8 @@ import {
   ApiExtraModels,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
-import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';

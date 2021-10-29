@@ -6,8 +6,7 @@ import {
   ApiExtraModels,
   getSchemaPath,
 } from '@nestjs/swagger';
-
-import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
+import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 import {
   ApiQueryComplianceMultiSelect,
   BadRequestResponse,

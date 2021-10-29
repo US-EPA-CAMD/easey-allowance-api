@@ -10,6 +10,8 @@ import { AccountFactRepository } from '../account/account-fact.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountMap } from '../maps/account.map';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 
 @Module({
@@ -19,6 +21,7 @@ import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attri
       AccountOwnerDimRepository,
       AccountFactRepository,
     ]),
+    HttpModule,
   ],
   controllers: [AllowanceHoldingsController],
   providers: [
@@ -28,6 +31,7 @@ import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attri
     AccountMap,
     ApplicableAccountAttributesMap,
     OwnerOperatorsMap,
+    ConfigService,
   ],
 })
 export class AllowanceHoldingsModule {}

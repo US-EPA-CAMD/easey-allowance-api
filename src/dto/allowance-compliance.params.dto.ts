@@ -2,12 +2,12 @@ import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
+import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
-import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsInDateRange } from '../pipes/is-in-date-range.pipe';
-import { IsYearFormat } from '../pipes/is-year-format.pipe';
-import { ErrorMessages } from '../utils/error-messages';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
+import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { ComplianceParamsDTO } from './compliance.params.dto';
 
 export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {

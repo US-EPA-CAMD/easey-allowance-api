@@ -1,16 +1,20 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import {
+  propertyMetadata,
+  ErrorMessages,
+} from '@us-epa-camd/easey-common/constants';
+import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
+import {
+  TransactionType,
+  AllowanceProgram,
+} from '@us-epa-camd/easey-common/enums';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
-import { ErrorMessages } from '../utils/error-messages';
-import { TransactionType } from '../enum/transaction-type.enum';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
 import { BeginDate, EndDate } from '../utils/validator.const';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
-import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
@@ -57,7 +61,7 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
     each: true,
     message: ErrorMessages.AccountCharacteristics(true, 'transactionType'),
   })
-    @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   transactionType?: TransactionType[];
 
   @ApiProperty({
@@ -73,6 +77,6 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
     each: true,
     message: ErrorMessages.YearRange('vintageYear', '1995'),
   })
-    @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @Transform(({ value }) => value.split('|').map(item => item.trim()))
   vintageYear?: number[];
 }

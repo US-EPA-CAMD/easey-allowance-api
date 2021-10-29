@@ -1,4 +1,4 @@
-import { Regex } from './regex';
+import { Regex } from '@us-epa-camd/easey-common/utilities';
 
 export class QueryBuilderHelper {
   private static paginationHelper(query: any, page: number, perPage: number) {

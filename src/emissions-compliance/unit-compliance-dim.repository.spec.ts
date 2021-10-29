@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
+import { State } from '@us-epa-camd/easey-common/enums';
 
 import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
-import { State } from '../enum/state.enum';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 const mockQueryBuilder = () => ({

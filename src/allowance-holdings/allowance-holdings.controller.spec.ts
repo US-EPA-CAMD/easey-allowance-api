@@ -12,6 +12,7 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountFactRepository } from '../account/account-fact.repository';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 
 const mockRequest = (url: string) => {
@@ -30,6 +31,7 @@ describe('-- Allowance Holdings Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       controllers: [AllowanceHoldingsController],
       providers: [
         AllowanceHoldingsService,
@@ -37,7 +39,7 @@ describe('-- Allowance Holdings Controller --', () => {
         AllowanceHoldingDimRepository,
         AccountService,
         AccountOwnerDimRepository,
-        OwnerOperatorsMap, 
+        OwnerOperatorsMap,
         AccountFactRepository,
         AccountMap,
         ApplicableAccountAttributesMap
@@ -46,7 +48,7 @@ describe('-- Allowance Holdings Controller --', () => {
 
     allowanceHoldingsController = module.get(AllowanceHoldingsController);
     allowanceHoldingsService = module.get(AllowanceHoldingsService);
-    accountService = module.get(AccountService)
+    accountService = module.get(AccountService);
   });
 
   afterEach(() => {

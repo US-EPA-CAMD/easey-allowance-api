@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import { BaseMap } from '@us-epa-camd/easey-common/maps';
 
-import { BaseMap } from './base.map';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 
 @Injectable()

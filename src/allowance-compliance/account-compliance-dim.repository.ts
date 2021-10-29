@@ -1,11 +1,11 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Request } from 'express';
+import { AllowanceProgram } from '@us-epa-camd/easey-common/enums/allowance-programs.enum';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { ResponseHeaders } from '../utils/response.headers';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
 
 @EntityRepository(AccountComplianceDim)
 export class AccountComplianceDimRepository extends Repository<

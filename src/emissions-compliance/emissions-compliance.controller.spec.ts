@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { State } from '@us-epa-camd/easey-common/enums';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -10,9 +11,9 @@ import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.r
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
-import { State } from '../enum/state.enum';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockRequest = (url: string) => {
   return {
@@ -30,6 +31,7 @@ describe('-- Emissions Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       controllers: [EmissionsComplianceController],
       providers: [
         AllowanceComplianceService,

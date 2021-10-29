@@ -2,16 +2,15 @@ import { validate } from 'class-validator';
 import * as typeorm from 'typeorm';
 import { createSandbox, SinonSandbox, createStubInstance } from 'sinon';
 
+import { IsOrisCode, IsYearFormat } from '@us-epa-camd/easey-common/pipes';
+
 import { IsAccountType } from '../pipes/is-account-type.pipe';
 import { IsAccountNumber } from '../pipes/is-account-number.pipe';
-import { IsOrisCode } from '../pipes/is-oris-code.pipe';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
-import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { BeginDate, EndDate } from '../utils/validator.const';
 import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
-
 
 describe('-- Allowance Transactions Params DTO --', () => {
   describe('getAllowanceTransactions with query parameters', () => {
@@ -33,10 +32,9 @@ describe('-- Allowance Transactions Params DTO --', () => {
         this.state = state;
         this.vintageYear = vintageYear;
         this.programCodeInfo = programCodeInfo;
-        this.transactionType = transactionType
+        this.transactionType = transactionType;
         this.transactionBeginDate = transactionBeginDate;
         this.transactionEndDate = transactionEndDate;
-
       }
       @IsAccountType()
       accountType: string;
@@ -62,7 +60,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
 
       @BeginDate()
       transactionBeginDate: string;
-      
+
       @EndDate()
       transactionEndDate: string;
     }
@@ -129,7 +127,17 @@ describe('-- Allowance Transactions Params DTO --', () => {
     it('should fail all of the validation pipes', async () => {
       fakeManager.findOne.resolves(null);
       const results = await validate(
-        new MyClass('general', '00001', 'oris', 'state', '1945', 'programCodeInfo', 'transactionType', 'beginDate', 'endDate'),
+        new MyClass(
+          'general',
+          '00001',
+          'oris',
+          'state',
+          '1945',
+          'programCodeInfo',
+          'transactionType',
+          'beginDate',
+          'endDate',
+        ),
       );
       expect(results.length).toBe(9);
     });
