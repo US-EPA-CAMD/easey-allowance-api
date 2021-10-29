@@ -63,7 +63,6 @@ export class AccountFactRepository extends Repository<AccountFact> {
     const query = this.createQueryBuilder('af')
       .select([
         'af.accountNumber',
-        'af.accountName',
         'af.programCodeInfo',
         'af.accountType',
         'af.facilityId',
@@ -73,7 +72,6 @@ export class AccountFactRepository extends Repository<AccountFact> {
       .leftJoin('af.accountOwnerDim', 'aod')
       .distinctOn([
         'af.account_number',
-        'af.account_name',
         'af.prg_code',
         'af.account_type',
         'af.orispl_code',

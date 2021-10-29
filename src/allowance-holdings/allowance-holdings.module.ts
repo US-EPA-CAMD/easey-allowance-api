@@ -11,6 +11,7 @@ import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountMap } from '../maps/account.map';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
+import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attri
     AccountMap,
     ApplicableAccountAttributesMap,
     OwnerOperatorsMap,
+    ApplicableAllowanceHoldingsAttributesMap,
   ],
 })
 export class AllowanceHoldingsModule {}

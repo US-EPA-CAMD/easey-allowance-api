@@ -13,6 +13,8 @@ import { AccountFactRepository } from '../account/account-fact.repository';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
+import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
+import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 
 const mockRequest = (url: string) => {
   return {
@@ -37,16 +39,17 @@ describe('-- Allowance Holdings Controller --', () => {
         AllowanceHoldingDimRepository,
         AccountService,
         AccountOwnerDimRepository,
-        OwnerOperatorsMap, 
+        OwnerOperatorsMap,
         AccountFactRepository,
         AccountMap,
-        ApplicableAccountAttributesMap
+        ApplicableAccountAttributesMap,
+        ApplicableAllowanceHoldingsAttributesMap,
       ],
     }).compile();
 
     allowanceHoldingsController = module.get(AllowanceHoldingsController);
     allowanceHoldingsService = module.get(AllowanceHoldingsService);
-    accountService = module.get(AccountService)
+    accountService = module.get(AccountService);
   });
 
   afterEach(() => {
@@ -78,6 +81,21 @@ describe('-- Allowance Holdings Controller --', () => {
       expect(await allowanceHoldingsController.getAllOwnerOperators()).toBe(
         expectedResults,
       );
+    });
+  });
+
+  describe('* getAllApplicableAllowanceHoldingsAttributes', () => {
+    it('should call the service and return applicable allowance holdings attributes', async () => {
+      const expectedResults: ApplicableAllowanceHoldingsAttributesDTO[] = [];
+      jest
+        .spyOn(
+          allowanceHoldingsService,
+          'getAllApplicableAllowanceHoldingsAttributes',
+        )
+        .mockResolvedValue(expectedResults);
+      expect(
+        await allowanceHoldingsController.getAllApplicableAllowanceHoldingsAttributes(),
+      ).toBe(expectedResults);
     });
   });
 });
