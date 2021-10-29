@@ -9,6 +9,9 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { ConfigService } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
+import { Logger, LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockAccountComplianceDimRepository = () => ({
   getAllowanceCompliance: jest.fn(),
@@ -39,6 +42,7 @@ describe('-- Allowance Compliance Service --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       providers: [
         AllowanceComplianceService,
         {

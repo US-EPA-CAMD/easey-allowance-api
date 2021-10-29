@@ -10,6 +10,7 @@ import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockRequest = (url: string) => {
   return {
@@ -26,6 +27,7 @@ describe('-- Account Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       controllers: [AccountController],
       providers: [
         AccountService,

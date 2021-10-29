@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
@@ -38,6 +39,7 @@ describe('-- Allowance Transactions Service --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       providers: [
         AllowanceTransactionsService,
         {

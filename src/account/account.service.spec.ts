@@ -9,10 +9,11 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockAccountFactRepository = () => ({
   getAllAccounts: jest.fn(),
-  getAllAccountAttributes: jest.fn()
+  getAllAccountAttributes: jest.fn(),
 });
 
 const mockAccountMap = () => ({
@@ -40,6 +41,7 @@ describe('-- Account Service --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       providers: [
         AccountService,
         {
@@ -61,7 +63,7 @@ describe('-- Account Service --', () => {
     accountService = module.get(AccountService);
     accountFactRepository = module.get(AccountFactRepository);
     accountOwnerDimRepository = module.get(AccountOwnerDimRepository);
-    accountMap = module.get(AccountMap)
+    accountMap = module.get(AccountMap);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
@@ -93,10 +95,7 @@ describe('-- Account Service --', () => {
 
       let filters = new AccountAttributesParamsDTO();
 
-      let result = await accountService.getAllAccountAttributes(
-        filters,
-        req,
-      );
+      let result = await accountService.getAllAccountAttributes(filters, req);
       expect(accountMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
     });

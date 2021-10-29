@@ -13,6 +13,7 @@ import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockRequest = (url: string) => {
   return {
@@ -30,6 +31,7 @@ describe('-- Emissions Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       controllers: [EmissionsComplianceController],
       providers: [
         AllowanceComplianceService,
