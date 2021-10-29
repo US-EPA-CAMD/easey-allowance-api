@@ -9,6 +9,7 @@ import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.pa
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockRequest = (url: string) => {
   return {
@@ -25,6 +26,7 @@ describe('-- Allowance Transactions Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       controllers: [AllowanceTransactionsController],
       providers: [
         AllowanceTransactionsService,

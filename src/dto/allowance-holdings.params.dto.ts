@@ -1,10 +1,12 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import {
+  propertyMetadata,
+  ErrorMessages,
+} from '@us-epa-camd/easey-common/constants';
+import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
 
-import { ErrorMessages } from '../utils/error-messages';
-import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';

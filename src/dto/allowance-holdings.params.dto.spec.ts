@@ -2,14 +2,13 @@ import { validate } from 'class-validator';
 import * as typeorm from 'typeorm';
 import { createSandbox, SinonSandbox, createStubInstance } from 'sinon';
 
+import { IsYearFormat, IsOrisCode } from '@us-epa-camd/easey-common/pipes';
+
 import { IsAccountType } from '../pipes/is-account-type.pipe';
 import { IsAccountNumber } from '../pipes/is-account-number.pipe';
-import { IsOrisCode } from '../pipes/is-oris-code.pipe';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
-import { IsYearFormat } from '../pipes/is-year-format.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-
 
 describe('-- Allowance Holdings Params DTO --', () => {
   describe('getAllowanceHoldings with query parameters', () => {
@@ -105,7 +104,14 @@ describe('-- Allowance Holdings Params DTO --', () => {
     it('should fail all of the validation pipes', async () => {
       fakeManager.findOne.resolves(null);
       const results = await validate(
-        new MyClass('general', '00001', 'oris', 'state', '1945', 'programCodeInfo'),
+        new MyClass(
+          'general',
+          '00001',
+          'oris',
+          'state',
+          '1945',
+          'programCodeInfo',
+        ),
       );
       expect(results.length).toBe(6);
     });

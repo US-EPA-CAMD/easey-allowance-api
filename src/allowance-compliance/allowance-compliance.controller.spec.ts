@@ -1,4 +1,6 @@
 import { Test } from '@nestjs/testing';
+import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import { State } from '@us-epa-camd/easey-common/enums';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
@@ -6,11 +8,10 @@ import { AllowanceComplianceController } from './allowance-compliance.controller
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
-import { State } from '../enum/state.enum';
-import { AllowanceProgram } from '../enum/allowance-programs.enum';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,6 +28,7 @@ describe('-- Allowance Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       controllers: [AllowanceComplianceController],
       providers: [
         AllowanceComplianceService,

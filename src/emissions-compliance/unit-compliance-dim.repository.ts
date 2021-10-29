@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Request } from 'express';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { ResponseHeaders } from '../utils/response.headers';
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 

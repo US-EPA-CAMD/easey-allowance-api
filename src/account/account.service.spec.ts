@@ -9,6 +9,7 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { fn } from 'moment';
@@ -45,6 +46,7 @@ describe('-- Account Service --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       providers: [
         AccountService,
         {

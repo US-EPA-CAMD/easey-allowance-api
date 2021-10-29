@@ -7,8 +7,8 @@ import {
   ApiExtraModels,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
-import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import {
   BadRequestResponse,

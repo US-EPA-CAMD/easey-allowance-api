@@ -1,12 +1,15 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
 
+import {
+  State,
+  ActiveAllowanceProgram,
+  AccountType,
+} from '@us-epa-camd/easey-common/enums';
+
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
-import { State } from '../enum/state.enum';
-import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
-import { AccountType } from '../enum/account-type.enum';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
-import { BaseMap } from './base.map';
+import { BaseMap } from '@us-epa-camd/easey-common/maps';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 

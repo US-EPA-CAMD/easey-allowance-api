@@ -4,6 +4,7 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 
 const mockAllowanceHoldingDimRepository = () => ({
@@ -32,6 +33,7 @@ describe('-- Allowance Holdings Service --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [LoggerModule],
       providers: [
         AllowanceHoldingsService,
         {

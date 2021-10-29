@@ -7,13 +7,13 @@ import {
   ApiExtraModels,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
 import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryMultiSelect,
 } from '../utils/swagger-decorator.const';
-import { Json2CsvInterceptor } from '../interceptors/json2csv.interceptor';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AccountService } from '../account/account.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
