@@ -19,6 +19,7 @@ import { AccountService } from '../account/account.service';
 import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 
 @Controller()
 @ApiTags('Allowance Holdings')
@@ -63,6 +64,20 @@ export class AllowanceHoldingsController {
       allowanceHoldingsParamsDTO,
       req,
     );
+  }
+
+  @Get('attributes/applicable')
+  @ApiExtraModels(ApplicableAllowanceHoldingsAttributesDTO)
+  @ApiOkResponse({
+    description: 'Retrieved All Applicable Allowance Holdings Attributes',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(ApplicableAllowanceHoldingsAttributesDTO)
+  getAllApplicableAllowanceHoldingsAttributes(): Promise<
+    ApplicableAllowanceHoldingsAttributesDTO[]
+  > {
+    return this.allowanceService.getAllApplicableAllowanceHoldingsAttributes();
   }
 
   @Get('owner-operators')

@@ -14,6 +14,8 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
+import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
+import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 
 const mockRequest = (url: string) => {
   return {
@@ -42,7 +44,8 @@ describe('-- Allowance Holdings Controller --', () => {
         OwnerOperatorsMap,
         AccountFactRepository,
         AccountMap,
-        ApplicableAccountAttributesMap
+        ApplicableAccountAttributesMap,
+        ApplicableAllowanceHoldingsAttributesMap,
       ],
     }).compile();
 
@@ -80,6 +83,21 @@ describe('-- Allowance Holdings Controller --', () => {
       expect(await allowanceHoldingsController.getAllOwnerOperators()).toBe(
         expectedResults,
       );
+    });
+  });
+
+  describe('* getAllApplicableAllowanceHoldingsAttributes', () => {
+    it('should call the service and return applicable allowance holdings attributes', async () => {
+      const expectedResults: ApplicableAllowanceHoldingsAttributesDTO[] = [];
+      jest
+        .spyOn(
+          allowanceHoldingsService,
+          'getAllApplicableAllowanceHoldingsAttributes',
+        )
+        .mockResolvedValue(expectedResults);
+      expect(
+        await allowanceHoldingsController.getAllApplicableAllowanceHoldingsAttributes(),
+      ).toBe(expectedResults);
     });
   });
 });

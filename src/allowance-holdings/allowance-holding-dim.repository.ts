@@ -61,4 +61,29 @@ export class AllowanceHoldingDimRepository extends Repository<
 
     return query.getMany();
   }
+
+  async getAllApplicableAllowanceHoldingsAttributes(): Promise<any> {
+    const query = this.createQueryBuilder('ahd')
+      .select([
+        'ahd.vintageYear',
+        'ahd.programCodeInfo',
+        'af.accountNumber',
+        'af.accountType',
+        'af.facilityId',
+        'af.state',
+        'aod.ownerOperator',
+      ])
+      .innerJoin('ahd.accountFact', 'af')
+      .leftJoin('af.accountOwnerDim', 'aod')
+      .distinctOn([
+        'ahd.vintage_year',
+        'ahd.prg_code',
+        'af.account_number',
+        'af.account_type',
+        'af.orispl_code',
+        'af.state',
+        'aod.own_display',
+      ]);
+    return query.getMany();
+  }
 }
