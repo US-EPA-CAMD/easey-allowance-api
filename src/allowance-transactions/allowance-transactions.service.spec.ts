@@ -123,7 +123,7 @@ describe('-- Allowance Transactions Service --', () => {
       let filters = new ApplicableAllowanceTransactionsAttributesParamsDTO();
 
       transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes.mockResolvedValue(
-        'list of applicable allowance transactions',
+        'list of applicable allowance transactions attributes',
       );
 
       applicableAllowanceTransactionsAttributesMap.many.mockReturnValue(
