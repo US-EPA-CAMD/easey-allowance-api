@@ -9,9 +9,12 @@ import { TransactionOwnerDim } from '../entities/transaction-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
+import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
 const mockTransactionBlockDimRepository = () => ({
   getAllowanceTransactions: jest.fn(),
+  getAllApplicableAllowanceTransactionsAttributes: jest.fn(),
 });
 
 const mockAllowanceTransactionsMap = () => ({
@@ -35,6 +38,7 @@ describe('-- Allowance Transactions Service --', () => {
   let transactionBlockDimRepository;
   let transactionOwnerDimRepository;
   let allowanceTransactionsMap;
+  let applicableAllowanceTransactionsAttributesMap;
   let req: any;
 
   beforeEach(async () => {
@@ -54,6 +58,10 @@ describe('-- Allowance Transactions Service --', () => {
           provide: AllowanceTransactionsMap,
           useFactory: mockAllowanceTransactionsMap,
         },
+        {
+          provide: ApplicableAllowanceTransactionsAttributesMap,
+          useFactory: mockAllowanceTransactionsMap,
+        },
         OwnerOperatorsMap,
       ],
     }).compile();
@@ -62,6 +70,7 @@ describe('-- Allowance Transactions Service --', () => {
     transactionBlockDimRepository = module.get(TransactionBlockDimRepository);
     transactionOwnerDimRepository = module.get(TransactionOwnerDimRepository);
     allowanceTransactionsMap = module.get(AllowanceTransactionsMap);
+    applicableAllowanceTransactionsAttributesMap = module.get(ApplicableAllowanceTransactionsAttributesMap)
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
@@ -106,6 +115,28 @@ describe('-- Allowance Transactions Service --', () => {
         transactionOwnerDimRepository.getAllOwnerOperators,
       ).toHaveBeenCalled();
       expect(result).toEqual([ownerOperatorsDTO]);
+    });
+  });
+
+  describe('getAllApplicableAllowanceTransactionsAttributes', () => {
+    it('call TransactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes.mockResolvedValue', async () => {
+      let filters = new ApplicableAllowanceTransactionsAttributesParamsDTO();
+
+      transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes.mockResolvedValue(
+        'list of applicable allowance transactions',
+      );
+
+      applicableAllowanceTransactionsAttributesMap.many.mockReturnValue(
+        'mapped DTOs',
+      );
+
+      const result = await allowanceTransactionsService.getAllApplicableAllowanceTransactionsAttributes(
+        filters,
+      );
+      expect(
+        applicableAllowanceTransactionsAttributesMap.many,
+      ).toHaveBeenCalled();
+      expect(result).toEqual('mapped DTOs');
     });
   });
 });

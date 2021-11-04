@@ -1,5 +1,14 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { TransactionBlockDim } from './transaction-block-dim.entity';
+import { TransactionOwnerDim } from './transaction-owner-dim.entity';
 
 @Entity({ name: 'camddmw.transaction_fact' })
 export class TransactionFact extends BaseEntity {
@@ -123,4 +132,20 @@ export class TransactionFact extends BaseEntity {
     tbd => tbd.transactionFact,
   )
   transactionBlockDim: TransactionBlockDim[];
+
+  @ManyToOne(
+    () => TransactionOwnerDim,
+    tod => tod.transactionFact,
+  )
+  @JoinColumn([
+    {
+      name: 'transaction_id',
+      referencedColumnName: 'transactionId',
+    },
+    {
+      name: 'prg_code',
+      referencedColumnName: 'programCodeInfo',
+    },
+  ])
+  transactionOwnerDim: TransactionOwnerDim;
 }

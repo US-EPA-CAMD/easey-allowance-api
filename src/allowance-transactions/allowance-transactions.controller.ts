@@ -13,6 +13,8 @@ import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
+import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import {
   BadRequestResponse,
   NotFoundResponse,
@@ -66,6 +68,23 @@ export class AllowanceTransactionsController {
     return this.allowanceTransactionsService.getAllowanceTransactions(
       allowanceTransactionsParamsDTO,
       req,
+    );
+  }
+
+  @Get('attributes/applicable')
+  @ApiExtraModels(ApplicableAllowanceTransactionsAttributesDTO)
+  @ApiOkResponse({
+    description: 'Retrieved All Applicable Allowance Transactions Attributes',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(ApplicableAllowanceTransactionsAttributesDTO)
+  getAllApplicableAllowanceTransactionsAttributes(
+    @Query()
+    applicableAllowanceTransactionsAttributesParamsDTO: ApplicableAllowanceTransactionsAttributesParamsDTO,
+  ): Promise<ApplicableAllowanceTransactionsAttributesDTO[]> {
+    return this.allowanceTransactionsService.getAllApplicableAllowanceTransactionsAttributes(
+      applicableAllowanceTransactionsAttributesParamsDTO,
     );
   }
 

@@ -9,6 +9,7 @@ import { TransactionOwnerDimRepository } from './transaction-owner-dim.repositor
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfigService } from '@nestjs/config';
   providers: [
     AllowanceTransactionsService,
     AllowanceTransactionsMap,
+    ApplicableAllowanceTransactionsAttributesMap,
     OwnerOperatorsMap,
     ConfigService,
   ],
