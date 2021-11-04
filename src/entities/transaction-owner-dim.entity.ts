@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { TransactionFact } from './transaction-fact.entity';
 
 @Entity({ name: 'camddmw.transaction_owner_dim' })
 export class TransactionOwnerDim extends BaseEntity {
@@ -6,6 +7,16 @@ export class TransactionOwnerDim extends BaseEntity {
     name: 'transaction_owner_unique_id',
   })
   transactionOwnerUniqueId: number;
+
+  @Column({
+    name: 'transaction_id',
+  })
+  transactionId: number;
+
+  @Column({
+    name: 'prg_code',
+  })
+  programCodeInfo: number;
 
   @Column({
     name: 'account_owner_id',
@@ -21,4 +32,10 @@ export class TransactionOwnerDim extends BaseEntity {
     name: 'own_type',
   })
   ownType: string;
+
+  @OneToMany(
+    () => TransactionFact,
+    tf => tf.transactionOwnerDim,
+  )
+  transactionFact: TransactionFact[];
 }

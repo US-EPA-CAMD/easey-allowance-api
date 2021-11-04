@@ -11,6 +11,9 @@ import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.pa
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { Logger } from '@us-epa-camd/easey-common/logger';
+import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
+import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
+import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
 @Injectable()
 export class AllowanceTransactionsService {
@@ -21,6 +24,7 @@ export class AllowanceTransactionsService {
     @InjectRepository(TransactionOwnerDimRepository)
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
+    private readonly applicableAllowanceTransactionsAttributesMap: ApplicableAllowanceTransactionsAttributesMap,
     private Logger: Logger,
   ) {}
 
@@ -50,5 +54,20 @@ export class AllowanceTransactionsService {
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
     const query = await this.transactionOwnerDimRepository.getAllOwnerOperators();
     return this.ownerOperatorsMap.many(query);
+  }
+
+  async getAllApplicableAllowanceTransactionsAttributes(
+    applicableAllowanceTransactionsAttributesParamsDTO: ApplicableAllowanceTransactionsAttributesParamsDTO,
+  ): Promise<ApplicableAllowanceTransactionsAttributesDTO[]> {
+    let query;
+    try {
+      query = await this.transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
+        applicableAllowanceTransactionsAttributesParamsDTO,
+      );
+    } catch (e) {
+      this.Logger.error(InternalServerErrorException, e.message);
+    }
+
+    return this.applicableAllowanceTransactionsAttributesMap.many(query);
   }
 }

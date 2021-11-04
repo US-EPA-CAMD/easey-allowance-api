@@ -5,6 +5,7 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
 @EntityRepository(TransactionBlockDim)
 export class TransactionBlockDimRepository extends Repository<
@@ -82,6 +83,54 @@ export class TransactionBlockDimRepository extends Repository<
       const totalCount = await query.getCount();
       ResponseHeaders.setPagination(page, perPage, totalCount, req);
     }
+
+    return query.getMany();
+  }
+
+  async getAllApplicableAllowanceTransactionsAttributes(
+    applicableAllowanceTransactionsAttributesParamsDTO: ApplicableAllowanceTransactionsAttributesParamsDTO,
+  ): Promise<any> {
+    const query = this.createQueryBuilder('tbd')
+      .select([
+        'tbd.vintageYear',
+        'tf.programCodeInfo',
+        'tf.buyAccountNumber',
+        'tf.sellAccountNumber',
+        'tf.buyAccountType',
+        'tf.sellAccountType',
+        'tf.buyFacilityId',
+        'tf.sellFacilityId',
+        'tf.buyState',
+        'tf.sellState',
+        'tf.transactionType',
+        'tf.transactionDate',
+        'tod.ownerOperator',
+      ])
+      .innerJoin('tbd.transactionFact', 'tf')
+      .leftJoin('tf.transactionOwnerDim', 'tod')
+      .distinctOn([
+        'tbd.vintage_year',
+        'tf.prg_code',
+        'tf.buy_acct_number',
+        'tf.sell_acct_number',
+        'tf.buy_account_type',
+        'tf.sell_account_type',
+        'tf.buy_orispl_code',
+        'tf.sell_orispl_code',
+        'tf.buy_state',
+        'tf.sell_state',
+        'tf.transaction_type',
+        'tf.transaction_date',
+        'tod.own_display',
+      ])
+      .where('tf.transactionDate >= (:transactionBeginDate)', {
+        transactionBeginDate:
+          applicableAllowanceTransactionsAttributesParamsDTO.transactionBeginDate,
+      })
+      .andWhere('tf.transactionDate <= (:transactionEndDate)', {
+        transactionEndDate:
+          applicableAllowanceTransactionsAttributesParamsDTO.transactionEndDate,
+      });
 
     return query.getMany();
   }
