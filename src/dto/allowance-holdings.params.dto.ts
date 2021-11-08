@@ -9,7 +9,7 @@ import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
 
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-import { ActiveAllowanceProgram } from '../enum/active-allowance-program.enum';
+import { ActiveAllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { AllowanceParamsDTO } from './allowance.params.dto';
 
 export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
