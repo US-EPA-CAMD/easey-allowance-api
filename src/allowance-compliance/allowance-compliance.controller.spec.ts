@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { State } from '@us-epa-camd/easey-common/enums';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
@@ -11,7 +12,8 @@ import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
+import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
 
 const mockRequest = (url: string) => {
   return {
@@ -36,6 +38,7 @@ describe('-- Allowance Compliance Controller --', () => {
         AccountComplianceDimRepository,
         OwnerYearDimRepository,
         OwnerOperatorsMap,
+        ApplicableAllowanceComplianceAttributesMap,
       ],
     }).compile();
 
@@ -70,6 +73,21 @@ describe('-- Allowance Compliance Controller --', () => {
           paramsDTO,
           req,
         ),
+      ).toBe(expectedResults);
+    });
+  });
+
+  describe('*getAllAplicableAllowanceComplianceAttributes', () => {
+    it('should call the service and return applicable allowance transactions attributes', async () => {
+      const expectedResults: ApplicableAllowanceComplianceAttributesDTO[] = [];
+      jest
+        .spyOn(
+          allowanceComplianceService,
+          'getAllApplicableAllowanceComplianceAttributes',
+        )
+        .mockResolvedValue(expectedResults);
+      expect(
+        await allowanceComplianceController.getAllApplicableAllowanceComplianceAttributes(),
       ).toBe(expectedResults);
     });
   });

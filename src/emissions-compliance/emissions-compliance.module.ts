@@ -10,6 +10,7 @@ import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.r
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
+import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
     AllowanceComplianceMap,
     OwnerOperatorsMap,
     EmissionsComplianceMap,
+    ApplicableAllowanceComplianceAttributesMap,
   ],
 })
 export class EmissionsComplianceModule {}

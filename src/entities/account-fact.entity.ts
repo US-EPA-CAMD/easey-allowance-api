@@ -25,6 +25,11 @@ export class AccountFact extends BaseEntity {
   programCodeInfo: string;
 
   @Column({
+    name: 'unit_id',
+  })
+  id: string;
+
+  @Column({
     name: 'account_name',
   })
   accountName: string;

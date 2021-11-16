@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceService } from './allowance-compliance.service';
@@ -9,12 +10,11 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
-import { ConfigService } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
-import { Logger, LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 
 const mockAccountComplianceDimRepository = () => ({
   getAllowanceCompliance: jest.fn(),
+  getAllApplicableAllowanceComplianceAttributes: jest.fn(),
 });
 
 const mockAllowanceComplianceMap = () => ({
@@ -38,6 +38,7 @@ describe('-- Allowance Compliance Service --', () => {
   let accountComplianceDimRepository;
   let ownerYearDimRepository;
   let allowanceComplianceMap;
+  let applicableAllowanceComplianceAttributesMap;
   let req: any;
 
   beforeEach(async () => {
@@ -57,6 +58,10 @@ describe('-- Allowance Compliance Service --', () => {
           provide: OwnerYearDimRepository,
           useFactory: mockOwnerYearDimRepository,
         },
+        {
+          provide: ApplicableAllowanceComplianceAttributesMap,
+          useFactory: mockAllowanceComplianceMap,
+        },
         OwnerOperatorsMap,
       ],
     }).compile();
@@ -65,6 +70,9 @@ describe('-- Allowance Compliance Service --', () => {
     accountComplianceDimRepository = module.get(AccountComplianceDimRepository);
     ownerYearDimRepository = module.get(OwnerYearDimRepository);
     allowanceComplianceMap = module.get(AllowanceComplianceMap);
+    applicableAllowanceComplianceAttributesMap = module.get(
+      ApplicableAllowanceComplianceAttributesMap,
+    );
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
@@ -107,6 +115,24 @@ describe('-- Allowance Compliance Service --', () => {
       );
 
       expect(allowanceComplianceMap.many).toHaveBeenCalled();
+      expect(result).toEqual('mapped DTOs');
+    });
+  });
+
+  describe('getAllApplicableAllowanceComplianceAttributes', () => {
+    it('call AccountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes() and gets all applicable allowance compliance attributes', async () => {
+      accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes.mockResolvedValue(
+        'list of applicable allowance compliance attributes',
+      );
+
+      applicableAllowanceComplianceAttributesMap.many.mockReturnValue(
+        'mapped DTOs',
+      );
+
+      const result = await allowanceComplianceService.getAllApplicableAllowanceComplianceAttributes();
+      expect(
+        applicableAllowanceComplianceAttributesMap.many,
+      ).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
     });
   });

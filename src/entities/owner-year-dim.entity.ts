@@ -10,12 +10,12 @@ export class OwnerYearDim extends BaseEntity {
   @PrimaryColumn({
     name: 'unit_id',
   })
-  unitId: string;
+  id: string;
 
   @PrimaryColumn({
     name: 'op_year',
   })
-  opYear: number;
+  year: number;
 
   @PrimaryColumn({
     name: 'own_type',

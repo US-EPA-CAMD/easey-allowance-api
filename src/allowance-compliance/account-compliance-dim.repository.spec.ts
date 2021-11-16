@@ -10,13 +10,16 @@ import { AccountComplianceDim } from '../entities/account-compliance-dim.entity'
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getRawMany: jest.fn(),
   select: jest.fn(),
+  leftJoin: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
+  distinctOn: jest.fn(),
 });
 
 const mockRequest = (url: string) => {
@@ -62,11 +65,16 @@ describe('-- AccountComplianceDimRepository --', () => {
       .mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
+    queryBuilder.leftJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
+    queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAllowanceCompliance');
+    queryBuilder.getRawMany.mockReturnValue(
+      'mockApplicableAllowanceComplianceAttributes',
+    );
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
   });
@@ -119,5 +127,13 @@ describe('-- AccountComplianceDimRepository --', () => {
     expect(req.res.setHeader).toHaveBeenCalled();
     expect(queryBuilder.getMany).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAllowanceCompliance');
+  });
+
+  describe('getAllApplicableAllowanceComplianceAttributes', () => {
+    it('calls createQueryBuilder and gets all applicable allowance compliance attributes from the repository', async () => {
+      const result = await accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes();
+      expect(queryBuilder.getRawMany).toHaveBeenCalled();
+      expect(result).toEqual('mockApplicableAllowanceComplianceAttributes');
+    });
   });
 });
