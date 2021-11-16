@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { State } from '@us-epa-camd/easey-common/enums';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -13,7 +14,7 @@ import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
-import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 
 const mockRequest = (url: string) => {
   return {
@@ -42,6 +43,7 @@ describe('-- Emissions Compliance Controller --', () => {
         UnitComplianceDimRepository,
         OwnerYearDimRepository,
         OwnerOperatorsMap,
+        ApplicableAllowanceComplianceAttributesMap,
       ],
     }).compile();
 

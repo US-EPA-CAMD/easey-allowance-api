@@ -18,6 +18,7 @@ import {
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
 
 @Controller()
 @ApiTags('Allowance Compliance')
@@ -61,6 +62,20 @@ export class AllowanceComplianceController {
       allowanceComplianceParamsDTO,
       req,
     );
+  }
+
+  @Get('attributes/applicable')
+  @ApiExtraModels(ApplicableAllowanceComplianceAttributesDTO)
+  @ApiOkResponse({
+    description: 'Retrieved All Applicable Allowance Compliance Attributes',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(ApplicableAllowanceComplianceAttributesDTO)
+  getAllApplicableAllowanceComplianceAttributes(): Promise<
+    ApplicableAllowanceComplianceAttributesDTO[]
+  > {
+    return this.allowanceComplianceService.getAllApplicableAllowanceComplianceAttributes();
   }
 
   @Get('owner-operators')

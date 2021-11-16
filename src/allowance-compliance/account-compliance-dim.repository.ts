@@ -6,6 +6,8 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { OwnerYearDim } from '../entities/owner-year-dim.entity';
+import { AccountFact } from '../entities/account-fact.entity';
 
 @EntityRepository(AccountComplianceDim)
 export class AccountComplianceDimRepository extends Repository<
@@ -78,5 +80,30 @@ export class AccountComplianceDimRepository extends Repository<
     }
 
     return query.getMany();
+  }
+
+  async getAllApplicableAllowanceComplianceAttributes(): Promise<any> {
+    const query = this.createQueryBuilder('acd')
+      .select([
+        'acd.year',
+        'af.programCodeInfo',
+        'af.facilityId',
+        'af.state',
+        'oyd.ownerOperator',
+      ])
+      .innerJoin(
+        AccountFact,
+        'af',
+        ' af.accountNumber = acd.accountNumber AND af.programCodeInfo = acd.programCodeInfo',
+      )
+      .leftJoin(OwnerYearDim, 'oyd', 'oyd.year = acd.year AND oyd.id = af.id')
+      .distinctOn([
+        'acd.op_year',
+        'af.prg_code',
+        'af.orispl_code',
+        'af.state',
+        'oyd.own_display',
+      ]);
+    return query.getRawMany();
   }
 }
