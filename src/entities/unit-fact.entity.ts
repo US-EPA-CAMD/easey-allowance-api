@@ -1,5 +1,15 @@
-import { BaseEntity, Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
+
 import { UnitComplianceDim } from './unit-compliance-dim.entity';
+import { OwnerYearDim } from './owner-year-dim.entity';
 
 @Entity({ name: 'camddmw.unit_fact' })
 export class UnitFact extends BaseEntity {
@@ -41,4 +51,20 @@ export class UnitFact extends BaseEntity {
     ucd => ucd.unitFact,
   )
   unitComplianceDim: UnitComplianceDim;
+
+  @ManyToOne(
+    () => OwnerYearDim,
+    oyd => oyd.unitFact,
+  )
+  @JoinColumn([
+    {
+      name: 'unit_id',
+      referencedColumnName: 'id',
+    },
+    {
+      name: 'op_year',
+      referencedColumnName: 'year',
+    },
+  ])
+  ownerYearDim: OwnerYearDim;
 }

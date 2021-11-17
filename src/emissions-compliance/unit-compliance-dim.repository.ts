@@ -62,4 +62,21 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
 
     return query.getMany();
   }
+
+  async getAllApplicableEmissionsComplianceAttributes(): Promise<
+    UnitComplianceDim[]
+  > {
+    const query = this.createQueryBuilder('ucd')
+      .select(['ucd.year', 'uf.facilityId', 'uf.state', 'oyd.ownerOperator'])
+      .innerJoin('ucd.unitFact', 'uf')
+      .leftJoin('uf.ownerYearDim', 'oyd')
+      .distinctOn([
+        'ucd.op_year',
+        'uf.orispl_code',
+        'uf.state',
+        'oyd.own_display',
+      ]);
+
+    return query.getMany();
+  }
 }
