@@ -15,6 +15,8 @@ import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
+import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-emissions-compliance-map';
+import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 
 const mockRequest = (url: string) => {
   return {
@@ -44,6 +46,7 @@ describe('-- Emissions Compliance Controller --', () => {
         OwnerYearDimRepository,
         OwnerOperatorsMap,
         ApplicableAllowanceComplianceAttributesMap,
+        ApplicableEmissionsComplianceAttributesMap,
       ],
     }).compile();
 
@@ -78,6 +81,21 @@ describe('-- Emissions Compliance Controller --', () => {
           paramsDTO,
           req,
         ),
+      ).toBe(expectedResults);
+    });
+  });
+
+  describe('*getAllApplicableEmissionsComplianceAttributes', () => {
+    it('should call the service and return applicable emissions compliance attributes', async () => {
+      const expectedResults: ApplicableComplianceAttributesDTO[] = [];
+      jest
+        .spyOn(
+          emissionsComplianceService,
+          'getAllApplicableEmissionsComplianceAttributes',
+        )
+        .mockResolvedValue(expectedResults);
+      expect(
+        await emissionsComplianceController.getAllApplicableEmissionsComplianceAttributes(),
       ).toBe(expectedResults);
     });
   });

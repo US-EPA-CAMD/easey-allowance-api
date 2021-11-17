@@ -11,11 +11,13 @@ const mockQueryBuilder = () => ({
   getMany: jest.fn(),
   select: jest.fn(),
   leftJoin: jest.fn(),
+  innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
+  distinctOn: jest.fn(),
 });
 
 const mockRequest = (url: string) => {
@@ -60,10 +62,12 @@ describe('-- UnitComplianceDimRepository --', () => {
       .mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
     queryBuilder.leftJoin.mockReturnValue(queryBuilder);
+    queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
+    queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockEmissionsCompliance');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
@@ -117,5 +121,13 @@ describe('-- UnitComplianceDimRepository --', () => {
     expect(req.res.setHeader).toHaveBeenCalled();
     expect(queryBuilder.getMany).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockEmissionsCompliance');
+  });
+
+  describe('getAllApplicableEmissionsComplianceAttributes', () => {
+    it('calls createQueryBuilder and gets all applicable emissions compliance attributes from the repository', async () => {
+      const result = await unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes();
+      expect(queryBuilder.getMany).toHaveBeenCalled();
+      expect(result).toEqual('mockEmissionsCompliance');
+    });
   });
 });

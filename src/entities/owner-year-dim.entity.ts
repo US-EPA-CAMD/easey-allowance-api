@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+
+import { UnitFact } from './unit-fact.entity';
 
 @Entity({ name: 'camddmw.owner_year_dim' })
 export class OwnerYearDim extends BaseEntity {
@@ -31,4 +33,10 @@ export class OwnerYearDim extends BaseEntity {
     name: 'own_display',
   })
   ownerOperator: string;
+
+  @OneToMany(
+    () => UnitFact,
+    uf => uf.ownerYearDim,
+  )
+  unitFact: UnitFact[];
 }

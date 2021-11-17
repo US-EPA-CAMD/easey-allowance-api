@@ -7,6 +7,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
+
 import {
   ApiQueryComplianceMultiSelect,
   BadRequestResponse,
@@ -17,6 +18,7 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceService } from './emissions-compliance.service';
+import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 
 @Controller()
 @ApiTags('Emissions Compliance')
@@ -55,6 +57,20 @@ export class EmissionsComplianceController {
       emissionsComplianceParamsDTO,
       req,
     );
+  }
+
+  @Get('attributes/applicable')
+  @ApiExtraModels(ApplicableComplianceAttributesDTO)
+  @ApiOkResponse({
+    description: 'Retrieved All Applicable Emissions Compliance Attributes',
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiExtraModels(ApplicableComplianceAttributesDTO)
+  getAllApplicableEmissionsComplianceAttributes(): Promise<
+    ApplicableComplianceAttributesDTO[]
+  > {
+    return this.emissionsComplianceService.getAllApplicableEmissionsComplianceAttributes();
   }
 
   @Get('owner-operators')
