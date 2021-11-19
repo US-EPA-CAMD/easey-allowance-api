@@ -58,10 +58,10 @@ describe('-- Allowance Transactions Params DTO --', () => {
       @IsTransactionType()
       transactionType: string;
 
-      @BeginDate()
+      @BeginDate(new Date())
       transactionBeginDate: string;
 
-      @EndDate()
+      @EndDate(new Date())
       transactionEndDate: string;
     }
 

@@ -43,13 +43,13 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({
     description: propertyMetadata.transactionBeginDate.description,
   })
-  @BeginDate()
+  @BeginDate(new Date())
   transactionBeginDate: Date;
 
   @ApiProperty({
     description: propertyMetadata.transactionEndDate.description,
   })
-  @EndDate()
+  @EndDate(new Date())
   transactionEndDate: Date;
 
   @ApiProperty({

@@ -9,9 +9,9 @@ import {
 
 import { IsInDateRange } from '../pipes/is-in-date-range.pipe';
 
-export function BeginDate() {
+export function BeginDate(currentDate) {
   return applyDecorators(
-    IsInDateRange([new Date('1993-03-23'), new Date()], {
+    IsInDateRange([new Date('1993-03-23'), currentDate], {
       message: ErrorMessages.DateRange(
         'transactionBeginDate',
         false,
@@ -33,12 +33,12 @@ export function BeginDate() {
   );
 }
 
-export function EndDate() {
+export function EndDate(currentDate) {
   return applyDecorators(
     IsDateGreaterThanEqualTo('transactionBeginDate', {
       message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
-    IsInDateRange([new Date('1993-03-23'), new Date()], {
+    IsInDateRange([new Date('1993-03-23'), currentDate], {
       message: ErrorMessages.DateRange(
         'transactionEndDate',
         false,
