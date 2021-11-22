@@ -36,20 +36,19 @@ const mockRequest = (url: string) => {
   };
 };
 
-let filters: AllowanceTransactionsParamsDTO = {
-  accountType: [AccountType.GENERAL],
-  vintageYear: [2019, 2020],
-  page: undefined,
-  perPage: undefined,
-  accountNumber: ['000127FACLTY'],
-  facilityId: [0],
-  ownerOperator: [''],
-  state: [State.AK],
-  programCodeInfo: [AllowanceProgram.ARP],
-  transactionBeginDate: new Date(),
-  transactionEndDate: new Date(),
-  transactionType: [TransactionType.ACTIVATE_CONDITIONAL_ALLOWANCES],
-};
+let filters: AllowanceTransactionsParamsDTO = new AllowanceTransactionsParamsDTO();
+filters.accountType = [AccountType.GENERAL];
+filters.vintageYear = [2019, 2020];
+filters.page = undefined;
+filters.perPage = undefined;
+filters.accountNumber = ['000127FACLTY'];
+filters.facilityId = [0];
+filters.ownerOperator = [''];
+filters.state = [State.AK];
+filters.programCodeInfo = [AllowanceProgram.ARP];
+filters.transactionBeginDate = new Date();
+filters.transactionEndDate = new Date();
+filters.transactionType = [TransactionType.ACTIVATE_CONDITIONAL_ALLOWANCES];
 
 describe('-- TransactionBlockDimRepository --', () => {
   let transactionBlockDimRepository;
@@ -139,10 +138,10 @@ describe('-- TransactionBlockDimRepository --', () => {
 
   describe('getAllApplicableAllowanceTransactionsAttributes', () => {
     it('calls createQueryBuilder and gets all applicable allowance transactions attributes from the repository', async () => {
-      let filters: ApplicableAllowanceTransactionsAttributesParamsDTO = {
-        transactionBeginDate: new Date(),
-        transactionEndDate: new Date(),
-      };
+      let filters: ApplicableAllowanceTransactionsAttributesParamsDTO = new ApplicableAllowanceTransactionsAttributesParamsDTO();
+      filters.transactionBeginDate = new Date();
+      filters.transactionEndDate = new Date();
+
       let result = await transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
         filters,
       );

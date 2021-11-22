@@ -12,6 +12,7 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
+import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
 const mockRequest = (url: string) => {
   return {
@@ -84,7 +85,7 @@ describe('-- Allowance Transactions Controller --', () => {
   describe('* getAllApplicableAllowanceTransactionsAttributes', () => {
     it('should call the service and return applicable allowance transactions attributes', async () => {
       const expectedResults: ApplicableAllowanceTransactionsAttributesDTO[] = [];
-      const paramsDTO = new AllowanceTransactionsParamsDTO();
+      const paramsDTO = new ApplicableAllowanceTransactionsAttributesParamsDTO();
       jest
         .spyOn(
           allowanceTransactionsService,

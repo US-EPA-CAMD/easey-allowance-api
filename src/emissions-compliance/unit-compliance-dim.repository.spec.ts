@@ -29,14 +29,13 @@ const mockRequest = (url: string) => {
   };
 };
 
-let filters: EmissionsComplianceParamsDTO = {
-  year: [2019, 2020],
-  page: undefined,
-  perPage: undefined,
-  facilityId: [0],
-  ownerOperator: [''],
-  state: [State.AK],
-};
+let filters: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      filters.year = [2019];
+      filters.page = undefined;
+      filters.perPage = undefined;
+      filters.facilityId = [0];
+      filters.state = [State.AK];
+      filters.ownerOperator = [''];
 
 describe('-- UnitComplianceDimRepository --', () => {
   let unitComplianceDimRepository;

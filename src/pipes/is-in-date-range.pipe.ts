@@ -9,7 +9,7 @@ import {
  * The date range is the min date -> max date inclusive
  */
 export function IsInDateRange(
-  property: Date[],
+  property: [Date, string],
   validationOptions?: ValidationOptions,
 ) {
   return function(object: Object, propertyName: string) {
@@ -22,7 +22,7 @@ export function IsInDateRange(
       validator: {
         validate(value: any, args: ValidationArguments) {
           const minDate = args.constraints[0][0];
-          const maxDate = args.constraints[0][1];
+          const maxDate = (args.object as Date)[args.constraints[0][1]];
           const dateObject = new Date(value);
 
           return dateObject >= minDate && dateObject <= maxDate;

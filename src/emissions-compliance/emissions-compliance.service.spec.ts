@@ -69,28 +69,26 @@ describe('-- Emissions Compliance Service --', () => {
       );
       emissionsComplianceMap.many.mockReturnValue('mapped DTOs');
 
-      let filters: EmissionsComplianceParamsDTO = {
-        year: [2019, 2020],
-        page: undefined,
-        perPage: undefined,
-        facilityId: [0],
-        ownerOperator: [''],
-        state: [State.AK],
-      };
+      let filters: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      filters.year = [2019];
+      filters.page = undefined;
+      filters.perPage = undefined;
+      filters.facilityId = [0];
+      filters.state = [State.AK];
+      filters.ownerOperator = [''];
 
       let result = await emissionsComplianceService.getEmissionsCompliance(
         filters,
         req,
       );
 
-      let filtersOtc: EmissionsComplianceParamsDTO = {
-        year: [2019, 2020],
-        page: undefined,
-        perPage: undefined,
-        facilityId: [0],
-        ownerOperator: [''],
-        state: [State.AK],
-      };
+      let filtersOtc: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      filtersOtc.year = [2019];
+      filtersOtc.page = undefined;
+      filtersOtc.perPage = undefined;
+      filtersOtc.facilityId = [0];
+      filtersOtc.state = [State.AK];
+      filtersOtc.ownerOperator = [''];
 
       result = await emissionsComplianceService.getEmissionsCompliance(
         filtersOtc,
