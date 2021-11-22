@@ -20,7 +20,7 @@ import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @ApiHideProperty()
   currentDate: Date = this.getCurrentDate;
-  
+
   @ApiProperty({
     enum: AllowanceProgram,
     description: propertyMetadata.programCodeInfo.description,

@@ -14,7 +14,7 @@ import { ComplianceParamsDTO } from './compliance.params.dto';
 export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
   @ApiHideProperty()
   currentDate: Date = this.getCurrentDate;
-  
+
   @ApiProperty({
     isArray: true,
     description: propertyMetadata.year.description,

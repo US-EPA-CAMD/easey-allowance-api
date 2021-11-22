@@ -13,7 +13,7 @@ import { ComplianceParamsDTO } from './compliance.params.dto';
 export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
   @ApiHideProperty()
   currentDate: Date = this.getCurrentDate;
-  
+
   @ApiProperty({
     enum: AllowanceProgram,
     description: propertyMetadata.programCodeInfo.description,

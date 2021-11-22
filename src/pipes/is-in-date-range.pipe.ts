@@ -24,7 +24,7 @@ export function IsInDateRange(
           const minDate = args.constraints[0][0];
           const maxDate = (args.object as Date)[args.constraints[0][1]];
           const dateObject = new Date(value);
-        
+
           return dateObject >= minDate && dateObject <= maxDate;
         },
       },
