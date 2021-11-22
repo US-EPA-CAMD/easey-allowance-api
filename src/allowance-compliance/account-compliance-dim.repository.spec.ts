@@ -31,15 +31,14 @@ const mockRequest = (url: string) => {
   };
 };
 
-let filters: AllowanceComplianceParamsDTO = {
-  year: [2019, 2020],
-  page: undefined,
-  perPage: undefined,
-  facilityId: [0],
-  ownerOperator: [''],
-  state: [State.AK],
-  programCodeInfo: [AllowanceProgram.ARP],
-};
+let filters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+filters.year = [2019];
+filters.page = undefined;
+filters.perPage = undefined;
+filters.facilityId = [0];
+filters.ownerOperator = [''];
+filters.state = [State.AK];
+filters.programCodeInfo = [AllowanceProgram.OTC];
 
 describe('-- AccountComplianceDimRepository --', () => {
   let accountComplianceDimRepository;

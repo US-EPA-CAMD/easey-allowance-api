@@ -65,14 +65,14 @@ describe('-- Emissions Compliance Controller --', () => {
 
     it('should call the service and return emissions compliance data ', async () => {
       const expectedResults: EmissionsComplianceDTO[] = [];
-      const paramsDTO: EmissionsComplianceParamsDTO = {
-        year: [2019],
-        page: undefined,
-        perPage: undefined,
-        facilityId: [0],
-        ownerOperator: [''],
-        state: [State.AK],
-      };
+      const paramsDTO: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      paramsDTO.year = [2019];
+      paramsDTO.page = undefined;
+      paramsDTO.perPage = undefined;
+      paramsDTO.facilityId = [0];
+      paramsDTO.state = [State.AK];
+      paramsDTO.ownerOperator = [''];
+
       jest
         .spyOn(emissionsComplianceService, 'getEmissionsCompliance')
         .mockResolvedValue(expectedResults);

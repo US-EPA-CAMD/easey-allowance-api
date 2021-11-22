@@ -56,15 +56,15 @@ describe('-- Allowance Compliance Controller --', () => {
 
     it('should call the service and return allowance compliance data ', async () => {
       const expectedResults: AllowanceComplianceDTO[] = [];
-      const paramsDTO: AllowanceComplianceParamsDTO = {
-        year: [2019],
-        page: undefined,
-        perPage: undefined,
-        facilityId: [0],
-        ownerOperator: [''],
-        state: [State.AK],
-        programCodeInfo: [AllowanceProgram.OTC],
-      };
+      const paramsDTO: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+      paramsDTO.year = [2019];
+      paramsDTO.page = undefined;
+      paramsDTO.perPage = undefined;
+      paramsDTO.facilityId = [0];
+      paramsDTO.ownerOperator = [''];
+      paramsDTO.state = [State.AK];
+      paramsDTO.programCodeInfo = [AllowanceProgram.OTC];
+
       jest
         .spyOn(allowanceComplianceService, 'getAllowanceCompliance')
         .mockResolvedValue(expectedResults);

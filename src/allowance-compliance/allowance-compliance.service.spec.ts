@@ -84,30 +84,28 @@ describe('-- Allowance Compliance Service --', () => {
       );
       allowanceComplianceMap.many.mockReturnValue('mapped DTOs');
 
-      let filters: AllowanceComplianceParamsDTO = {
-        year: [2019, 2020],
-        page: undefined,
-        perPage: undefined,
-        facilityId: [0],
-        ownerOperator: [''],
-        state: [State.AK],
-        programCodeInfo: [AllowanceProgram.ARP],
-      };
+      let filters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+      filters.year = [2019];
+      filters.page = undefined;
+      filters.perPage = undefined;
+      filters.facilityId = [0];
+      filters.ownerOperator = [''];
+      filters.state = [State.AK];
+      filters.programCodeInfo = [AllowanceProgram.OTC];
 
       let result = await allowanceComplianceService.getAllowanceCompliance(
         filters,
         req,
       );
 
-      let filtersOtc: AllowanceComplianceParamsDTO = {
-        year: [2019, 2020],
-        page: undefined,
-        perPage: undefined,
-        facilityId: [0],
-        ownerOperator: [''],
-        state: [State.AK],
-        programCodeInfo: [AllowanceProgram.OTC],
-      };
+      let filtersOtc: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+      filtersOtc.year = [2019];
+      filtersOtc.page = undefined;
+      filtersOtc.perPage = undefined;
+      filtersOtc.facilityId = [0];
+      filtersOtc.ownerOperator = [''];
+      filtersOtc.state = [State.AK];
+      filtersOtc.programCodeInfo = [AllowanceProgram.OTC];
 
       result = await allowanceComplianceService.getAllowanceCompliance(
         filtersOtc,
