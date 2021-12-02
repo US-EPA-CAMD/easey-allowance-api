@@ -107,7 +107,7 @@ describe('-- Emissions Compliance Service --', () => {
       );
 
       applicableEmissionsComplianceAttributesMap.many.mockReturnValue(
-        'mappedDTOs',
+        'mapped DTOs',
       );
 
       const result = await emissionsComplianceService.getAllApplicableEmissionsComplianceAttributes();

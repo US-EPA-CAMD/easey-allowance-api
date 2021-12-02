@@ -22,10 +22,10 @@ export class ApplicableAllowanceTransactionsAttributesMap extends BaseMap<
         entity.transactionFact.buyAccountNumber,
       [propertyMetadata.sellAccountNumber.fieldLabels.value]:
         entity.transactionFact.sellAccountNumber,
-      [propertyMetadata.buyAccountType.fieldLabels.value]:
-        entity.transactionFact.buyAccountType,
-      [propertyMetadata.sellAccountType.fieldLabels.value]:
-        entity.transactionFact.sellAccountType,
+      [propertyMetadata.buyAccountTypeCode.fieldLabels.value]:
+        entity.transactionFact.buyAccountTypeCode,
+      [propertyMetadata.sellAccountTypeCode.fieldLabels.value]:
+        entity.transactionFact.sellAccountTypeCode,
       [propertyMetadata.buyFacilityId.fieldLabels.value]: entity.transactionFact
         .buyFacilityId
         ? Number(entity.transactionFact.buyFacilityId)
@@ -38,8 +38,8 @@ export class ApplicableAllowanceTransactionsAttributesMap extends BaseMap<
         entity.transactionFact.buyState,
       [propertyMetadata.sellState.fieldLabels.value]:
         entity.transactionFact.sellState,
-      [propertyMetadata.transactionType.fieldLabels.value]:
-        entity.transactionFact.transactionType,
+      [propertyMetadata.transactionTypeCode.fieldLabels.value]:
+        entity.transactionFact.transactionTypeCode,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity.transactionFact.transactionOwnerDim?.ownerOperator || null,
     };

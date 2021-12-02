@@ -33,6 +33,11 @@ export class TransactionFact extends BaseEntity {
   transactionType: string;
 
   @Column({
+    name: 'transaction_type_code',
+  })
+  transactionTypeCode: string;
+
+  @Column({
     name: 'sell_acct_number',
   })
   sellAccountNumber: string;
@@ -46,6 +51,11 @@ export class TransactionFact extends BaseEntity {
     name: 'sell_account_type',
   })
   sellAccountType: string;
+
+  @Column({
+    name: 'sell_account_type_code',
+  })
+  sellAccountTypeCode: string;
 
   @Column({
     name: 'sell_facility_name',
@@ -91,6 +101,11 @@ export class TransactionFact extends BaseEntity {
     name: 'buy_account_type',
   })
   buyAccountType: string;
+
+  @Column({
+    name: 'buy_account_type_code',
+  })
+  buyAccountTypeCode: string;
 
   @Column({
     name: 'buy_facility_name',

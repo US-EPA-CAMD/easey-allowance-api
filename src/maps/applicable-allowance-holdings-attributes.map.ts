@@ -12,12 +12,11 @@ export class ApplicableAllowanceHoldingsAttributesMap extends BaseMap<
   public async one(entity: any): Promise<any> {
     return {
       [propertyMetadata.vintageYear.fieldLabels.value]: entity.vintageYear,
-      [propertyMetadata.programCode.fieldLabels.value]:
-        entity.programCodeInfo,
+      [propertyMetadata.programCode.fieldLabels.value]: entity.programCodeInfo,
       [propertyMetadata.accountNumber.fieldLabels.value]:
         entity.accountFact.accountNumber,
-      [propertyMetadata.accountType.fieldLabels.value]:
-        entity.accountFact.accountType,
+      [propertyMetadata.accountTypeCode.fieldLabels.value]:
+        entity.accountFact.accountTypeCode,
       [propertyMetadata.facilityId.fieldLabels.value]: entity.accountFact
         .facilityId
         ? Number(entity.accountFact.facilityId)

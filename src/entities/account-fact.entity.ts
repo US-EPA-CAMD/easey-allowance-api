@@ -72,6 +72,11 @@ export class AccountFact extends BaseEntity {
   })
   accountType: string;
 
+  @Column({
+    name: 'account_type_code',
+  })
+  accountTypeCode: string;
+
   @OneToMany(
     () => AllowanceHoldingDim,
     ahd => ahd.accountFact,

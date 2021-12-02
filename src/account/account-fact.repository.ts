@@ -65,7 +65,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       .select([
         'af.accountNumber',
         'af.programCodeInfo',
-        'af.accountType',
+        'af.accountTypeCode',
         'af.facilityId',
         'af.state',
         'aod.ownerOperator',
@@ -74,7 +74,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       .distinctOn([
         'af.account_number',
         'af.prg_code',
-        'af.account_type',
+        'af.account_type_code',
         'af.orispl_code',
         'af.state',
         'aod.own_display',
