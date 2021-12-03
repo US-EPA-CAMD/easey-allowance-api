@@ -38,18 +38,18 @@ export class ApplicableAllowanceTransactionsAttributesDTO {
   sellAccountNumber: string;
 
   @ApiProperty({
-    description: propertyMetadata.buyAccountType.description,
-    example: propertyMetadata.buyAccountType.example,
-    name: propertyMetadata.buyAccountType.fieldLabels.value,
+    description: propertyMetadata.buyAccountTypeCode.description,
+    example: propertyMetadata.buyAccountTypeCode.example,
+    name: propertyMetadata.buyAccountTypeCode.fieldLabels.value,
   })
-  buyAccountType: string;
+  buyAccountTypeCode: string;
 
   @ApiProperty({
-    description: propertyMetadata.sellAccountType.description,
-    example: propertyMetadata.sellAccountType.example,
-    name: propertyMetadata.sellAccountType.fieldLabels.value,
+    description: propertyMetadata.sellAccountTypeCode.description,
+    example: propertyMetadata.sellAccountTypeCode.example,
+    name: propertyMetadata.sellAccountTypeCode.fieldLabels.value,
   })
-  sellAccountType: string;
+  sellAccountTypeCode: string;
 
   @ApiProperty({
     description: propertyMetadata.buyFacilityId.description,
@@ -80,11 +80,11 @@ export class ApplicableAllowanceTransactionsAttributesDTO {
   sellState: string;
 
   @ApiProperty({
-    description: propertyMetadata.transactionType.description,
-    example: propertyMetadata.transactionType.example,
-    name: propertyMetadata.transactionType.fieldLabels.value,
+    description: propertyMetadata.transactionTypeCode.description,
+    example: propertyMetadata.transactionTypeCode.example,
+    name: propertyMetadata.transactionTypeCode.fieldLabels.value,
   })
-  transactionType: string;
+  transactionTypeCode: string;
 
   @ApiProperty({
     description: propertyMetadata.ownerOperator.description,

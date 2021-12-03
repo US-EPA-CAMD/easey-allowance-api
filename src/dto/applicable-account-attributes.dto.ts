@@ -31,11 +31,11 @@ export class ApplicableAccountAttributesDTO {
   accountNumber: string;
 
   @ApiProperty({
-    description: propertyMetadata.accountType.description,
-    example: propertyMetadata.accountType.example,
-    name: propertyMetadata.accountType.fieldLabels.value,
+    description: propertyMetadata.accountTypeCode.description,
+    example: propertyMetadata.accountTypeCode.example,
+    name: propertyMetadata.accountTypeCode.fieldLabels.value,
   })
-  accountType: string;
+  accountTypeCode: string;
 
   @ApiProperty({
     description: propertyMetadata.ownerOperator.description,

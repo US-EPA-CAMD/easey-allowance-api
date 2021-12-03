@@ -17,7 +17,8 @@ export class ApplicableAccountAttributesMap extends BaseMap<
         : entity.facilityId,
       [propertyMetadata.state.fieldLabels.value]: entity.state,
       [propertyMetadata.accountNumber.fieldLabels.value]: entity.accountNumber,
-      [propertyMetadata.accountType.fieldLabels.value]: entity.accountType,
+      [propertyMetadata.accountTypeCode.fieldLabels.value]:
+        entity.accountTypeCode,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity.accountOwnerDim?.ownerOperator || null,
     };
