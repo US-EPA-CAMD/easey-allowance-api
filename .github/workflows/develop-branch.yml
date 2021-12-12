@@ -10,7 +10,7 @@ jobs:
   Build-Test-Deploy:
     runs-on: ubuntu-latest
     environment:
-      name: Deev
+      name: Dev
       url: https://api.epa.gov/easey/dev/account-mgmt/swagger
     steps:
       - name: Checkout repo
