@@ -5,6 +5,7 @@ import {
   ApiOkResponse,
   ApiExtraModels,
   getSchemaPath,
+  ApiSecurity
 } from '@nestjs/swagger';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
@@ -21,6 +22,7 @@ import { EmissionsComplianceService } from './emissions-compliance.service';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 
 @Controller()
+@ApiSecurity('APIKey')
 @ApiTags('Emissions Compliance')
 @UseInterceptors(Json2CsvInterceptor)
 export class EmissionsComplianceController {

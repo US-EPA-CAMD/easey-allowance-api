@@ -3,6 +3,7 @@ import {
   ApiOkResponse,
   ApiExtraModels,
   getSchemaPath,
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
 import { Request } from 'express';
@@ -20,9 +21,10 @@ import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 
+@Controller()
+@ApiSecurity('APIKey')
 @ApiTags('Accounts')
 @UseInterceptors(Json2CsvInterceptor)
-@Controller()
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 

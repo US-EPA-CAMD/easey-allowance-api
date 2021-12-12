@@ -6,6 +6,7 @@ import {
   getSchemaPath,
   ApiExtraModels,
   ApiQuery,
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
@@ -21,6 +22,7 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
 
 @Controller()
+@ApiSecurity('APIKey')
 @ApiTags('Allowance Compliance')
 @UseInterceptors(Json2CsvInterceptor)
 export class AllowanceComplianceController {

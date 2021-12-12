@@ -6,6 +6,7 @@ import {
   getSchemaPath,
   ApiExtraModels,
   ApiQuery,
+  ApiSecurity
 } from '@nestjs/swagger';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
@@ -22,6 +23,7 @@ import {
 } from '../utils/swagger-decorator.const';
 
 @Controller()
+@ApiSecurity('APIKey')
 @ApiTags('Allowance Transactions')
 @UseInterceptors(Json2CsvInterceptor)
 export class AllowanceTransactionsController {
