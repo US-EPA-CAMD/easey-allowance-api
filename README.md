@@ -12,10 +12,6 @@ Follow these [instructions](https://github.com/US-EPA-CAMD/devops/blob/master/GE
 
 Please refer to the [Account Management API Swagger Documentation](https://easey-dev.app.cloud.gov/api/account-mgmt/swagger/) for descriptions of the endpoints.
 
-## Built With
-​
-[NestJS](https://nestjs.com/) - server-side Node.js framework
-
 
 ## License & Contributing
 
