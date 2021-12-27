@@ -73,7 +73,7 @@ export class AllowanceComplianceMap extends BaseMap<
         : entity.excessEmissions,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity.accountFact.ownerOperator,
-      [propertyMetadata.state.fieldLabels.value]: entity.accountFact.state,
+      [propertyMetadata.stateCode.fieldLabels.value]: entity.accountFact.stateCode,
     };
   }
 }

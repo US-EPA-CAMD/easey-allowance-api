@@ -34,7 +34,7 @@ let filters: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
       filters.page = undefined;
       filters.perPage = undefined;
       filters.facilityId = [0];
-      filters.state = [State.AK];
+      filters.stateCode = [State.AK];
       filters.ownerOperator = [''];
 
 describe('-- UnitComplianceDimRepository --', () => {

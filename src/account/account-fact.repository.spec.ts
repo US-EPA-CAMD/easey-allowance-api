@@ -41,7 +41,7 @@ let filters: AccountAttributesParamsDTO = {
   accountNumber: ['000127FACLTY'],
   facilityId: [0],
   ownerOperator: [''],
-  state: [State.AK],
+  stateCode: [State.AK],
   programCodeInfo: [AllowanceProgram.ARP],
 };
 

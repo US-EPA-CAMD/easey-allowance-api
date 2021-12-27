@@ -38,8 +38,10 @@ export class UnitFact extends BaseEntity {
   })
   facilityId: number;
 
-  @Column()
-  state: string;
+  @Column({
+    name: 'state'
+  })
+  stateCode: string;
 
   @Column({
     name: 'prg_code_info',

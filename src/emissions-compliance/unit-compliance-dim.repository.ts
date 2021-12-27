@@ -23,7 +23,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
         'ucd.actualEmissionsRate',
         'ucd.avgPlanActual',
         'ucd.inCompliance',
-        'uf.state',
+        'uf.stateCode',
         'uf.facilityName',
         'uf.facilityId',
         'uf.unitId',
@@ -37,7 +37,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     query = QueryBuilderHelper.createAccountQuery(
       query,
       emissionsComplianceParamsDTO,
-      ['facilityId', 'state'],
+      ['facilityId', 'stateCode'],
       'ucd',
       'uf',
       true,
@@ -67,13 +67,13 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     UnitComplianceDim[]
   > {
     const query = this.createQueryBuilder('ucd')
-      .select(['ucd.year', 'uf.facilityId', 'uf.state', 'oyd.ownerOperator'])
+      .select(['ucd.year', 'uf.facilityId', 'uf.stateCode', 'oyd.ownerOperator'])
       .innerJoin('ucd.unitFact', 'uf')
       .leftJoin('uf.ownerYearDim', 'oyd')
       .distinctOn([
         'ucd.op_year',
         'uf.orispl_code',
-        'uf.state',
+        'uf.stateCode',
         'oyd.own_display',
       ]);
 

@@ -31,8 +31,8 @@ export class EmissionsComplianceMap extends BaseMap<
         entity.unitFact?.unitId || null,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         ownerOperator.length > 0 ? `${ownerOperator})` : null,
-      [propertyMetadata.state.fieldLabels.value]:
-        entity.unitFact?.state || null,
+      [propertyMetadata.stateCode.fieldLabels.value]:
+        entity.unitFact?.stateCode || null,
       [propertyMetadata.complianceApproach.fieldLabels.value]:
         entity.complianceApproach,
       [propertyMetadata.avgPlanId.fieldLabels.value]: entity.avgPlanId

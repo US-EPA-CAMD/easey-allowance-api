@@ -74,7 +74,7 @@ describe('-- Emissions Compliance Service --', () => {
       filters.page = undefined;
       filters.perPage = undefined;
       filters.facilityId = [0];
-      filters.state = [State.AK];
+      filters.stateCode = [State.AK];
       filters.ownerOperator = [''];
 
       let result = await emissionsComplianceService.getEmissionsCompliance(
@@ -87,7 +87,7 @@ describe('-- Emissions Compliance Service --', () => {
       filtersOtc.page = undefined;
       filtersOtc.perPage = undefined;
       filtersOtc.facilityId = [0];
-      filtersOtc.state = [State.AK];
+      filtersOtc.stateCode = [State.AK];
       filtersOtc.ownerOperator = [''];
 
       result = await emissionsComplianceService.getEmissionsCompliance(

@@ -17,14 +17,14 @@ describe('-- Allowance Holdings Params DTO --', () => {
         accountType: string,
         accountNumber: string,
         facilityId: string,
-        state: string,
+        stateCode: string,
         vintageYear: string,
         programCodeInfo: string,
       ) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.facilityId = facilityId;
-        this.state = state;
+        this.stateCode = stateCode;
         this.vintageYear = vintageYear;
         this.programCodeInfo = programCodeInfo;
       }
@@ -38,7 +38,7 @@ describe('-- Allowance Holdings Params DTO --', () => {
       facilityId: string;
 
       @IsStateCode()
-      state: string;
+      stateCode: string;
 
       @IsYearFormat()
       @IsYearGreater(1995)
@@ -108,7 +108,7 @@ describe('-- Allowance Holdings Params DTO --', () => {
           'general',
           '00001',
           'oris',
-          'state',
+          'stateCode',
           '1945',
           'programCodeInfo',
         ),
