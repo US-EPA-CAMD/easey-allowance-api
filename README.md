@@ -8,9 +8,6 @@ Account data API for the EPA CAMD Business Systems EASEY Application
 
 Follow these [instructions](https://github.com/US-EPA-CAMD/devops/blob/master/GETTING_STARTED.md) to get the project up and running correctly.
 
-Open [http://localhost:8080/api/account-mgmt/swagger/](http://localhost:8080/api/account-mgmt/swagger/) to view swagger documentation.
-> NOTE: The port can be changed by setting the EASEY_ACCOUNT_API_PORT environment variable
-
 ## API Endpoints
 
 Please refer to the [Account Management API Swagger Documentation](https://easey-dev.app.cloud.gov/api/account-mgmt/swagger/) for descriptions of the endpoints.
