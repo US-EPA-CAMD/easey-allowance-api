@@ -25,14 +25,14 @@ export class AllowanceTransactionsService {
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly applicableAllowanceTransactionsAttributesMap: ApplicableAllowanceTransactionsAttributesMap,
-    private Logger: Logger,
+    private logger: Logger,
   ) {}
 
   async getAllowanceTransactions(
     allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
-    this.Logger.info('Getting allowance transactions');
+    this.logger.info('Getting allowance transactions');
     let query;
     try {
       query = await this.transactionBlockDimRepository.getAllowanceTransactions(
@@ -40,33 +40,46 @@ export class AllowanceTransactionsService {
         req,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message, true);
     }
 
     req.res.setHeader(
       'X-Field-Mappings',
       JSON.stringify(fieldMappings.allowances.transactions),
     );
-    this.Logger.info('Got allowance transactions');
+    this.logger.info('Got allowance transactions');
     return this.allowanceTransactionsMap.many(query);
   }
 
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    const query = await this.transactionOwnerDimRepository.getAllOwnerOperators();
+    this.logger.info('Getting all owner operators');
+    let query;
+    try {
+      query = await this.transactionOwnerDimRepository.getAllOwnerOperators();
+    } catch (e) {
+      this.logger.error(InternalServerErrorException, e.message, true);
+    }
+
+    this.logger.info('Got all owner operators');
+
     return this.ownerOperatorsMap.many(query);
   }
 
   async getAllApplicableAllowanceTransactionsAttributes(
     applicableAllowanceTransactionsAttributesParamsDTO: ApplicableAllowanceTransactionsAttributesParamsDTO,
   ): Promise<ApplicableAllowanceTransactionsAttributesDTO[]> {
+    this.logger.info('Getting all applicable allowance transaction attributes');
+
     let query;
     try {
       query = await this.transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
         applicableAllowanceTransactionsAttributesParamsDTO,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message, true);
     }
+
+    this.logger.info('Got all applicable allowance transaction attributes');
 
     return this.applicableAllowanceTransactionsAttributesMap.many(query);
   }

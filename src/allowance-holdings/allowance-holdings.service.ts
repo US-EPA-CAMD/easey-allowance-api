@@ -17,7 +17,7 @@ export class AllowanceHoldingsService {
     @InjectRepository(AllowanceHoldingDimRepository)
     private readonly allowanceHoldingsRepository: AllowanceHoldingDimRepository,
     private readonly allowanceHoldingsMap: AllowanceHoldingsMap,
-    private Logger: Logger,
+    private logger: Logger,
     private readonly applicableAllowanceHoldingsAttributesMap: ApplicableAllowanceHoldingsAttributesMap,
   ) {}
 
@@ -25,7 +25,7 @@ export class AllowanceHoldingsService {
     allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
-    this.Logger.info('Getting allowance holdings');
+    this.logger.info('Getting allowance holdings');
     let query;
     try {
       query = await this.allowanceHoldingsRepository.getAllowanceHoldings(
@@ -33,20 +33,29 @@ export class AllowanceHoldingsService {
         req,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message, true);
     }
 
     req.res.setHeader(
       'X-Field-Mappings',
       JSON.stringify(fieldMappings.allowances.holdings),
     );
-    this.Logger.info('Got allowance holdings');
+    this.logger.info('Got allowance holdings');
     return this.allowanceHoldingsMap.many(query);
   }
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<
     ApplicableAllowanceHoldingsAttributesDTO[]
   > {
-    const query = await this.allowanceHoldingsRepository.getAllApplicableAllowanceHoldingsAttributes();
+    this.logger.info('Getting all applicable allowance holding attributes');
+    let query;
+    try {
+      query = await this.allowanceHoldingsRepository.getAllApplicableAllowanceHoldingsAttributes();
+    } catch (e) {
+      this.logger.error(InternalServerErrorException, e.message, true);
+    }
+
+    this.logger.info('Got all applicable allowance holding attributes');
+
     return this.applicableAllowanceHoldingsAttributesMap.many(query);
   }
 }

@@ -25,14 +25,14 @@ export class AllowanceComplianceService {
     private readonly ownerYearDimRepository: OwnerYearDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly applicableAllowanceComplianceAttributesMap: ApplicableAllowanceComplianceAttributesMap,
-    private Logger: Logger,
+    private logger: Logger,
   ) {}
 
   async getAllowanceCompliance(
     allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
     req: Request,
   ): Promise<AllowanceComplianceDTO[]> {
-    this.Logger.info('Getting allowance compliance');
+    this.logger.info('Getting allowance compliance');
     let query;
     try {
       query = await this.accountComplianceDimRepository.getAllowanceCompliance(
@@ -40,7 +40,7 @@ export class AllowanceComplianceService {
         req,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message, true);
     }
 
     if (
@@ -52,24 +52,30 @@ export class AllowanceComplianceService {
         AllowanceProgram.NBP,
       )
     ) {
-      this.Logger.info('Setting header without program code info');
+      this.logger.info('Setting header without program code info');
       req.res.setHeader(
         'X-Field-Mappings',
         JSON.stringify(fieldMappings.compliance.allowanceNbpOtc),
       );
     } else {
-      this.Logger.info('Setting header with program code info');
+      this.logger.info('Setting header with program code info');
       req.res.setHeader(
         'X-Field-Mappings',
         JSON.stringify(fieldMappings.compliance.allowance),
       );
     }
-    this.Logger.info('Got allowance compliance');
+    this.logger.info('Got allowance compliance');
     return this.allowanceComplianceMap.many(query);
   }
 
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    const query = await this.ownerYearDimRepository.getAllOwnerOperators();
+    let query;
+    try {
+      query = await this.ownerYearDimRepository.getAllOwnerOperators();
+    } catch (e) {
+      this.logger.error(InternalServerErrorException, e.message, true);
+    }
+
     return this.ownerOperatorsMap.many(query);
   }
 
@@ -80,7 +86,7 @@ export class AllowanceComplianceService {
     try {
       query = await this.accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes();
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message, true);
     }
 
     return this.applicableAllowanceComplianceAttributesMap.many(query);
