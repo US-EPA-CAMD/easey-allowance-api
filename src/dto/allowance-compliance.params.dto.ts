@@ -3,10 +3,9 @@ import { IsOptional } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
-import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
+import { IsYearFormat, IsInDateRange } from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
-import { IsInDateRange } from '../pipes/is-in-date-range.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { ComplianceParamsDTO } from './compliance.params.dto';
 
@@ -37,7 +36,7 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
     each: true,
     message: ErrorMessages.MultipleFormat('year', 'YYYY'),
   })
-  @IsInDateRange([new Date('1995-01-01'), 'currentDate'], {
+  @IsInDateRange([new Date('1995-01-01'), 'currentDate'], true, false, false, {
     each: true,
     message: ErrorMessages.DateRange(
       'year',
