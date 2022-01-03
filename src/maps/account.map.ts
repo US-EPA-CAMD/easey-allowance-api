@@ -17,7 +17,7 @@ export class AccountMap extends BaseMap<AccountFact, any> {
           : entity.facilityId,
         [propertyMetadata.unitId.fieldLabels.value]: entity.unitId,
         [propertyMetadata.ownerOperator.fieldLabels.value]: entity.ownerOperator,
-        [propertyMetadata.state.fieldLabels.value]: entity.state,
+        [propertyMetadata.stateCode.fieldLabels.value]: entity.stateCode,
         [propertyMetadata.epaRegion.fieldLabels.value]: entity.epaRegion
           ? Number(entity.epaRegion)
           : entity.epaRegion,

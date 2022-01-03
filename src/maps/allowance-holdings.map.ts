@@ -32,7 +32,7 @@ export class AllowanceHoldingsMap extends BaseMap<
       [propertyMetadata.endBlock.fieldLabels.value]: entity.endBlock
         ? Number(entity.endBlock)
         : entity.endBlock,
-      [propertyMetadata.state.fieldLabels.value]: entity.accountFact.state,
+      [propertyMetadata.stateCode.fieldLabels.value]: entity.accountFact.stateCode,
       [propertyMetadata.epaRegion.fieldLabels.value]: entity.accountFact
         .epaRegion
         ? Number(entity.accountFact.epaRegion)

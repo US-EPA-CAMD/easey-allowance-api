@@ -19,7 +19,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
         accountType: string,
         accountNumber: string,
         facilityId: string,
-        state: string,
+        stateCode: string,
         vintageYear: string,
         programCodeInfo: string,
         transactionType: string,
@@ -29,7 +29,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.facilityId = facilityId;
-        this.state = state;
+        this.stateCode = stateCode;
         this.vintageYear = vintageYear;
         this.programCodeInfo = programCodeInfo;
         this.transactionType = transactionType;
@@ -46,7 +46,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
       facilityId: string;
 
       @IsStateCode()
-      state: string;
+      stateCode: string;
 
       @IsYearFormat()
       @IsYearGreater(1995)
@@ -131,7 +131,7 @@ describe('-- Allowance Transactions Params DTO --', () => {
           'general',
           '00001',
           'oris',
-          'state',
+          'stateCode',
           '1945',
           'programCodeInfo',
           'transactionType',

@@ -54,9 +54,9 @@ export class QueryBuilderHelper {
       query.andWhere(string);
     }
 
-    if (param.includes('state') && dto.state) {
-      query.andWhere(`UPPER(${characteristicAlias}.state) IN (:...states)`, {
-        states: dto.state.map(state => {
+    if (param.includes('stateCode') && dto.stateCode) {
+      query.andWhere(`UPPER(${characteristicAlias}.stateCode) IN (:...states)`, {
+        states: dto.stateCode.map(state => {
           return state.toUpperCase();
         }),
       });
@@ -142,11 +142,11 @@ export class QueryBuilderHelper {
       query.andWhere(string);
     }
 
-    if (param.includes('state') && dto.state) {
+    if (param.includes('stateCode') && dto.stateCode) {
       query.andWhere(
         `(UPPER(${alias}.buyState) IN (:...states) OR UPPER(${alias}.sellState) IN (:...states))`,
         {
-          states: dto.state.map(state => {
+          states: dto.stateCode.map(state => {
             return state.toUpperCase();
           }),
         },

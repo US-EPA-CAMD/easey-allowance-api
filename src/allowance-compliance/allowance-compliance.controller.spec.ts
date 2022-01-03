@@ -62,7 +62,7 @@ describe('-- Allowance Compliance Controller --', () => {
       paramsDTO.perPage = undefined;
       paramsDTO.facilityId = [0];
       paramsDTO.ownerOperator = [''];
-      paramsDTO.state = [State.AK];
+      paramsDTO.stateCode = [State.AK];
       paramsDTO.programCodeInfo = [AllowanceProgram.OTC];
 
       jest

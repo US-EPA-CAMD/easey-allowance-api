@@ -65,7 +65,7 @@ export class TransactionBlockDimRepository extends Repository<
         'accountNumber',
         'facilityId',
         'ownerOperator',
-        'state',
+        'stateCode',
         'transactionBeginDate',
         'transactionEndDate',
         'transactionType',

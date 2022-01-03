@@ -52,15 +52,15 @@ export class AllowanceParamsDTO extends PaginationDTO {
 
   @ApiProperty({
     enum: State,
-    description: propertyMetadata.state.description,
+    description: propertyMetadata.stateCode.description,
   })
   @IsOptional()
   @IsStateCode({
     each: true,
-    message: ErrorMessages.AccountCharacteristics(true, 'state'),
+    message: ErrorMessages.AccountCharacteristics(true, 'stateCode'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
-  state?: State[];
+  stateCode?: State[];
 
   @ApiProperty({
     description:

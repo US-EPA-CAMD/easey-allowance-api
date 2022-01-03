@@ -90,7 +90,7 @@ describe('-- Allowance Compliance Service --', () => {
       filters.perPage = undefined;
       filters.facilityId = [0];
       filters.ownerOperator = [''];
-      filters.state = [State.AK];
+      filters.stateCode = [State.AK];
       filters.programCodeInfo = [AllowanceProgram.OTC];
 
       let result = await allowanceComplianceService.getAllowanceCompliance(
@@ -104,7 +104,7 @@ describe('-- Allowance Compliance Service --', () => {
       filtersOtc.perPage = undefined;
       filtersOtc.facilityId = [0];
       filtersOtc.ownerOperator = [''];
-      filtersOtc.state = [State.AK];
+      filtersOtc.stateCode = [State.AK];
       filtersOtc.programCodeInfo = [AllowanceProgram.OTC];
 
       result = await allowanceComplianceService.getAllowanceCompliance(

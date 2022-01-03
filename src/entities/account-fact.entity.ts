@@ -49,8 +49,10 @@ export class AccountFact extends BaseEntity {
   })
   unitId: string;
 
-  @Column()
-  state: string;
+  @Column({
+    name: 'state'
+  })
+  stateCode: string;
 
   @Column({
     name: 'epa_region',
