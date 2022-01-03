@@ -21,7 +21,7 @@ export class ApplicableAllowanceHoldingsAttributesMap extends BaseMap<
         .facilityId
         ? Number(entity.accountFact.facilityId)
         : entity.accountFact.facilityId,
-      [propertyMetadata.state.fieldLabels.value]: entity.accountFact.state,
+      [propertyMetadata.stateCode.fieldLabels.value]: entity.accountFact.stateCode,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity.accountFact.accountOwnerDim?.ownerOperator || null,
     };

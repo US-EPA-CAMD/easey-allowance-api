@@ -70,7 +70,7 @@ describe('-- Emissions Compliance Controller --', () => {
       paramsDTO.page = undefined;
       paramsDTO.perPage = undefined;
       paramsDTO.facilityId = [0];
-      paramsDTO.state = [State.AK];
+      paramsDTO.stateCode = [State.AK];
       paramsDTO.ownerOperator = [''];
 
       jest

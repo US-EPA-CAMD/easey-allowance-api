@@ -25,7 +25,7 @@ export class AllowanceHoldingDimRepository extends Repository<
         'ahd.startBlock',
         'ahd.endBlock',
         'af.facilityId',
-        'af.state',
+        'af.stateCode',
         'af.epaRegion',
         'af.ownerOperator',
         'af.accountType',
@@ -39,7 +39,7 @@ export class AllowanceHoldingDimRepository extends Repository<
         'accountNumber',
         'facilityId',
         'ownerOperator',
-        'state',
+        'stateCode',
         'programCodeInfo',
         'accountType',
       ],
@@ -70,7 +70,7 @@ export class AllowanceHoldingDimRepository extends Repository<
         'af.accountNumber',
         'af.accountTypeCode',
         'af.facilityId',
-        'af.state',
+        'af.stateCode',
         'aod.ownerOperator',
       ])
       .innerJoin('ahd.accountFact', 'af')
@@ -81,7 +81,7 @@ export class AllowanceHoldingDimRepository extends Repository<
         'af.account_number',
         'af.account_type_code',
         'af.orispl_code',
-        'af.state',
+        'af.stateCode',
         'aod.own_display',
       ]);
     return query.getMany();

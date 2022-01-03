@@ -16,7 +16,7 @@ export class ApplicableAllowanceComplianceAttributesMap extends BaseMap<
       [propertyMetadata.facilityId.fieldLabels.value]: entity.af_orispl_code
         ? Number(entity.af_orispl_code)
         : entity.af_orispl_code,
-      [propertyMetadata.state.fieldLabels.value]: entity.af_state,
+      [propertyMetadata.stateCode.fieldLabels.value]: entity.af_state,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity?.oyd_own_display || null,
     };

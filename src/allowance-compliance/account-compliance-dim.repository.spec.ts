@@ -37,7 +37,7 @@ filters.page = undefined;
 filters.perPage = undefined;
 filters.facilityId = [0];
 filters.ownerOperator = [''];
-filters.state = [State.AK];
+filters.stateCode = [State.AK];
 filters.programCodeInfo = [AllowanceProgram.OTC];
 
 describe('-- AccountComplianceDimRepository --', () => {

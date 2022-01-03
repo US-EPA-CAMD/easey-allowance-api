@@ -30,7 +30,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       'af.facilityId',
       'af.unitId',
       'af.ownerOperator',
-      'af.state',
+      'af.stateCode',
       'af.epaRegion',
       'af.nercRegion',
     ]);
@@ -43,7 +43,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'programCodeInfo',
         'facilityId',
         'ownerOperator',
-        'state',
+        'stateCode',
         'accountType',
       ],
       'af',
@@ -67,7 +67,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'af.programCodeInfo',
         'af.accountTypeCode',
         'af.facilityId',
-        'af.state',
+        'af.stateCode',
         'aod.ownerOperator',
       ])
       .leftJoin('af.accountOwnerDim', 'aod')
@@ -76,7 +76,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'af.prg_code',
         'af.account_type_code',
         'af.orispl_code',
-        'af.state',
+        'af.stateCode',
         'aod.own_display',
       ]);
 
