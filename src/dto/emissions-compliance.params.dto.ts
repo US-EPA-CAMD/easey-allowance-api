@@ -5,9 +5,7 @@ import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
-import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
-
-import { IsInDateRange } from '../pipes/is-in-date-range.pipe';
+import { IsYearFormat, IsInDateRange } from '@us-epa-camd/easey-common/pipes';
 
 import { ComplianceParamsDTO } from './compliance.params.dto';
 
@@ -24,7 +22,7 @@ export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
     each: true,
     message: ErrorMessages.MultipleFormat('year', 'YYYY'),
   })
-  @IsInDateRange([new Date('1996-01-01'), 'currentDate'], {
+  @IsInDateRange([new Date('1996-01-01'), 'currentDate'], true, false, false, {
     each: true,
     message: ErrorMessages.DateRange(
       'year',
