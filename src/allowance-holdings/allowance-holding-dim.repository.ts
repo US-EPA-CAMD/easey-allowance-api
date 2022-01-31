@@ -29,8 +29,10 @@ export class AllowanceHoldingDimRepository extends Repository<
         'af.epaRegion',
         'af.ownerOperator',
         'af.accountType',
+        'atc.accountTypeDescription',
       ])
-      .innerJoin('ahd.accountFact', 'af');
+      .innerJoin('ahd.accountFact', 'af')
+      .innerJoin('af.accountTypeCd', 'atc');
     query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceHoldingsParamsDTO,
@@ -46,6 +48,7 @@ export class AllowanceHoldingDimRepository extends Repository<
       'ahd',
       'af',
       false,
+      'atc',
     );
 
     query

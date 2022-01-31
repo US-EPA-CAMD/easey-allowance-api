@@ -46,8 +46,15 @@ export class TransactionBlockDimRepository extends Repository<
         'tbd.startBlock',
         'tbd.endBlock',
         'tbd.totalBlock',
+        'batc.accountTypeDescription',
+        'satc.accountTypeDescription',
+        'ttc.transactionTypeDescription',
       ])
-      .innerJoin('tbd.transactionFact', 'tf');
+      .innerJoin('tbd.transactionFact', 'tf')
+      .innerJoin('tf.buyAccountTypeCd', 'batc')
+      .innerJoin('tf.sellAccountTypeCd', 'satc')
+      .innerJoin('tf.transactionTypeCd', 'ttc');
+
     query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceTransactionsParamsDTO,
@@ -71,6 +78,9 @@ export class TransactionBlockDimRepository extends Repository<
         'transactionType',
       ],
       'tf',
+      'batc',
+      'satc',
+      'ttc',
     );
 
     query
