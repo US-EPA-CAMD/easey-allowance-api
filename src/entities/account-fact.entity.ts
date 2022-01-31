@@ -11,6 +11,7 @@ import {
 import { AllowanceHoldingDim } from './allowance-holding-dim.entity';
 import { AccountComplianceDim } from './account-compliance-dim.entity';
 import { AccountOwnerDim } from './account-owner-dim.entity';
+import { AccountTypeCode } from './account-type-code.entity';
 
 @Entity({ name: 'camddmw.account_fact' })
 export class AccountFact extends BaseEntity {
@@ -50,7 +51,7 @@ export class AccountFact extends BaseEntity {
   unitId: string;
 
   @Column({
-    name: 'state'
+    name: 'state',
   })
   stateCode: string;
 
@@ -106,4 +107,14 @@ export class AccountFact extends BaseEntity {
     },
   ])
   accountOwnerDim: AccountOwnerDim;
+
+  @ManyToOne(
+    () => AccountTypeCode,
+    atd => atd.accountFact,
+  )
+  @JoinColumn({
+    name: 'account_type_code',
+    referencedColumnName: 'accountTypeCode',
+  })
+  accountTypeCd: AccountTypeCode;
 }

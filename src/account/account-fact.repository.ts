@@ -22,18 +22,21 @@ export class AccountFactRepository extends Repository<AccountFact> {
   ): Promise<AccountFact[]> {
     const { page, perPage } = accountAttributesParamsDTO;
 
-    let query = this.createQueryBuilder('af').select([
-      'af.accountNumber',
-      'af.accountName',
-      'af.programCodeInfo',
-      'af.accountType',
-      'af.facilityId',
-      'af.unitId',
-      'af.ownerOperator',
-      'af.stateCode',
-      'af.epaRegion',
-      'af.nercRegion',
-    ]);
+    let query = this.createQueryBuilder('af')
+      .select([
+        'af.accountNumber',
+        'af.accountName',
+        'af.programCodeInfo',
+        'af.accountType',
+        'af.facilityId',
+        'af.unitId',
+        'af.ownerOperator',
+        'af.stateCode',
+        'af.epaRegion',
+        'af.nercRegion',
+        'atc.accountTypeDescription',
+      ])
+      .innerJoin('af.accountTypeCd', 'atc');
 
     query = QueryBuilderHelper.createAccountQuery(
       query,
@@ -49,6 +52,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       'af',
       'af',
       false,
+      'atc',
     );
 
     query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');

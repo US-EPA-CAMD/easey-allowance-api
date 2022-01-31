@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+
+import { TransactionFact } from './transaction-fact.entity';
 
 @Entity({ name: 'camdmd.transaction_type_code' })
 export class TransactionTypeCode extends BaseEntity {
@@ -11,4 +13,10 @@ export class TransactionTypeCode extends BaseEntity {
     name: 'trans_type_description',
   })
   transactionTypeDescription: string;
+
+  @OneToMany(
+    () => TransactionFact,
+    tf => tf.transactionTypeCd,
+  )
+  transactionFact: TransactionFact[];
 }

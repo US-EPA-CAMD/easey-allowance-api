@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
-
 import { BaseMap } from '@us-epa-camd/easey-common/maps';
+
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 
@@ -22,13 +22,13 @@ export class AllowanceTransactionsMap extends BaseMap<
         ? Number(entity.transactionFact.transactionTotal)
         : entity.transactionFact.transactionTotal,
       [propertyMetadata.transactionType.fieldLabels.value]:
-        entity.transactionFact.transactionType,
+        entity.transactionFact.transactionTypeCd.transactionTypeDescription,
       [propertyMetadata.sellAccountNumber.fieldLabels.value]:
         entity.transactionFact.sellAccountNumber,
       [propertyMetadata.sellAccountName.fieldLabels.value]:
         entity.transactionFact.sellAccountName,
       [propertyMetadata.sellAccountType.fieldLabels.value]:
-        entity.transactionFact.sellAccountType,
+        entity.transactionFact.sellAccountTypeCd.accountTypeDescription,
       [propertyMetadata.sellFacilityName.fieldLabels.value]:
         entity.transactionFact.sellFacilityName,
       [propertyMetadata.sellFacilityId.fieldLabels.value]: entity
@@ -50,7 +50,7 @@ export class AllowanceTransactionsMap extends BaseMap<
       [propertyMetadata.buyAccountName.fieldLabels.value]:
         entity.transactionFact.buyAccountName,
       [propertyMetadata.buyAccountType.fieldLabels.value]:
-        entity.transactionFact.buyAccountType,
+        entity.transactionFact.buyAccountTypeCd.accountTypeDescription,
       [propertyMetadata.buyFacilityName.fieldLabels.value]:
         entity.transactionFact.buyFacilityName,
       [propertyMetadata.buyFacilityId.fieldLabels.value]: entity.transactionFact
