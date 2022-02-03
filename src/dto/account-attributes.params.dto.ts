@@ -1,6 +1,6 @@
 import { IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
@@ -30,4 +30,16 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: AllowanceProgram[];
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: propertyMetadata.page.description,
+  })
+  page: number;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: propertyMetadata.perPage.description,
+  })
+  perPage: number;
 }

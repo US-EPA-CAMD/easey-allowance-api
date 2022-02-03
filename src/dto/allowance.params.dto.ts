@@ -8,12 +8,11 @@ import {
 import { State, AccountType } from '@us-epa-camd/easey-common/enums';
 import { IsOrisCode } from '@us-epa-camd/easey-common/pipes';
 
-import { PaginationDTO } from './pagination.dto';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsAccountType } from '../pipes/is-account-type.pipe';
 import { IsAccountNumber } from '../pipes/is-account-number.pipe';
 
-export class AllowanceParamsDTO extends PaginationDTO {
+export class AllowanceParamsDTO {
   @ApiProperty({
     enum: AccountType,
     description: propertyMetadata.accountType.description,
