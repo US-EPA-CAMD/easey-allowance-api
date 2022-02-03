@@ -28,7 +28,7 @@ export class TransactionBlockDimRepository extends Repository<
     let totalCount: number;
     let results: TransactionBlockDim[];
     const { page, perPage } = paginatedAllowanceTransactionsParamsDTO;
-    let query = this.buildQuery(paginatedAllowanceTransactionsParamsDTO);
+    const query = this.buildQuery(paginatedAllowanceTransactionsParamsDTO);
 
     if (page && perPage) {
       [results, totalCount] = await query.getManyAndCount();
@@ -131,7 +131,7 @@ export class TransactionBlockDimRepository extends Repository<
 
   private buildQuery(
     params: AllowanceTransactionsParamsDTO,
-    isStreamed: boolean = false,
+    isStreamed = false,
   ): SelectQueryBuilder<TransactionBlockDim> {
     let query = this.createQueryBuilder('tbd')
       .select(this.getColumns(isStreamed))
