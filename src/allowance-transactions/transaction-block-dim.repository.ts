@@ -1,100 +1,43 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
+import { ReadStream } from 'fs';
 import { Request } from 'express';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
-import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import {
+  AllowanceTransactionsParamsDTO,
+  PaginatedAllowanceTransactionsParamsDTO,
+} from '../dto/allowance-transactions.params.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
 @EntityRepository(TransactionBlockDim)
 export class TransactionBlockDimRepository extends Repository<
   TransactionBlockDim
 > {
+  streamAllowanceTransactions(
+    params: AllowanceTransactionsParamsDTO,
+  ): Promise<ReadStream> {
+    return this.buildQuery(params, true).stream();
+  }
+
   async getAllowanceTransactions(
-    allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<TransactionBlockDim[]> {
-    const { page, perPage } = allowanceTransactionsParamsDTO;
-    let query = this.createQueryBuilder('tbd')
-      .select([
-        'tbd.programCodeInfo',
-        'tbd.transactionBlockId', //primarykey
-        'tbd.transactionId',
-        'tf.transactionTotal',
-        'tf.transactionType',
-        'tf.sellAccountNumber',
-        'tf.sellAccountName',
-        'tf.sellAccountType',
-        'tf.sellFacilityName',
-        'tf.sellFacilityId',
-        'tf.sellState',
-        'tf.sellEpaRegion',
-        'tf.sellSourceCategory',
-        'tf.sellOwner',
-        'tf.buyAccountNumber',
-        'tf.buyAccountName',
-        'tf.buyAccountType',
-        'tf.buyFacilityName',
-        'tf.buyFacilityId',
-        'tf.buyState',
-        'tf.buyEpaRegion',
-        'tf.buySourceCategory',
-        'tf.buyOwner',
-        'tf.transactionDate',
-        'tbd.vintageYear',
-        'tbd.startBlock',
-        'tbd.endBlock',
-        'tbd.totalBlock',
-        'batc.accountTypeDescription',
-        'satc.accountTypeDescription',
-        'ttc.transactionTypeDescription',
-      ])
-      .innerJoin('tbd.transactionFact', 'tf')
-      .innerJoin('tf.buyAccountTypeCd', 'batc')
-      .innerJoin('tf.sellAccountTypeCd', 'satc')
-      .innerJoin('tf.transactionTypeCd', 'ttc');
-
-    query = QueryBuilderHelper.createAccountQuery(
-      query,
-      allowanceTransactionsParamsDTO,
-      ['vintageYear', 'programCodeInfo'],
-      'tbd',
-      'tf',
-      true,
-    );
-
-    query = QueryBuilderHelper.createTransactionQuery(
-      query,
-      allowanceTransactionsParamsDTO,
-      [
-        'accountType',
-        'accountNumber',
-        'facilityId',
-        'ownerOperator',
-        'stateCode',
-        'transactionBeginDate',
-        'transactionEndDate',
-        'transactionType',
-      ],
-      'tf',
-      'batc',
-      'satc',
-      'ttc',
-    );
-
-    query
-      .orderBy('tbd.programCodeInfo')
-      .addOrderBy('tbd.transactionId')
-      .addOrderBy('tbd.vintageYear')
-      .addOrderBy('tbd.startBlock');
+    let totalCount: number;
+    let results: TransactionBlockDim[];
+    const { page, perPage } = paginatedAllowanceTransactionsParamsDTO;
+    const query = this.buildQuery(paginatedAllowanceTransactionsParamsDTO);
 
     if (page && perPage) {
-      const totalCount = await query.getCount();
+      [results, totalCount] = await query.getManyAndCount();
       ResponseHeaders.setPagination(page, perPage, totalCount, req);
+    } else {
+      results = await query.getMany();
     }
 
-    return query.getMany();
+    return results;
   }
 
   async getAllApplicableAllowanceTransactionsAttributes(
@@ -143,5 +86,94 @@ export class TransactionBlockDimRepository extends Repository<
       });
 
     return query.getMany();
+  }
+
+  private getColumns(isStreamed: boolean): string[] {
+    const columns = [
+      'tbd.programCodeInfo',
+      'tbd.transactionBlockId', //primarykey
+      'tbd.transactionId',
+      'tf.transactionTotal',
+      'tf.sellAccountNumber',
+      'tf.sellAccountName',
+      'tf.sellFacilityName',
+      'tf.sellFacilityId',
+      'tf.sellState',
+      'tf.sellEpaRegion',
+      'tf.sellSourceCategory',
+      'tf.sellOwner',
+      'tf.buyAccountNumber',
+      'tf.buyAccountName',
+      'tf.buyFacilityName',
+      'tf.buyFacilityId',
+      'tf.buyState',
+      'tf.buyEpaRegion',
+      'tf.buySourceCategory',
+      'tf.buyOwner',
+      'tf.transactionDate',
+      'tbd.vintageYear',
+      'tbd.startBlock',
+      'tbd.endBlock',
+      'tbd.totalBlock',
+      'batc.accountTypeDescription',
+      'satc.accountTypeDescription',
+      'ttc.transactionTypeDescription',
+    ];
+
+    return columns.map(col => {
+      if (isStreamed) {
+        return `${col} AS "${col.split('.')[1]}"`;
+      } else {
+        return col;
+      }
+    });
+  }
+
+  private buildQuery(
+    params: AllowanceTransactionsParamsDTO,
+    isStreamed = false,
+  ): SelectQueryBuilder<TransactionBlockDim> {
+    let query = this.createQueryBuilder('tbd')
+      .select(this.getColumns(isStreamed))
+      .innerJoin('tbd.transactionFact', 'tf')
+      .innerJoin('tf.buyAccountTypeCd', 'batc')
+      .innerJoin('tf.sellAccountTypeCd', 'satc')
+      .innerJoin('tf.transactionTypeCd', 'ttc');
+
+    query = QueryBuilderHelper.createAccountQuery(
+      query,
+      params,
+      ['vintageYear', 'programCodeInfo'],
+      'tbd',
+      'tf',
+      true,
+    );
+
+    query = QueryBuilderHelper.createTransactionQuery(
+      query,
+      params,
+      [
+        'accountType',
+        'accountNumber',
+        'facilityId',
+        'ownerOperator',
+        'stateCode',
+        'transactionBeginDate',
+        'transactionEndDate',
+        'transactionType',
+      ],
+      'tf',
+      'batc',
+      'satc',
+      'ttc',
+    );
+
+    query
+      .orderBy('tbd.programCodeInfo')
+      .addOrderBy('tbd.transactionId')
+      .addOrderBy('tbd.vintageYear')
+      .addOrderBy('tbd.startBlock');
+
+    return query;
   }
 }

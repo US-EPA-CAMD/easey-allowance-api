@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,
@@ -50,4 +50,16 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: ActiveAllowanceProgram[];
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: propertyMetadata.page.description,
+  })
+  page: number;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: propertyMetadata.perPage.description,
+  })
+  perPage: number;
 }
