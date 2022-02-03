@@ -22,18 +22,21 @@ export class AccountFactRepository extends Repository<AccountFact> {
   ): Promise<AccountFact[]> {
     const { page, perPage } = accountAttributesParamsDTO;
 
-    let query = this.createQueryBuilder('af').select([
-      'af.accountNumber',
-      'af.accountName',
-      'af.programCodeInfo',
-      'af.accountType',
-      'af.facilityId',
-      'af.unitId',
-      'af.ownerOperator',
-      'af.state',
-      'af.epaRegion',
-      'af.nercRegion',
-    ]);
+    let query = this.createQueryBuilder('af')
+      .select([
+        'af.accountNumber',
+        'af.accountName',
+        'af.programCodeInfo',
+        'af.accountType',
+        'af.facilityId',
+        'af.unitId',
+        'af.ownerOperator',
+        'af.stateCode',
+        'af.epaRegion',
+        'af.nercRegion',
+        'atc.accountTypeDescription',
+      ])
+      .innerJoin('af.accountTypeCd', 'atc');
 
     query = QueryBuilderHelper.createAccountQuery(
       query,
@@ -43,12 +46,13 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'programCodeInfo',
         'facilityId',
         'ownerOperator',
-        'state',
+        'stateCode',
         'accountType',
       ],
       'af',
       'af',
       false,
+      'atc',
     );
 
     query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');
@@ -67,7 +71,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'af.programCodeInfo',
         'af.accountTypeCode',
         'af.facilityId',
-        'af.state',
+        'af.stateCode',
         'aod.ownerOperator',
       ])
       .leftJoin('af.accountOwnerDim', 'aod')
@@ -76,7 +80,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'af.prg_code',
         'af.account_type_code',
         'af.orispl_code',
-        'af.state',
+        'af.stateCode',
         'aod.own_display',
       ]);
 

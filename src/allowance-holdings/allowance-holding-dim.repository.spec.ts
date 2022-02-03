@@ -42,7 +42,7 @@ let filters: AllowanceHoldingsParamsDTO = {
   accountNumber: ['000127FACLTY'],
   facilityId: [0],
   ownerOperator: [''],
-  state: [State.AK],
+  stateCode: [State.AK],
   programCodeInfo: [ActiveAllowanceProgram.ARP],
 };
 

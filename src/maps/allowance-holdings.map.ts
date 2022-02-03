@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
-
 import { BaseMap } from '@us-epa-camd/easey-common/maps';
+
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 
@@ -32,7 +32,8 @@ export class AllowanceHoldingsMap extends BaseMap<
       [propertyMetadata.endBlock.fieldLabels.value]: entity.endBlock
         ? Number(entity.endBlock)
         : entity.endBlock,
-      [propertyMetadata.state.fieldLabels.value]: entity.accountFact.state,
+      [propertyMetadata.stateCode.fieldLabels.value]:
+        entity.accountFact.stateCode,
       [propertyMetadata.epaRegion.fieldLabels.value]: entity.accountFact
         .epaRegion
         ? Number(entity.accountFact.epaRegion)
@@ -40,7 +41,7 @@ export class AllowanceHoldingsMap extends BaseMap<
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity.accountFact.ownerOperator,
       [propertyMetadata.accountType.fieldLabels.value]:
-        entity.accountFact.accountType,
+        entity.accountFact.accountTypeCd.accountTypeDescription,
     };
   }
 }

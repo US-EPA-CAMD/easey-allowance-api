@@ -7,8 +7,11 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
+
+import { AccountTypeCode } from './account-type-code.entity';
 import { TransactionBlockDim } from './transaction-block-dim.entity';
 import { TransactionOwnerDim } from './transaction-owner-dim.entity';
+import { TransactionTypeCode } from './transaction-type-code.entity';
 
 @Entity({ name: 'camddmw.transaction_fact' })
 export class TransactionFact extends BaseEntity {
@@ -163,4 +166,40 @@ export class TransactionFact extends BaseEntity {
     },
   ])
   transactionOwnerDim: TransactionOwnerDim;
+
+  @ManyToOne(
+    () => AccountTypeCode,
+    atd => atd.buyTransactionFact,
+  )
+  @JoinColumn([
+    {
+      name: 'buy_account_type_code',
+      referencedColumnName: 'accountTypeCode',
+    },
+  ])
+  buyAccountTypeCd: AccountTypeCode;
+
+  @ManyToOne(
+    () => AccountTypeCode,
+    atd => atd.sellTransactionFact,
+  )
+  @JoinColumn([
+    {
+      name: 'sell_account_type_code',
+      referencedColumnName: 'accountTypeCode',
+    },
+  ])
+  sellAccountTypeCd: AccountTypeCode;
+
+  @ManyToOne(
+    () => TransactionTypeCode,
+    ttd => ttd.transactionFact,
+  )
+  @JoinColumn([
+    {
+      name: 'transaction_type_code',
+      referencedColumnName: 'transactionTypeCode',
+    },
+  ])
+  transactionTypeCd: TransactionTypeCode;
 }

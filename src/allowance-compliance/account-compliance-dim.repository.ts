@@ -33,7 +33,7 @@ export class AccountComplianceDimRepository extends Repository<
       'acd.totalAllowancesDeducted',
       'acd.carriedOver',
       'acd.excessEmissions',
-      'af.state',
+      'af.stateCode',
       'af.ownerOperator',
     ];
     if (
@@ -57,7 +57,7 @@ export class AccountComplianceDimRepository extends Repository<
     query = QueryBuilderHelper.createAccountQuery(
       query,
       allowanceComplianceParamsDTO,
-      ['facilityId', 'ownerOperator', 'state', 'programCodeInfo'],
+      ['facilityId', 'ownerOperator', 'stateCode', 'programCodeInfo'],
       'acd',
       'af',
       true,
@@ -88,7 +88,7 @@ export class AccountComplianceDimRepository extends Repository<
         'acd.year',
         'af.programCodeInfo',
         'af.facilityId',
-        'af.state',
+        'af.stateCode',
         'oyd.ownerOperator',
       ])
       .innerJoin(
@@ -101,7 +101,7 @@ export class AccountComplianceDimRepository extends Repository<
         'acd.op_year',
         'af.prg_code',
         'af.orispl_code',
-        'af.state',
+        'af.stateCode',
         'oyd.own_display',
       ]);
     return query.getRawMany();

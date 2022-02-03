@@ -18,7 +18,7 @@ export class ApplicableEmissionsComplianceAttributesMap extends BaseMap<
         .facilityId
         ? Number(entity.unitFact.facilityId)
         : entity.unitFact.facilityId,
-      [propertyMetadata.state.fieldLabels.value]: entity.unitFact.state,
+      [propertyMetadata.stateCode.fieldLabels.value]: entity.unitFact.stateCode,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
         entity.unitFact.ownerYearDim?.ownerOperator || null,
     };

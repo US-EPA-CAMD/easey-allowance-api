@@ -9,7 +9,7 @@ const holdings = [
   { ...propertyMetadata.totalBlock.fieldLabels },
   { ...propertyMetadata.startBlock.fieldLabels },
   { ...propertyMetadata.endBlock.fieldLabels },
-  { ...propertyMetadata.state.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
   { ...propertyMetadata.epaRegion.fieldLabels },
   { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
   { ...propertyMetadata.accountType.fieldLabels },
@@ -53,7 +53,7 @@ const accountAttributes = [
   { ...propertyMetadata.facilityId.fieldLabels },
   { ...propertyMetadata.unitId.fieldLabels },
   { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
-  { ...propertyMetadata.state.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
   { ...propertyMetadata.epaRegion.fieldLabels },
   { ...propertyMetadata.nercRegion.fieldLabels },
 ];
@@ -80,7 +80,7 @@ const allowanceComplianceNbpOtc = [
   { ...propertyMetadata.carriedOver.fieldLabels },
   { ...propertyMetadata.excessEmissions.fieldLabels },
   { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
-  { ...propertyMetadata.state.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
 ];
 
 const allowanceCompliance = [
@@ -99,7 +99,7 @@ const allowanceCompliance = [
   { ...propertyMetadata.carriedOver.fieldLabels },
   { ...propertyMetadata.excessEmissions.fieldLabels },
   { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
-  { ...propertyMetadata.state.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
 ];
 
 const emissionsCompliance = [
@@ -108,7 +108,7 @@ const emissionsCompliance = [
   { ...propertyMetadata.facilityId.fieldLabels },
   { ...propertyMetadata.unitId.fieldLabels },
   { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
-  { ...propertyMetadata.state.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
   { ...propertyMetadata.complianceApproach.fieldLabels },
   { ...propertyMetadata.avgPlanId.fieldLabels },
   { ...propertyMetadata.emissionsLimitDisplay.fieldLabels },

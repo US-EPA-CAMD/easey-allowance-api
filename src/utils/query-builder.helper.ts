@@ -13,6 +13,7 @@ export class QueryBuilderHelper {
     dataAlias: string,
     characteristicAlias: string,
     additionalQuery: boolean,
+    transactionTypeAlias = null,
   ) {
     if (param.includes('vintageYear') && dto.vintageYear) {
       query.andWhere(`${dataAlias}.vintageYear IN (:...vintageYears)`, {
@@ -54,9 +55,9 @@ export class QueryBuilderHelper {
       query.andWhere(string);
     }
 
-    if (param.includes('state') && dto.state) {
-      query.andWhere(`UPPER(${characteristicAlias}.state) IN (:...states)`, {
-        states: dto.state.map(state => {
+    if (param.includes('stateCode') && dto.stateCode) {
+      query.andWhere(`UPPER(${characteristicAlias}.stateCode) IN (:...states)`, {
+        states: dto.stateCode.map(state => {
           return state.toUpperCase();
         }),
       });
@@ -72,7 +73,7 @@ export class QueryBuilderHelper {
 
     if (param.includes('accountType') && dto.accountType) {
       query.andWhere(
-        `UPPER(${characteristicAlias}.accountType) IN (:...accountTypes)`,
+        `UPPER(${transactionTypeAlias}.accountTypeDescription) IN (:...accountTypes)`,
         {
           accountTypes: dto.accountType.map(accountType => {
             return accountType.toUpperCase();
@@ -93,10 +94,13 @@ export class QueryBuilderHelper {
     dto: any,
     param: string[],
     alias: string,
+    buyAccountTypeAlias: string,
+    sellAccountTypeAlias: string,
+    transactionTypeAlias: string,
   ) {
     if (param.includes('accountType') && dto.accountType) {
       query.andWhere(
-        `(UPPER(${alias}.buyAccountType) IN (:...accountTypes) OR UPPER(${alias}.sellAccountType) IN (:...accountTypes))`,
+        `(UPPER(${buyAccountTypeAlias}.accountTypeDescription) IN (:...accountTypes) OR UPPER(${sellAccountTypeAlias}.accountTypeDescription) IN (:...accountTypes))`,
         {
           accountTypes: dto.accountType.map(accountType => {
             return accountType.toUpperCase();
@@ -142,11 +146,11 @@ export class QueryBuilderHelper {
       query.andWhere(string);
     }
 
-    if (param.includes('state') && dto.state) {
+    if (param.includes('stateCode') && dto.stateCode) {
       query.andWhere(
         `(UPPER(${alias}.buyState) IN (:...states) OR UPPER(${alias}.sellState) IN (:...states))`,
         {
-          states: dto.state.map(state => {
+          states: dto.stateCode.map(state => {
             return state.toUpperCase();
           }),
         },
@@ -167,7 +171,7 @@ export class QueryBuilderHelper {
 
     if (param.includes('transactionType') && dto.transactionType) {
       query.andWhere(
-        `UPPER(${alias}.transactionType) IN (:...transactionTypes)`,
+        `UPPER(${transactionTypeAlias}.transactionTypeDescription) IN (:...transactionTypes)`,
         {
           transactionTypes: dto.transactionType.map(transactionType => {
             return transactionType.toUpperCase();
