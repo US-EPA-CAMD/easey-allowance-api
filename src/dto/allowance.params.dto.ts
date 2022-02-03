@@ -61,10 +61,4 @@ export class AllowanceParamsDTO extends PaginationDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   stateCode?: State[];
-
-  @ApiProperty({
-    description:
-      'Attaches a file with data in the format specified by the Accept header',
-  })
-  attachFile?: boolean;
 }

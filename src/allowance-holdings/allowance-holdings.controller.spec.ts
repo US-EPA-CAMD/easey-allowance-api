@@ -16,6 +16,7 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { StreamableFile } from '@nestjs/common';
 
 const mockRequest = (url: string) => {
   return {
@@ -70,6 +71,25 @@ describe('-- Allowance Holdings Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceHoldingsController.getAllowanceHoldings(paramsDTO, req),
+      ).toBe(expectedResults);
+    });
+  });
+
+  describe('* getAllowanceHoldingsStream', () => {
+    const req: any = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+
+    it('should call the service and return allowance holdings ', async () => {
+      const expectedResults: StreamableFile = undefined;
+      const paramsDTO = new AllowanceHoldingsParamsDTO();
+      jest
+        .spyOn(allowanceHoldingsService, 'streamAllowanceHoldings')
+        .mockResolvedValue(expectedResults);
+      expect(
+        await allowanceHoldingsController.streamAllowanceHoldings(
+          req,
+          paramsDTO,
+        ),
       ).toBe(expectedResults);
     });
   });

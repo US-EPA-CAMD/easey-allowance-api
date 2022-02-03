@@ -1,5 +1,12 @@
 import { Request } from 'express';
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Query,
+  Req,
+  UseInterceptors,
+  StreamableFile,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -21,6 +28,7 @@ import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { fieldMappings } from '../constants/field-mappings';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -66,6 +74,35 @@ export class AllowanceHoldingsController {
       allowanceHoldingsParamsDTO,
       req,
     );
+  }
+
+  @Get('stream')
+  @ApiOkResponse({
+    description: 'Streams Allowance Holdings per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AllowanceHoldingsDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.allowances.holdings
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  streamAllowanceHoldings(
+    @Req() req: Request,
+    @Query() params: AllowanceHoldingsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.allowanceService.streamAllowanceHoldings(req, params);
   }
 
   @Get('attributes/applicable')

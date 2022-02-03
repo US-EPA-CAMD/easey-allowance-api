@@ -9,6 +9,7 @@ import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-all
 
 const mockAllowanceHoldingDimRepository = () => ({
   getAllowanceHoldings: jest.fn(),
+  streamAllowanceHoldings: jest.fn(),
   getAllApplicableAllowanceHoldingsAttributes: jest.fn(),
 });
 

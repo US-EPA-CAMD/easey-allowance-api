@@ -11,13 +11,11 @@ export class AllowanceHoldingsMap extends BaseMap<
   AllowanceHoldingsDTO
 > {
   public async one(entity: AllowanceHoldingDim): Promise<any> {
+    console.log(entity);
+
     return {
       [propertyMetadata.accountNumber.fieldLabels.value]: entity.accountNumber,
       [propertyMetadata.accountName.fieldLabels.value]: entity.accountName,
-      [propertyMetadata.facilityId.fieldLabels.value]: entity.accountFact
-        .facilityId
-        ? Number(entity.accountFact.facilityId)
-        : entity.accountFact.facilityId,
       [propertyMetadata.programCodeInfo.fieldLabels.value]:
         entity.programCodeInfo,
       [propertyMetadata.vintageYear.fieldLabels.value]: Number(
@@ -32,6 +30,10 @@ export class AllowanceHoldingsMap extends BaseMap<
       [propertyMetadata.endBlock.fieldLabels.value]: entity.endBlock
         ? Number(entity.endBlock)
         : entity.endBlock,
+      [propertyMetadata.facilityId.fieldLabels.value]: entity.accountFact
+        .facilityId
+        ? Number(entity.accountFact.facilityId)
+        : entity.accountFact.facilityId,
       [propertyMetadata.stateCode.fieldLabels.value]:
         entity.accountFact.stateCode,
       [propertyMetadata.epaRegion.fieldLabels.value]: entity.accountFact
