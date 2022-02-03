@@ -1,18 +1,21 @@
 import { Request } from 'express';
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, Query, Req, UseInterceptors, StreamableFile } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
   getSchemaPath,
   ApiExtraModels,
   ApiQuery,
-  ApiSecurity
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
-import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import {
+  AllowanceTransactionsParamsDTO,
+  PaginatedAllowanceTransactionsParamsDTO,
+} from '../dto/allowance-transactions.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
@@ -25,7 +28,7 @@ import {
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Allowance Transactions')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(AllowanceTransactionsDTO)
 export class AllowanceTransactionsController {
   constructor(
     private readonly allowanceTransactionsService: AllowanceTransactionsService,
@@ -62,12 +65,53 @@ export class AllowanceTransactionsController {
     required: false,
     explode: false,
   })
-  @ApiExtraModels(AllowanceTransactionsDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getAllowanceTransactions(
-    @Query() allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    @Query() paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     @Req() req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
     return this.allowanceTransactionsService.getAllowanceTransactions(
+      paginatedAllowanceTransactionsParamsDTO,
+      req,
+    );
+  }
+
+  @Get('stream')
+  @ApiOkResponse({
+    description: 'Retrieve Allowance Transactions per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AllowanceTransactionsDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'transactionType',
+    required: false,
+    explode: false,
+  })
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'vintageYear',
+    required: false,
+    explode: false,
+  })
+  streamAllowanceTransactions(
+    @Query() allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    @Req() req: Request,
+  ): Promise<StreamableFile> {
+    return this.allowanceTransactionsService.streamAllowanceTransactions(
       allowanceTransactionsParamsDTO,
       req,
     );

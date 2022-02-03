@@ -1,19 +1,31 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  StreamableFile,
+} from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
+import { Transform } from 'stream';
+import { plainToClass } from 'class-transformer';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import { Logger } from '@us-epa-camd/easey-common/logger';
+import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
 
 import { fieldMappings } from '../constants/field-mappings';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import {
+  AllowanceTransactionsParamsDTO,
+  PaginatedAllowanceTransactionsParamsDTO,
+} from '../dto/allowance-transactions.params.dto';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
-import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
+import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 
 @Injectable()
 export class AllowanceTransactionsService {
@@ -29,14 +41,14 @@ export class AllowanceTransactionsService {
   ) {}
 
   async getAllowanceTransactions(
-    allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
     this.logger.info('Getting allowance transactions');
-    let query;
+    let entities: TransactionBlockDim[];
     try {
-      query = await this.transactionBlockDimRepository.getAllowanceTransactions(
-        allowanceTransactionsParamsDTO,
+      entities = await this.transactionBlockDimRepository.getAllowanceTransactions(
+        paginatedAllowanceTransactionsParamsDTO,
         req,
       );
     } catch (e) {
@@ -48,7 +60,7 @@ export class AllowanceTransactionsService {
       JSON.stringify(fieldMappings.allowances.transactions),
     );
     this.logger.info('Got allowance transactions');
-    return this.allowanceTransactionsMap.many(query);
+    return this.allowanceTransactionsMap.many(entities);
   }
 
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {

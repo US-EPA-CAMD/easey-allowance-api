@@ -87,3 +87,15 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
     return new Date();
   }
 }
+
+export class PaginatedAllowanceTransactionsParamsDTO extends AllowanceTransactionsParamsDTO {
+  @ApiProperty({
+    description: propertyMetadata.page.description,
+  })
+  page: number;
+
+  @ApiProperty({
+    description: propertyMetadata.perPage.description,
+  })
+  perPage: number;
+}

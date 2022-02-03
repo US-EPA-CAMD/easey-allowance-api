@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
+import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 
 import { AccountTypeCode } from './account-type-code.entity';
 import { TransactionBlockDim } from './transaction-block-dim.entity';
@@ -17,6 +18,7 @@ import { TransactionTypeCode } from './transaction-type-code.entity';
 export class TransactionFact extends BaseEntity {
   @PrimaryColumn({
     name: 'transaction_id',
+    transformer: new NumericColumnTransformer(),
   })
   transactionId: number;
 
@@ -27,6 +29,7 @@ export class TransactionFact extends BaseEntity {
 
   @Column({
     name: 'transaction_total',
+    transformer: new NumericColumnTransformer(),
   })
   transactionTotal: number;
 
@@ -67,6 +70,7 @@ export class TransactionFact extends BaseEntity {
 
   @Column({
     name: 'sell_orispl_code',
+    transformer: new NumericColumnTransformer(),
   })
   sellFacilityId: number;
 
@@ -77,6 +81,7 @@ export class TransactionFact extends BaseEntity {
 
   @Column({
     name: 'sell_epa_region',
+    transformer: new NumericColumnTransformer(),
   })
   sellEpaRegion: number;
 
@@ -117,6 +122,7 @@ export class TransactionFact extends BaseEntity {
 
   @Column({
     name: 'buy_orispl_code',
+    transformer: new NumericColumnTransformer(),
   })
   buyFacilityId: number;
 
@@ -127,6 +133,7 @@ export class TransactionFact extends BaseEntity {
 
   @Column({
     name: 'buy_epa_region',
+    transformer: new NumericColumnTransformer(),
   })
   buyEpaRegion: number;
 
