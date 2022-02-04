@@ -10,6 +10,8 @@ if (host === 'localhost') {
   uri = `http://localhost:${port}/${path}`;
 }
 
+export const PAGINATION_MAX_PER_PAGE = +process.env.EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE || 25000;
+
 export default registerAs('app', () => ({
   name: 'account-api',
   title: process.env.EASEY_ACCOUNT_API_TITLE || 'Account Management',
@@ -25,4 +27,5 @@ export default registerAs('app', () => ({
   enableGlobalValidationPipes: process.env.EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE || true,
   version: process.env.EASEY_ACCOUNT_API_VERSION || 'v0.0.0',
   published: process.env.EASEY_ACCOUNT_API_PUBLISHED || 'local',
+  perPageLimit: PAGINATION_MAX_PER_PAGE,
 }));
