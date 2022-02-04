@@ -29,6 +29,7 @@ import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { AllowanceHoldingsParamsStreamDTO } from 'src/dto/allowance-holdings-stream.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -100,7 +101,7 @@ export class AllowanceHoldingsController {
   @ApiQueryMultiSelect()
   streamAllowanceHoldings(
     @Req() req: Request,
-    @Query() params: AllowanceHoldingsParamsDTO,
+    @Query() params: AllowanceHoldingsParamsStreamDTO,
   ): Promise<StreamableFile> {
     return this.allowanceService.streamAllowanceHoldings(req, params);
   }

@@ -28,6 +28,7 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
+import { AccountAttributesStreamParamsDTO } from 'src/dto/account-attributes-stream.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -71,7 +72,7 @@ export class AccountController {
   @ApiQueryMultiSelect()
   streamAllowanceHoldings(
     @Req() req: Request,
-    @Query() params: AccountAttributesParamsDTO,
+    @Query() params: AccountAttributesStreamParamsDTO,
   ): Promise<StreamableFile> {
     return this.accountService.streamAllAccountAttributes(req, params);
   }

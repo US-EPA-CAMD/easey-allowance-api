@@ -22,6 +22,7 @@ import { fieldMappings } from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { Transform } from 'stream';
+import { AccountAttributesStreamParamsDTO } from 'src/dto/account-attributes-stream.params.dto';
 
 @Injectable()
 export class AccountService {
@@ -50,7 +51,7 @@ export class AccountService {
 
   async streamAllAccountAttributes(
     req: Request,
-    params: AccountAttributesParamsDTO,
+    params: AccountAttributesStreamParamsDTO,
   ): Promise<StreamableFile> {
     const stream = await this.accountFactRepository.streamAllAccountAttributes(
       params,

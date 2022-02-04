@@ -5,8 +5,9 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AccountFact } from '../entities/account-fact.entity';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { AccountAttributesParamsDTO } from 'src/dto/account-attributes.params.dto';
 import { ReadStream } from 'fs';
+import { AccountAttributesStreamParamsDTO } from 'src/dto/account-attributes-stream.params.dto';
+import { AccountAttributesParamsDTO } from 'src/dto/account-attributes.params.dto';
 
 @EntityRepository(AccountFact)
 export class AccountFactRepository extends Repository<AccountFact> {
@@ -19,7 +20,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   streamAllAccountAttributes(
-    params: AccountAttributesParamsDTO,
+    params: AccountAttributesStreamParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }
@@ -87,7 +88,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   private buildQuery(
-    params: AccountAttributesParamsDTO,
+    params: AccountAttributesStreamParamsDTO | AccountAttributesParamsDTO,
     isStreamed: boolean = false,
   ): SelectQueryBuilder<AccountFact> {
     let query = this.createQueryBuilder('af')

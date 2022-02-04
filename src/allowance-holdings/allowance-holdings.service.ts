@@ -18,6 +18,7 @@ import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { Transform } from 'stream';
+import { AllowanceHoldingsParamsStreamDTO } from 'src/dto/allowance-holdings-stream.params.dto';
 
 @Injectable()
 export class AllowanceHoldingsService {
@@ -31,7 +32,7 @@ export class AllowanceHoldingsService {
 
   async streamAllowanceHoldings(
     req: Request,
-    params: AllowanceHoldingsParamsDTO,
+    params: AllowanceHoldingsParamsStreamDTO,
   ): Promise<StreamableFile> {
     const stream = await this.allowanceHoldingsRepository.streamAllowanceHoldings(
       params,
