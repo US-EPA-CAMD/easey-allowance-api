@@ -1,3 +1,4 @@
+import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 import {
   BaseEntity,
   Column,
@@ -11,21 +12,6 @@ import { AccountFact } from './account-fact.entity';
 
 @Entity({ name: 'camddmw.allowance_holding_dim' })
 export class AllowanceHoldingDim extends BaseEntity {
-  @PrimaryColumn({
-    name: 'vintage_year',
-  })
-  vintageYear: number;
-
-  @PrimaryColumn({
-    name: 'prg_code',
-  })
-  programCodeInfo: string;
-
-  @PrimaryColumn({
-    name: 'start_block',
-  })
-  startBlock: number;
-
   @Column({
     name: 'account_number',
   })
@@ -36,13 +22,32 @@ export class AllowanceHoldingDim extends BaseEntity {
   })
   accountName: string;
 
+  @PrimaryColumn({
+    name: 'prg_code',
+  })
+  programCodeInfo: string;
+
+  @PrimaryColumn({
+    name: 'vintage_year',
+    transformer: new NumericColumnTransformer(),
+  })
+  vintageYear: number;
+
   @Column({
     name: 'total_block',
+    transformer: new NumericColumnTransformer(),
   })
   totalBlock: number;
 
+  @PrimaryColumn({
+    name: 'start_block',
+    transformer: new NumericColumnTransformer(),
+  })
+  startBlock: number;
+
   @Column({
     name: 'end_block',
+    transformer: new NumericColumnTransformer(),
   })
   endBlock: number;
 

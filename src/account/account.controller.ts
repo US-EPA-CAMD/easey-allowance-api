@@ -5,9 +5,17 @@ import {
   getSchemaPath,
   ApiSecurity,
 } from '@nestjs/swagger';
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Query,
+  Req,
+  UseInterceptors,
+  StreamableFile,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
+import { fieldMappings } from '../constants/field-mappings';
 
 import {
   BadRequestResponse,
@@ -37,6 +45,35 @@ export class AccountController {
   @ApiExtraModels(AccountDTO)
   getAllAccounts(): Promise<AccountDTO[]> {
     return this.accountService.getAllAccounts();
+  }
+
+  @Get('attributes/stream')
+  @ApiOkResponse({
+    description: 'Streams Allowance Holdings per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AccountAttributesDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.allowances.accountAttributes
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  streamAllowanceHoldings(
+    @Req() req: Request,
+    @Query() params: AccountAttributesParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.accountService.streamAllAccountAttributes(req, params);
   }
 
   @Get('attributes')
