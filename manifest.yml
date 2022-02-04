@@ -16,6 +16,7 @@ applications:
       EASEY_ACCOUNT_API_ENABLE_API_KEY: true
       EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN: false
       EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE: true
+      EASEY_ACCOUNT_API_MAX_PAGINATION_PER_PAGE: 25000
     routes:
       - route: ((host))/((path))
     services:
