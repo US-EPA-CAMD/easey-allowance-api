@@ -1,10 +1,12 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 import { Request } from 'express';
 
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AccountFact } from '../entities/account-fact.entity';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
+import { AccountAttributesParamsDTO } from 'src/dto/account-attributes.params.dto';
+import { ReadStream } from 'fs';
 
 @EntityRepository(AccountFact)
 export class AccountFactRepository extends Repository<AccountFact> {
@@ -16,46 +18,19 @@ export class AccountFactRepository extends Repository<AccountFact> {
     return query.getMany();
   }
 
+  streamAllAccountAttributes(
+    params: AccountAttributesParamsDTO,
+  ): Promise<ReadStream> {
+    return this.buildQuery(params, true).stream();
+  }
+
   async getAllAccountAttributes(
     accountAttributesParamsDTO,
     req: Request,
   ): Promise<AccountFact[]> {
     const { page, perPage } = accountAttributesParamsDTO;
 
-    let query = this.createQueryBuilder('af')
-      .select([
-        'af.accountNumber',
-        'af.accountName',
-        'af.programCodeInfo',
-        'af.accountType',
-        'af.facilityId',
-        'af.unitId',
-        'af.ownerOperator',
-        'af.stateCode',
-        'af.epaRegion',
-        'af.nercRegion',
-        'atc.accountTypeDescription',
-      ])
-      .innerJoin('af.accountTypeCd', 'atc');
-
-    query = QueryBuilderHelper.createAccountQuery(
-      query,
-      accountAttributesParamsDTO,
-      [
-        'accountNumber',
-        'programCodeInfo',
-        'facilityId',
-        'ownerOperator',
-        'stateCode',
-        'accountType',
-      ],
-      'af',
-      'af',
-      false,
-      'atc',
-    );
-
-    query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');
+    let query = this.buildQuery(accountAttributesParamsDTO, false);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -85,5 +60,59 @@ export class AccountFactRepository extends Repository<AccountFact> {
       ]);
 
     return query.getMany();
+  }
+
+  private getColumns(isStreamed: boolean): string[] {
+    const columns = [
+      'af.accountNumber',
+      'af.accountName',
+      'af.programCodeInfo',
+      'af.accountType',
+      'af.facilityId',
+      'af.unitId',
+      'af.ownerOperator',
+      'af.stateCode',
+      'af.epaRegion',
+      'af.nercRegion',
+      'atc.accountTypeDescription',
+    ];
+
+    return columns.map(col => {
+      if (isStreamed) {
+        return `${col} AS "${col.split('.')[1]}"`;
+      } else {
+        return col;
+      }
+    });
+  }
+
+  private buildQuery(
+    params: AccountAttributesParamsDTO,
+    isStreamed: boolean = false,
+  ): SelectQueryBuilder<AccountFact> {
+    let query = this.createQueryBuilder('af')
+      .select(this.getColumns(isStreamed))
+      .innerJoin('af.accountTypeCd', 'atc');
+
+    query = QueryBuilderHelper.createAccountQuery(
+      query,
+      params,
+      [
+        'accountNumber',
+        'programCodeInfo',
+        'facilityId',
+        'ownerOperator',
+        'stateCode',
+        'accountType',
+      ],
+      'af',
+      'af',
+      false,
+      'atc',
+    );
+
+    query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');
+
+    return query;
   }
 }
