@@ -4536,6 +4536,7 @@ pg-protocol@^1.5.0:
   resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.5.0.tgz#b5dd452257314565e2d54ab3c132adc46565a6a0"
   integrity sha512-muRttij7H8TqRNu/DxrAJQITO4Ac7RmX3Klyr/9mJEOBeIpgnF8f9jAfRz5d3XwQZl5qBjF9gLsUtMPJE0vezQ==
 
+pg-query-stream@^4.2.1:
 pg-query-stream@4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/pg-query-stream/-/pg-query-stream-4.2.1.tgz#e69d8c9a3cc5aa43d0943bdee63dfb2af9763c36"
