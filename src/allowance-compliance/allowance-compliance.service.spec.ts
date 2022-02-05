@@ -5,7 +5,7 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
-import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
@@ -84,7 +84,7 @@ describe('-- Allowance Compliance Service --', () => {
       );
       allowanceComplianceMap.many.mockReturnValue('mapped DTOs');
 
-      let filters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+      let filters: PaginatedAllowanceComplianceParamsDTO = new PaginatedAllowanceComplianceParamsDTO();
       filters.year = [2019];
       filters.page = undefined;
       filters.perPage = undefined;
@@ -98,7 +98,7 @@ describe('-- Allowance Compliance Service --', () => {
         req,
       );
 
-      let filtersOtc: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+      let filtersOtc: PaginatedAllowanceComplianceParamsDTO = new PaginatedAllowanceComplianceParamsDTO();
       filtersOtc.year = [2019];
       filtersOtc.page = undefined;
       filtersOtc.perPage = undefined;

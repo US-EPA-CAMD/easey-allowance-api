@@ -8,10 +8,9 @@ import {
 import { State } from '@us-epa-camd/easey-common/enums';
 import { IsOrisCode } from '@us-epa-camd/easey-common/pipes';
 
-import { PaginationDTO } from './pagination.dto';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 
-export class ComplianceParamsDTO extends PaginationDTO {
+export class ComplianceParamsDTO {
   @ApiProperty({
     enum: State,
     description: propertyMetadata.stateCode.description,
@@ -43,10 +42,4 @@ export class ComplianceParamsDTO extends PaginationDTO {
   @IsOptional()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   ownerOperator?: string[];
-
-  @ApiProperty({
-    description:
-      'Attaches a file with data in the format specified by the Accept header',
-  })
-  attachFile?: boolean;
 }

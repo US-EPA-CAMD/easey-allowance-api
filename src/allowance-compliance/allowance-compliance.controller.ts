@@ -1,5 +1,12 @@
 import { Request } from 'express';
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Query,
+  Req,
+  UseInterceptors,
+  StreamableFile,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -17,14 +24,18 @@ import {
   ApiQueryComplianceMultiSelect,
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
-import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import {
+  AllowanceComplianceParamsDTO,
+  PaginatedAllowanceComplianceParamsDTO,
+} from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
+import { fieldMappings } from '../constants/field-mappings';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Allowance Compliance')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(AllowanceComplianceDTO)
 export class AllowanceComplianceController {
   constructor(
     private readonly allowanceComplianceService: AllowanceComplianceService,
@@ -42,6 +53,9 @@ export class AllowanceComplianceController {
       'text/csv': {
         schema: {
           type: 'string',
+          example: fieldMappings.compliance.allowanceNbpOtc
+            .map(i => i.label)
+            .join(','),
         },
       },
     },
@@ -55,12 +69,51 @@ export class AllowanceComplianceController {
     required: false,
     explode: false,
   })
-  @ApiExtraModels(AllowanceComplianceDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getAllowanceCompliance(
-    @Query() allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
+    @Query()
+    paginatedAllowanceComplianceParamsDTO: PaginatedAllowanceComplianceParamsDTO,
     @Req() req: Request,
   ): Promise<AllowanceComplianceDTO[]> {
     return this.allowanceComplianceService.getAllowanceCompliance(
+      paginatedAllowanceComplianceParamsDTO,
+      req,
+    );
+  }
+
+  @Get('stream')
+  @ApiOkResponse({
+    description: 'Retrieve Allowance Compliance Data per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AllowanceComplianceDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.compliance.allowanceNbpOtc
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryComplianceMultiSelect()
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'programCodeInfo',
+    required: false,
+    explode: false,
+  })
+  streamAllowanceCompliance(
+    @Query() allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
+    @Req() req: Request,
+  ): Promise<StreamableFile> {
+    return this.allowanceComplianceService.streamAllowanceCompliance(
       allowanceComplianceParamsDTO,
       req,
     );

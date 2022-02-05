@@ -3,13 +3,14 @@ import { SelectQueryBuilder } from 'typeorm';
 
 import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 
-import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
-import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getManyAndCount: jest.fn(),
   getRawMany: jest.fn(),
   select: jest.fn(),
   leftJoin: jest.fn(),
@@ -22,16 +23,20 @@ const mockQueryBuilder = () => ({
   distinctOn: jest.fn(),
 });
 
-const mockRequest = (url: string) => {
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
     url,
     res: {
       setHeader: jest.fn(),
     },
+    query: {
+      page,
+      perPage,
+    },
   };
 };
 
-let filters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+let filters = new PaginatedAllowanceComplianceParamsDTO();
 filters.year = [2019];
 filters.page = undefined;
 filters.perPage = undefined;
@@ -41,8 +46,9 @@ filters.stateCode = [State.AK];
 filters.programCodeInfo = [AllowanceProgram.OTC];
 
 describe('-- AccountComplianceDimRepository --', () => {
-  let accountComplianceDimRepository;
-  let queryBuilder;
+  let repository: AccountComplianceDimRepository;
+  let queryBuilder: any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -52,16 +58,13 @@ describe('-- AccountComplianceDimRepository --', () => {
       ],
     }).compile();
 
-    accountComplianceDimRepository = module.get<AccountComplianceDimRepository>(
-      AccountComplianceDimRepository,
-    );
-    queryBuilder = module.get<SelectQueryBuilder<AccountComplianceDim>>(
-      SelectQueryBuilder,
-    );
+    repository = module.get(AccountComplianceDimRepository);
+    queryBuilder = module.get(SelectQueryBuilder);
 
-    accountComplianceDimRepository.createQueryBuilder = jest
-      .fn()
-      .mockReturnValue(queryBuilder);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+
+    repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.leftJoin.mockReturnValue(queryBuilder);
@@ -74,63 +77,73 @@ describe('-- AccountComplianceDimRepository --', () => {
     queryBuilder.getRawMany.mockReturnValue(
       'mockApplicableAllowanceComplianceAttributes',
     );
+    queryBuilder.getManyAndCount.mockReturnValue([
+      'mockAllowanceCompliance',
+      0,
+    ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
   });
 
   describe('getAllowanceCompliance', () => {
-    it('calls createQueryBuilder and gets all AccountComplianceDim results from the repository', async () => {
-      const emptyFilters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+    it('calls createQueryBuilder and gets all AccountComplianceDim results from the repository with no filters', async () => {
+      // const emptyFilters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
 
-      let result = await accountComplianceDimRepository.getAllowanceCompliance(
-        emptyFilters,
-      );
-
-      result = await accountComplianceDimRepository.getAllowanceCompliance(
-        filters,
+      let result = await repository.getAllowanceCompliance(
+        req,
+        new PaginatedAllowanceComplianceParamsDTO(),
       );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(result).toEqual('mockAllowanceCompliance');
     });
 
-    it('calls createQueryBuilder and gets page 1 of AccountComplianceDim paginated results from the repository', async () => {
-      let paginatedFilters = filters;
-      paginatedFilters.page = 1;
-      paginatedFilters.perPage = 5;
-      let req: any = mockRequest(
-        `/allowance-compliance?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-      );
-      req.res.setHeader.mockReturnValue();
-      let paginatedResult = await accountComplianceDimRepository.getAllowanceCompliance(
-        paginatedFilters,
-        req,
-      );
-      expect(req.res.setHeader).toHaveBeenCalled();
+    it('calls createQueryBuilder and gets all AccountComplianceDim results from the repository with filters', async () => {
+      const result = await repository.getAllowanceCompliance(req, filters);
       expect(queryBuilder.getMany).toHaveBeenCalled();
+      expect(result).toEqual('mockAllowanceCompliance');
+    });
+
+    it('calls createQueryBuilder and gets page 1 of AccountComplianceDim paginated results from the repository', async () => {
+      ResponseHeaders.setPagination = jest
+        .fn()
+        .mockReturnValue('paginated results');
+
+      let pagiantedFilters = filters;
+      pagiantedFilters.page = 1;
+      pagiantedFilters.perPage = 10;
+
+      const paginatedResult = await repository.getAllowanceCompliance(
+        req,
+        pagiantedFilters,
+      );
+
+      expect(ResponseHeaders.setPagination).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockAllowanceCompliance');
     });
   });
+
   it('calls createQueryBuilder and gets page 2 of AccountComplianceDim paginated results from the repository', async () => {
-    let paginatedFilters = filters;
-    paginatedFilters.page = 2;
-    paginatedFilters.perPage = 5;
-    let req: any = mockRequest(
-      `/allowance-compliance?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-    );
-    req.res.setHeader.mockReturnValue();
-    let paginatedResult = await accountComplianceDimRepository.getAllowanceCompliance(
-      paginatedFilters,
+    ResponseHeaders.setPagination = jest
+      .fn()
+      .mockReturnValue('paginated results');
+
+    let pagiantedFilters = filters;
+    pagiantedFilters.page = 2;
+    pagiantedFilters.perPage = 10;
+
+    const paginatedResult = await repository.getAllowanceCompliance(
       req,
+      pagiantedFilters,
     );
-    expect(req.res.setHeader).toHaveBeenCalled();
-    expect(queryBuilder.getMany).toHaveBeenCalled();
+
+    expect(ResponseHeaders.setPagination).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAllowanceCompliance');
   });
 
   describe('getAllApplicableAllowanceComplianceAttributes', () => {
     it('calls createQueryBuilder and gets all applicable allowance compliance attributes from the repository', async () => {
-      const result = await accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes();
+      const result = await repository.getAllApplicableAllowanceComplianceAttributes();
       expect(queryBuilder.getRawMany).toHaveBeenCalled();
       expect(result).toEqual('mockApplicableAllowanceComplianceAttributes');
     });

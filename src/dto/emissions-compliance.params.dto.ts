@@ -1,6 +1,10 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiHideProperty,
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,
@@ -36,4 +40,16 @@ export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
   private get getCurrentDate(): Date {
     return new Date();
   }
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: propertyMetadata.page.description,
+  })
+  page: number;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: propertyMetadata.perPage.description,
+  })
+  perPage: number;
 }
