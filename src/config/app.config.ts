@@ -11,6 +11,7 @@ if (host === 'localhost') {
 }
 
 export const PAGINATION_MAX_PER_PAGE = +process.env.EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE || 25000;
+
 export default registerAs('app', () => ({
   name: 'account-api',
   title: process.env.EASEY_ACCOUNT_API_TITLE || 'Account Management',
