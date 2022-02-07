@@ -5,7 +5,7 @@ import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
-import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
@@ -57,7 +57,7 @@ describe('-- Allowance Transactions Controller --', () => {
 
     it('should call the service and return allowance transactions ', async () => {
       const expectedResults: AllowanceTransactionsDTO[] = [];
-      const paramsDTO = new AllowanceTransactionsParamsDTO();
+      const paramsDTO = new PaginatedAllowanceTransactionsParamsDTO();
       jest
         .spyOn(allowanceTransactionsService, 'getAllowanceTransactions')
         .mockResolvedValue(expectedResults);

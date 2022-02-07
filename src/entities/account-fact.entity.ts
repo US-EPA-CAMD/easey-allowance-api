@@ -12,6 +12,7 @@ import { AllowanceHoldingDim } from './allowance-holding-dim.entity';
 import { AccountComplianceDim } from './account-compliance-dim.entity';
 import { AccountOwnerDim } from './account-owner-dim.entity';
 import { AccountTypeCode } from './account-type-code.entity';
+import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 
 @Entity({ name: 'camddmw.account_fact' })
 export class AccountFact extends BaseEntity {
@@ -37,6 +38,7 @@ export class AccountFact extends BaseEntity {
 
   @Column({
     name: 'orispl_code',
+    transformer: new NumericColumnTransformer(),
   })
   facilityId: number;
 
@@ -57,6 +59,7 @@ export class AccountFact extends BaseEntity {
 
   @Column({
     name: 'epa_region',
+    transformer: new NumericColumnTransformer(),
   })
   epaRegion: number;
 

@@ -8,7 +8,7 @@ import { AccountComplianceDimRepository } from './account-compliance-dim.reposit
 import { AllowanceComplianceController } from './allowance-compliance.controller';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
-import { AllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
@@ -27,6 +27,7 @@ const mockRequest = (url: string) => {
 describe('-- Allowance Compliance Controller --', () => {
   let allowanceComplianceController: AllowanceComplianceController;
   let allowanceComplianceService: AllowanceComplianceService;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -44,6 +45,8 @@ describe('-- Allowance Compliance Controller --', () => {
 
     allowanceComplianceController = module.get(AllowanceComplianceController);
     allowanceComplianceService = module.get(AllowanceComplianceService);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
   });
 
   afterEach(() => {
@@ -56,7 +59,7 @@ describe('-- Allowance Compliance Controller --', () => {
 
     it('should call the service and return allowance compliance data ', async () => {
       const expectedResults: AllowanceComplianceDTO[] = [];
-      const paramsDTO: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
+      const paramsDTO: PaginatedAllowanceComplianceParamsDTO = new PaginatedAllowanceComplianceParamsDTO();
       paramsDTO.year = [2019];
       paramsDTO.page = undefined;
       paramsDTO.perPage = undefined;
@@ -78,7 +81,7 @@ describe('-- Allowance Compliance Controller --', () => {
   });
 
   describe('*getAllAplicableAllowanceComplianceAttributes', () => {
-    it('should call the service and return applicable allowance transactions attributes', async () => {
+    it('should call the service and return applicable allowance compliance attributes', async () => {
       const expectedResults: ApplicableAllowanceComplianceAttributesDTO[] = [];
       jest
         .spyOn(
