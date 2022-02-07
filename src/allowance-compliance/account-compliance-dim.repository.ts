@@ -72,7 +72,7 @@ export class AccountComplianceDimRepository extends Repository<
         'af.ownerOperator',
         'af.stateCode',
       ];
-    } else
+    } else {
       columns = [
         'acd.programCodeInfo',
         'acd.year',
@@ -91,6 +91,7 @@ export class AccountComplianceDimRepository extends Repository<
         'af.ownerOperator',
         'af.stateCode',
       ];
+    }
 
     return columns.map(col => {
       if (isStreamed) {

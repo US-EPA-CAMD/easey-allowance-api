@@ -86,12 +86,12 @@ export class AllowanceComplianceService {
       objectMode: true,
       transform(data, _enc, callback) {
         if (!includesOtcNbp(allowanceComplianceParamsDTO)) {
-          delete data.bankedHeld,
-            delete data.currentHeld,
-            delete data.totalRequiredDeductions,
-            delete data.currentDeductions,
-            delete data.deductOneToOne,
-            delete data.deductTwoToOne;
+          delete data.bankedHeld;
+          delete data.currentHeld;
+          delete data.totalRequiredDeductions;
+          delete data.currentDeductions;
+          delete data.deductOneToOne;
+          delete data.deductTwoToOne;
         }
         const dto = plainToClass(AllowanceComplianceDTO, data, {
           enableImplicitConversion: true,
