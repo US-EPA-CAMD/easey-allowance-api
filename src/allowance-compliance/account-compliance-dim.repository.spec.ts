@@ -90,8 +90,8 @@ describe('-- AccountComplianceDimRepository --', () => {
       // const emptyFilters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
 
       let result = await repository.getAllowanceCompliance(
-        req,
         new PaginatedAllowanceComplianceParamsDTO(),
+        req,
       );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
@@ -99,7 +99,7 @@ describe('-- AccountComplianceDimRepository --', () => {
     });
 
     it('calls createQueryBuilder and gets all AccountComplianceDim results from the repository with filters', async () => {
-      const result = await repository.getAllowanceCompliance(req, filters);
+      const result = await repository.getAllowanceCompliance(filters, req);
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(result).toEqual('mockAllowanceCompliance');
     });
@@ -114,8 +114,8 @@ describe('-- AccountComplianceDimRepository --', () => {
       pagiantedFilters.perPage = 10;
 
       const paginatedResult = await repository.getAllowanceCompliance(
-        req,
         pagiantedFilters,
+        req,
       );
 
       expect(ResponseHeaders.setPagination).toHaveBeenCalled();
@@ -133,8 +133,8 @@ describe('-- AccountComplianceDimRepository --', () => {
     pagiantedFilters.perPage = 10;
 
     const paginatedResult = await repository.getAllowanceCompliance(
-      req,
       pagiantedFilters,
+      req,
     );
 
     expect(ResponseHeaders.setPagination).toHaveBeenCalled();

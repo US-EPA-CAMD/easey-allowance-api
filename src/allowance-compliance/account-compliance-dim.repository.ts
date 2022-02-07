@@ -26,8 +26,8 @@ export class AccountComplianceDimRepository extends Repository<
   }
 
   async getAllowanceCompliance(
-    req: Request,
     params: PaginatedAllowanceComplianceParamsDTO,
+    req: Request,
   ): Promise<AccountComplianceDim[]> {
     let totalCount: number;
     let results: AccountComplianceDim[];
@@ -133,19 +133,6 @@ export class AccountComplianceDimRepository extends Repository<
 
     return query;
   }
-
-  // private isOtcNbp(params): boolean {
-  //   const { programCodeInfo } = params;
-  //   if (
-  //     programCodeInfo ||
-  //     programCodeInfo.includes(AllowanceProgram.OTC) ||
-  //     programCodeInfo.includes(AllowanceProgram.NBP)
-  //   ) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   async getAllApplicableAllowanceComplianceAttributes(): Promise<any> {
     const query = this.createQueryBuilder('acd')

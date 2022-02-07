@@ -49,8 +49,8 @@ export class AllowanceComplianceService {
     let fieldMapping;
     try {
       entities = await this.accountComplianceDimRepository.getAllowanceCompliance(
-        req,
         paginatedAllowanceComplianceParamsDTO,
+        req,
       );
     } catch (e) {
       this.Logger.error(InternalServerErrorException, e.message);
