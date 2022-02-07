@@ -43,7 +43,7 @@ export class AllowanceComplianceController {
 
   @Get()
   @ApiOkResponse({
-    description: 'Retrieve Allowance Compliance Data per filter criteria',
+    description: 'Retrieves Allowance Compliance Data per filter criteria',
     content: {
       'application/json': {
         schema: {
@@ -83,7 +83,7 @@ export class AllowanceComplianceController {
 
   @Get('stream')
   @ApiOkResponse({
-    description: 'Retrieve Allowance Compliance Data per filter criteria',
+    description: 'Streams Allowance Compliance Data per filter criteria',
     content: {
       'application/json': {
         schema: {
