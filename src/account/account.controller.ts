@@ -26,9 +26,11 @@ import { AccountService } from './account.service';
 import { AccountDTO } from '../dto/account.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import {
+  AccountAttributesParamsDTO,
+  PaginatedAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
-import { AccountAttributesStreamParamsDTO } from '../dto/account-attributes-stream.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -46,6 +48,37 @@ export class AccountController {
   @ApiExtraModels(AccountDTO)
   getAllAccounts(): Promise<AccountDTO[]> {
     return this.accountService.getAllAccounts();
+  }
+
+  @Get('attributes')
+  @ApiOkResponse({
+    description: 'Retrieved All Valid Account Attributes',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AccountAttributesDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  @ApiExtraModels(AccountAttributesDTO)
+  getAllAccountAttributes(
+    @Query()
+    paginatedAccountAttributesParamsDTO: PaginatedAccountAttributesParamsDTO,
+    @Req() req: Request,
+  ): Promise<AccountAttributesDTO[]> {
+    return this.accountService.getAllAccountAttributes(
+      paginatedAccountAttributesParamsDTO,
+      req,
+    );
   }
 
   @Get('attributes/stream')
@@ -72,39 +105,9 @@ export class AccountController {
   @ApiQueryMultiSelect()
   streamAllAccountAttributes(
     @Req() req: Request,
-    @Query() params: AccountAttributesStreamParamsDTO,
+    @Query() params: AccountAttributesParamsDTO,
   ): Promise<StreamableFile> {
     return this.accountService.streamAllAccountAttributes(req, params);
-  }
-
-  @Get('attributes')
-  @ApiOkResponse({
-    description: 'Retrieved All Valid Account Attributes',
-    content: {
-      'application/json': {
-        schema: {
-          $ref: getSchemaPath(AccountAttributesDTO),
-        },
-      },
-      'text/csv': {
-        schema: {
-          type: 'string',
-        },
-      },
-    },
-  })
-  @BadRequestResponse()
-  @NotFoundResponse()
-  @ApiQueryMultiSelect()
-  @ApiExtraModels(AccountAttributesDTO)
-  getAllAccountAttributes(
-    @Query() accountAttributesParamsDTO: AccountAttributesParamsDTO,
-    @Req() req: Request,
-  ): Promise<AccountAttributesDTO[]> {
-    return this.accountService.getAllAccountAttributes(
-      accountAttributesParamsDTO,
-      req,
-    );
   }
 
   @Get('attributes/applicable')

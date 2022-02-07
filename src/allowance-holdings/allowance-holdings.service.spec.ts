@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 
@@ -66,7 +66,7 @@ describe('-- Allowance Holdings Service --', () => {
       );
       allowanceHoldingsMap.many.mockReturnValue('mapped DTOs');
 
-      let filters = new AllowanceHoldingsParamsDTO();
+      let filters = new PaginatedAllowanceHoldingsParamsDTO();
 
       let result = await allowanceHoldingsService.getAllowanceHoldings(
         filters,

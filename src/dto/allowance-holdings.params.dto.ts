@@ -51,12 +51,14 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: ActiveAllowanceProgram[];
+}
 
+export class PaginatedAllowanceHoldingsParamsDTO extends AllowanceHoldingsParamsDTO {
   @Min(1, {
     message: ErrorMessages.GreaterThanOrEqual('page', 1),
   })
   @IsDefined()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: propertyMetadata.page.description,
   })
   page: number;
@@ -65,7 +67,7 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
     message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
   })
   @IsDefined()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: propertyMetadata.perPage.description,
   })
   perPage: number;

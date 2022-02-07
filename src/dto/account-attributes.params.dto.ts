@@ -1,9 +1,11 @@
 import { IsDefined, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
+import {
+  propertyMetadata,
+  ErrorMessages,
+} from '@us-epa-camd/easey-common/constants';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
-import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 import { Min, IsInRange } from '@us-epa-camd/easey-common/pipes';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
@@ -32,12 +34,14 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   programCodeInfo?: AllowanceProgram[];
+}
 
+export class PaginatedAccountAttributesParamsDTO extends AccountAttributesParamsDTO {
   @Min(1, {
     message: ErrorMessages.GreaterThanOrEqual('page', 1),
   })
   @IsDefined()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: propertyMetadata.page.description,
   })
   page: number;
@@ -46,7 +50,7 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
     message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
   })
   @IsDefined()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: propertyMetadata.perPage.description,
   })
   perPage: number;

@@ -3,28 +3,30 @@ import { Request } from 'express';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  AllowanceHoldingsParamsDTO,
+  PaginatedAllowanceHoldingsParamsDTO,
+} from '../dto/allowance-holdings.params.dto';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { ReadStream } from 'fs';
-import { AllowanceHoldingsParamsStreamDTO } from 'src/dto/allowance-holdings-stream.params.dto';
 
 @EntityRepository(AllowanceHoldingDim)
 export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
   streamAllowanceHoldings(
-    params: AllowanceHoldingsParamsStreamDTO,
+    params: AllowanceHoldingsParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }
 
   async getAllowanceHoldings(
-    allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingDim[]> {
-    const { page, perPage } = allowanceHoldingsParamsDTO;
+    const { page, perPage } = paginatedAllowanceHoldingsParamsDTO;
 
-    const query = this.buildQuery(allowanceHoldingsParamsDTO, false);
+    const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO, false);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -86,7 +88,7 @@ export class AllowanceHoldingDimRepository extends Repository<
   }
 
   private buildQuery(
-    params: AllowanceHoldingsParamsStreamDTO | AllowanceHoldingsParamsDTO,
+    params: AllowanceHoldingsParamsDTO | PaginatedAllowanceHoldingsParamsDTO,
     isStreamed: boolean = false,
   ): SelectQueryBuilder<AllowanceHoldingDim> {
     let query = this.createQueryBuilder('ahd')

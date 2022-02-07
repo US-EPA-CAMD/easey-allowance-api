@@ -9,8 +9,8 @@ import {
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -36,7 +36,7 @@ const mockRequest = (url: string) => {
   };
 };
 
-let filters: AccountAttributesParamsDTO = {
+let filters: PaginatedAccountAttributesParamsDTO = {
   accountType: [AccountType.GENERAL],
   page: undefined,
   perPage: undefined,
@@ -87,7 +87,7 @@ describe('AccountFactRepository', () => {
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
       const result = await accountFactRepository.streamAllAccountAttributes(
-        new AllowanceHoldingsParamsDTO(),
+        new PaginatedAllowanceHoldingsParamsDTO(),
       );
 
       expect(result).toEqual('mockStream');
@@ -104,7 +104,7 @@ describe('AccountFactRepository', () => {
 
   describe('getAllAccountAttributes', () => {
     it('calls createQueryBuilder and gets all AccountAttributes results from the repository', async () => {
-      const emptyFilters: AccountAttributesParamsDTO = new AccountAttributesParamsDTO();
+      const emptyFilters: PaginatedAccountAttributesParamsDTO = new PaginatedAccountAttributesParamsDTO();
 
       let result = await accountFactRepository.getAllAccountAttributes(
         emptyFilters,

@@ -7,7 +7,7 @@ import {
   AccountType,
 } from '@us-epa-camd/easey-common/enums';
 
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 
@@ -35,7 +35,7 @@ const mockRequest = (url: string) => {
   };
 };
 
-let filters: AllowanceHoldingsParamsDTO = {
+let filters: PaginatedAllowanceHoldingsParamsDTO = {
   accountType: [AccountType.GENERAL],
   vintageYear: [2019, 2020],
   page: undefined,
@@ -86,7 +86,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
   describe('streamAllowanceHoldings', () => {
     it('streams allowance holdings', async () => {
       const result = await allowanceHoldingDimRepository.streamAllowanceHoldings(
-        new AllowanceHoldingsParamsDTO(),
+        new PaginatedAllowanceHoldingsParamsDTO(),
       );
 
       expect(result).toEqual('mockStream');
@@ -95,7 +95,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
 
   describe('getAllowanceHoldings', () => {
     it('calls createQueryBuilder and gets all AllowanceHoldingDim results from the repository', async () => {
-      const emptyFilters: AllowanceHoldingsParamsDTO = new AllowanceHoldingsParamsDTO();
+      const emptyFilters: PaginatedAllowanceHoldingsParamsDTO = new PaginatedAllowanceHoldingsParamsDTO();
 
       let result = await allowanceHoldingDimRepository.getAllowanceHoldings(
         emptyFilters,

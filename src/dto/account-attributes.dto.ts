@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
+
 export class AccountAttributesDTO {
   @ApiProperty({
     description: propertyMetadata.accountNumber.description,

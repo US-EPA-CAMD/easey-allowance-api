@@ -17,12 +17,11 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { AccountAttributesParamsDTO, PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { Transform } from 'stream';
-import { AccountAttributesStreamParamsDTO } from '../dto/account-attributes-stream.params.dto';
 
 @Injectable()
 export class AccountService {
@@ -51,7 +50,7 @@ export class AccountService {
 
   async streamAllAccountAttributes(
     req: Request,
-    params: AccountAttributesStreamParamsDTO,
+    params: AccountAttributesParamsDTO,
   ): Promise<StreamableFile> {
     const stream = await this.accountFactRepository.streamAllAccountAttributes(
       params,
@@ -89,14 +88,14 @@ export class AccountService {
   }
 
   async getAllAccountAttributes(
-    accountAttributesParamsDTO: AccountAttributesParamsDTO,
+    paginatedAccountAttributesParamsDTO: PaginatedAccountAttributesParamsDTO,
     req: Request,
   ): Promise<AccountAttributesDTO[]> {
     this.logger.info('Getting all account attributes');
     let query;
     try {
       query = await this.accountFactRepository.getAllAccountAttributes(
-        accountAttributesParamsDTO,
+        paginatedAccountAttributesParamsDTO,
         req,
       );
     } catch (e) {

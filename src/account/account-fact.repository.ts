@@ -6,8 +6,10 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 import { AccountFact } from '../entities/account-fact.entity';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { ReadStream } from 'fs';
-import { AccountAttributesStreamParamsDTO } from '../dto/account-attributes-stream.params.dto';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import {
+  AccountAttributesParamsDTO,
+  PaginatedAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
 
 @EntityRepository(AccountFact)
 export class AccountFactRepository extends Repository<AccountFact> {
@@ -20,18 +22,18 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   streamAllAccountAttributes(
-    params: AccountAttributesStreamParamsDTO,
+    params: AccountAttributesParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }
 
   async getAllAccountAttributes(
-    accountAttributesParamsDTO,
+    paginatedAccountAttributesParamsDTO,
     req: Request,
   ): Promise<AccountFact[]> {
-    const { page, perPage } = accountAttributesParamsDTO;
+    const { page, perPage } = paginatedAccountAttributesParamsDTO;
 
-    let query = this.buildQuery(accountAttributesParamsDTO, false);
+    let query = this.buildQuery(paginatedAccountAttributesParamsDTO, false);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -88,7 +90,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   private buildQuery(
-    params: AccountAttributesStreamParamsDTO | AccountAttributesParamsDTO,
+    params: AccountAttributesParamsDTO | PaginatedAccountAttributesParamsDTO,
     isStreamed: boolean = false,
   ): SelectQueryBuilder<AccountFact> {
     let query = this.createQueryBuilder('af')

@@ -9,12 +9,14 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import {
+  AccountAttributesParamsDTO,
+  PaginatedAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { StreamableFile } from '@nestjs/common';
-import { AccountAttributesStreamParamsDTO } from '../dto/account-attributes-stream.params.dto';
 
 const mockRequest = (url: string) => {
   return {
@@ -67,7 +69,7 @@ describe('-- Account Controller --', () => {
 
     it('should call the service and return all account attributes ', async () => {
       const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new AccountAttributesStreamParamsDTO();
+      const paramsDTO = new AccountAttributesParamsDTO();
       jest
         .spyOn(accountService, 'streamAllAccountAttributes')
         .mockResolvedValue(expectedResults);
@@ -83,7 +85,7 @@ describe('-- Account Controller --', () => {
 
     it('should call the service and return allowance attributes ', async () => {
       const expectedResults: AccountAttributesDTO[] = [];
-      const paramsDTO = new AccountAttributesParamsDTO();
+      const paramsDTO = new PaginatedAccountAttributesParamsDTO();
       jest
         .spyOn(accountService, 'getAllAccountAttributes')
         .mockResolvedValue(expectedResults);

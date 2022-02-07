@@ -10,7 +10,10 @@ import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
 import { v4 as uuid } from 'uuid';
 
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  AllowanceHoldingsParamsDTO,
+  PaginatedAllowanceHoldingsParamsDTO,
+} from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { fieldMappings } from '../constants/field-mappings';
@@ -18,7 +21,6 @@ import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { Transform } from 'stream';
-import { AllowanceHoldingsParamsStreamDTO } from 'src/dto/allowance-holdings-stream.params.dto';
 
 @Injectable()
 export class AllowanceHoldingsService {
@@ -32,7 +34,7 @@ export class AllowanceHoldingsService {
 
   async streamAllowanceHoldings(
     req: Request,
-    params: AllowanceHoldingsParamsStreamDTO,
+    params: AllowanceHoldingsParamsDTO,
   ): Promise<StreamableFile> {
     const stream = await this.allowanceHoldingsRepository.streamAllowanceHoldings(
       params,
@@ -70,14 +72,14 @@ export class AllowanceHoldingsService {
   }
 
   async getAllowanceHoldings(
-    allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    PaginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
     this.logger.info('Getting allowance holdings');
     let query;
     try {
       query = await this.allowanceHoldingsRepository.getAllowanceHoldings(
-        allowanceHoldingsParamsDTO,
+        PaginatedAllowanceHoldingsParamsDTO,
         req,
       );
     } catch (e) {

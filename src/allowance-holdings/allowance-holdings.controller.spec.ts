@@ -5,7 +5,7 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AccountService } from '../account/account.service';
 import { AccountOwnerDimRepository } from '../account/account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
@@ -65,7 +65,7 @@ describe('-- Allowance Holdings Controller --', () => {
 
     it('should call the service and return allowance holdings ', async () => {
       const expectedResults: AllowanceHoldingsDTO[] = [];
-      const paramsDTO = new AllowanceHoldingsParamsDTO();
+      const paramsDTO = new PaginatedAllowanceHoldingsParamsDTO();
       jest
         .spyOn(allowanceHoldingsService, 'getAllowanceHoldings')
         .mockResolvedValue(expectedResults);
@@ -81,7 +81,7 @@ describe('-- Allowance Holdings Controller --', () => {
 
     it('should call the service and return allowance holdings ', async () => {
       const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new AllowanceHoldingsParamsDTO();
+      const paramsDTO = new PaginatedAllowanceHoldingsParamsDTO();
       jest
         .spyOn(allowanceHoldingsService, 'streamAllowanceHoldings')
         .mockResolvedValue(expectedResults);

@@ -24,12 +24,14 @@ import {
 } from '../utils/swagger-decorator.const';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AccountService } from '../account/account.service';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  AllowanceHoldingsParamsDTO,
+  PaginatedAllowanceHoldingsParamsDTO,
+} from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
-import { AllowanceHoldingsParamsStreamDTO } from '../dto/allowance-holdings-stream.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -68,11 +70,12 @@ export class AllowanceHoldingsController {
   })
   @ApiExtraModels(AllowanceHoldingsDTO)
   getAllowanceHoldings(
-    @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    @Query()
+    paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     @Req() req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
     return this.allowanceService.getAllowanceHoldings(
-      allowanceHoldingsParamsDTO,
+      paginatedAllowanceHoldingsParamsDTO,
       req,
     );
   }
@@ -101,7 +104,7 @@ export class AllowanceHoldingsController {
   @ApiQueryMultiSelect()
   streamAllowanceHoldings(
     @Req() req: Request,
-    @Query() params: AllowanceHoldingsParamsStreamDTO,
+    @Query() params: AllowanceHoldingsParamsDTO,
   ): Promise<StreamableFile> {
     return this.allowanceService.streamAllowanceHoldings(req, params);
   }
