@@ -59,7 +59,7 @@ export class AccountService {
 
     req.res.setHeader(
       'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.holdings),
+      JSON.stringify(fieldMappings.allowances.accountAttributes),
     );
 
     const toDto = new Transform({
@@ -74,17 +74,17 @@ export class AccountService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      const toCSV = new PlainToCSV(fieldMappings.allowances.holdings);
+      const toCSV = new PlainToCSV(fieldMappings.allowances.accountAttributes);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
-        disposition: `attachment; filename="daily-emissions-${uuid()}.csv"`,
+        disposition: `attachment; filename="account-attributes-${uuid()}.csv"`,
       });
     }
 
     const objToString = new PlainToJSON();
     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
       type: req.headers.accept,
-      disposition: `attachment; filename="daily-emissions-${uuid()}.json"`,
+      disposition: `attachment; filename="account-attributes${uuid()}.json"`,
     });
   }
 

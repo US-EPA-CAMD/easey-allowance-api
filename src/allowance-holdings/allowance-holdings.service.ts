@@ -58,14 +58,14 @@ export class AllowanceHoldingsService {
       const toCSV = new PlainToCSV(fieldMappings.allowances.holdings);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
-        disposition: `attachment; filename="daily-emissions-${uuid()}.csv"`,
+        disposition: `attachment; filename="allowance-holdings-${uuid()}.csv"`,
       });
     }
 
     const objToString = new PlainToJSON();
     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
       type: req.headers.accept,
-      disposition: `attachment; filename="daily-emissions-${uuid()}.json"`,
+      disposition: `attachment; filename="allowance-holdings-${uuid()}.json"`,
     });
   }
 

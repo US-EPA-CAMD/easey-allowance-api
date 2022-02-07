@@ -50,7 +50,7 @@ export class AccountController {
 
   @Get('attributes/stream')
   @ApiOkResponse({
-    description: 'Streams Allowance Holdings per filter criteria',
+    description: 'Streams All Valid Account Attributes',
     content: {
       'application/json': {
         schema: {

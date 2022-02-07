@@ -11,26 +11,23 @@ export class AccountMap extends BaseMap<AccountFact, any> {
     let attributes = {};
     if (entity.programCodeInfo) {
       attributes = {
-        [propertyMetadata.programCodeInfo.fieldLabels.value]:
-          entity.programCodeInfo,
-        [propertyMetadata.accountType.fieldLabels.value]:
-          entity.accountTypeCd.accountTypeDescription,
-        [propertyMetadata.facilityId.fieldLabels.value]: entity.facilityId
+        programCodeInfo: entity.programCodeInfo,
+        accountTypeDescription: entity.accountTypeCd.accountTypeDescription,
+        facilityId: entity.facilityId
           ? Number(entity.facilityId)
           : entity.facilityId,
-        [propertyMetadata.unitId.fieldLabels.value]: entity.unitId,
-        [propertyMetadata.ownerOperator.fieldLabels.value]:
-          entity.ownerOperator,
-        [propertyMetadata.stateCode.fieldLabels.value]: entity.stateCode,
-        [propertyMetadata.epaRegion.fieldLabels.value]: entity.epaRegion
+        unitId: entity.unitId,
+        ownerOperator: entity.ownerOperator,
+        stateCode: entity.stateCode,
+        epaRegion: entity.epaRegion
           ? Number(entity.epaRegion)
           : entity.epaRegion,
-        [propertyMetadata.nercRegion.fieldLabels.value]: entity.nercRegion,
+        nercRegion: entity.nercRegion,
       };
     }
     return {
-      [propertyMetadata.accountNumber.fieldLabels.value]: entity.accountNumber,
-      [propertyMetadata.accountName.fieldLabels.value]: entity.accountName,
+      accountNumber: entity.accountNumber,
+      accountName: entity.accountName,
       ...attributes,
     };
   }
