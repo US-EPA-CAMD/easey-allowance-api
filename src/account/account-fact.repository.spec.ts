@@ -10,6 +10,7 @@ import {
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -23,6 +24,7 @@ const mockQueryBuilder = () => ({
   getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
+  stream: jest.fn(),
 });
 
 const mockRequest = (url: string) => {
@@ -79,6 +81,17 @@ describe('AccountFactRepository', () => {
     queryBuilder.getMany.mockReturnValue('mockAccount');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
+    queryBuilder.stream.mockReturnValue('mockStream');
+  });
+
+  describe('streamAccountAttributes', () => {
+    it('streams all account attributes', async () => {
+      const result = await accountFactRepository.streamAllAccountAttributes(
+        new AllowanceHoldingsParamsDTO(),
+      );
+
+      expect(result).toEqual('mockStream');
+    });
   });
 
   describe('getAllAccounts', () => {

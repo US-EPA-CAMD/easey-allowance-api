@@ -29,7 +29,7 @@ import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
-import { AllowanceHoldingsParamsStreamDTO } from 'src/dto/allowance-holdings-stream.params.dto';
+import { AllowanceHoldingsParamsStreamDTO } from '../dto/allowance-holdings-stream.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')

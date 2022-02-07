@@ -22,7 +22,7 @@ import { fieldMappings } from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { Transform } from 'stream';
-import { AccountAttributesStreamParamsDTO } from 'src/dto/account-attributes-stream.params.dto';
+import { AccountAttributesStreamParamsDTO } from '../dto/account-attributes-stream.params.dto';
 
 @Injectable()
 export class AccountService {

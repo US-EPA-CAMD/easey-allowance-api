@@ -6,8 +6,8 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 import { AccountFact } from '../entities/account-fact.entity';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { ReadStream } from 'fs';
-import { AccountAttributesStreamParamsDTO } from 'src/dto/account-attributes-stream.params.dto';
-import { AccountAttributesParamsDTO } from 'src/dto/account-attributes.params.dto';
+import { AccountAttributesStreamParamsDTO } from '../dto/account-attributes-stream.params.dto';
+import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 
 @EntityRepository(AccountFact)
 export class AccountFactRepository extends Repository<AccountFact> {
