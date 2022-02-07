@@ -105,7 +105,7 @@ export class AccountComplianceDimRepository extends Repository<
   private buildQuery(
     params: AllowanceComplianceParamsDTO,
     isOtcNbp,
-    isStreamed: boolean = false,
+    isStreamed = false,
   ): SelectQueryBuilder<AccountComplianceDim> {
     let query = this.createQueryBuilder('acd')
       .select(this.getColumns(isStreamed, isOtcNbp))
