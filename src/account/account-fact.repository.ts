@@ -33,7 +33,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   ): Promise<AccountFact[]> {
     const { page, perPage } = paginatedAccountAttributesParamsDTO;
 
-    let query = this.buildQuery(paginatedAccountAttributesParamsDTO, false);
+    const query = this.buildQuery(paginatedAccountAttributesParamsDTO, false);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -91,7 +91,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
 
   private buildQuery(
     params: AccountAttributesParamsDTO | PaginatedAccountAttributesParamsDTO,
-    isStreamed: boolean = false,
+    isStreamed = false,
   ): SelectQueryBuilder<AccountFact> {
     let query = this.createQueryBuilder('af')
       .select(this.getColumns(isStreamed))

@@ -37,14 +37,14 @@ export class AllowanceTransactionsService {
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly applicableAllowanceTransactionsAttributesMap: ApplicableAllowanceTransactionsAttributesMap,
-    private Logger: Logger,
+    private readonly logger: Logger,
   ) {}
 
   async getAllowanceTransactions(
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
-    this.Logger.info('Getting allowance transactions');
+    this.logger.info('Getting allowance transactions');
     let entities: TransactionBlockDim[];
     try {
       entities = await this.transactionBlockDimRepository.getAllowanceTransactions(
@@ -52,14 +52,14 @@ export class AllowanceTransactionsService {
         req,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message);
     }
 
     req.res.setHeader(
       'X-Field-Mappings',
       JSON.stringify(fieldMappings.allowances.transactions),
     );
-    this.Logger.info('Got allowance transactions');
+    this.logger.info('Got allowance transactions');
     return this.allowanceTransactionsMap.many(entities);
   }
 
@@ -118,7 +118,7 @@ export class AllowanceTransactionsService {
         applicableAllowanceTransactionsAttributesParamsDTO,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message);
     }
 
     return this.applicableAllowanceTransactionsAttributesMap.many(query);

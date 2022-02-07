@@ -17,7 +17,10 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
-import { AccountAttributesParamsDTO, PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import {
+  AccountAttributesParamsDTO,
+  PaginatedAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
@@ -33,7 +36,7 @@ export class AccountService {
     @InjectRepository(AccountOwnerDimRepository)
     private readonly accountOwnerDimRepository: AccountOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
-    private logger: Logger,
+    private readonly logger: Logger,
   ) {}
 
   async getAllAccounts(): Promise<AccountDTO[]> {
@@ -83,7 +86,7 @@ export class AccountService {
     const objToString = new PlainToJSON();
     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
       type: req.headers.accept,
-      disposition: `attachment; filename="account-attributes${uuid()}.json"`,
+      disposition: `attachment; filename="account-attributes-${uuid()}.json"`,
     });
   }
 

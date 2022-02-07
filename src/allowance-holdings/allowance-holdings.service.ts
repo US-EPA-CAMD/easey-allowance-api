@@ -28,7 +28,7 @@ export class AllowanceHoldingsService {
     @InjectRepository(AllowanceHoldingDimRepository)
     private readonly allowanceHoldingsRepository: AllowanceHoldingDimRepository,
     private readonly allowanceHoldingsMap: AllowanceHoldingsMap,
-    private logger: Logger,
+    private readonly logger: Logger,
     private readonly applicableAllowanceHoldingsAttributesMap: ApplicableAllowanceHoldingsAttributesMap,
   ) {}
 
@@ -72,14 +72,14 @@ export class AllowanceHoldingsService {
   }
 
   async getAllowanceHoldings(
-    PaginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
+    paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
     this.logger.info('Getting allowance holdings');
     let query;
     try {
       query = await this.allowanceHoldingsRepository.getAllowanceHoldings(
-        PaginatedAllowanceHoldingsParamsDTO,
+        paginatedAllowanceHoldingsParamsDTO,
         req,
       );
     } catch (e) {

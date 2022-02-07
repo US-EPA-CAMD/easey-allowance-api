@@ -89,7 +89,7 @@ export class AllowanceHoldingDimRepository extends Repository<
 
   private buildQuery(
     params: AllowanceHoldingsParamsDTO | PaginatedAllowanceHoldingsParamsDTO,
-    isStreamed: boolean = false,
+    isStreamed = false,
   ): SelectQueryBuilder<AllowanceHoldingDim> {
     let query = this.createQueryBuilder('ahd')
       .select(this.getColumns(isStreamed))

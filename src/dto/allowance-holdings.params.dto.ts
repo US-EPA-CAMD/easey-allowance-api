@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsDefined, IsOptional } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,

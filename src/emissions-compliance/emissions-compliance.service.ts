@@ -18,7 +18,7 @@ export class EmissionsComplianceService {
     private readonly unitComplianceDimRepository: UnitComplianceDimRepository,
     private readonly emissionsComplianceMap: EmissionsComplianceMap,
     private readonly applicableEmissionsComplianceAttributesMap: ApplicableEmissionsComplianceAttributesMap,
-    private Logger: Logger,
+    private readonly logger: Logger,
   ) {}
 
   async getEmissionsCompliance(
@@ -45,7 +45,7 @@ export class EmissionsComplianceService {
     try {
       query = await this.unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes();
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message);
     }
 
     return this.applicableEmissionsComplianceAttributesMap.many(query);
