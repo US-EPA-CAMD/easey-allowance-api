@@ -8,7 +8,7 @@ import { AccountOwnerDim } from '../entities/account-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
@@ -103,7 +103,7 @@ describe('-- Account Service --', () => {
       );
       accountMap.many.mockReturnValue('mapped DTOs');
 
-      let filters = new AccountAttributesParamsDTO();
+      let filters = new PaginatedAccountAttributesParamsDTO();
 
       let result = await accountService.getAllAccountAttributes(filters, req);
       expect(accountMap.many).toHaveBeenCalled();

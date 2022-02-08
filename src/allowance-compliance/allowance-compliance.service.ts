@@ -37,14 +37,14 @@ export class AllowanceComplianceService {
     private readonly ownerYearDimRepository: OwnerYearDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly applicableAllowanceComplianceAttributesMap: ApplicableAllowanceComplianceAttributesMap,
-    private Logger: Logger,
+    private readonly logger: Logger,
   ) {}
 
   async getAllowanceCompliance(
     paginatedAllowanceComplianceParamsDTO: PaginatedAllowanceComplianceParamsDTO,
     req: Request,
   ): Promise<AllowanceComplianceDTO[]> {
-    this.Logger.info('Getting allowance compliance');
+    this.logger.info('Getting allowance compliance');
     let entities: AccountComplianceDim[];
     let fieldMapping;
     try {
@@ -53,7 +53,7 @@ export class AllowanceComplianceService {
         req,
       );
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message);
     }
 
     if (includesOtcNbp(paginatedAllowanceComplianceParamsDTO)) {
@@ -61,10 +61,10 @@ export class AllowanceComplianceService {
     } else {
       fieldMapping = fieldMappings.compliance.allowance;
     }
-    this.Logger.info('Setting header without program code info');
+    this.logger.info('Setting header without program code info');
     req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMapping));
 
-    this.Logger.info('Got allowance compliance');
+    this.logger.info('Got allowance compliance');
     return this.allowanceComplianceMap.many(entities);
   }
 
@@ -127,7 +127,7 @@ export class AllowanceComplianceService {
     try {
       query = await this.accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes();
     } catch (e) {
-      this.Logger.error(InternalServerErrorException, e.message);
+      this.logger.error(InternalServerErrorException, e.message);
     }
 
     return this.applicableAllowanceComplianceAttributesMap.many(query);

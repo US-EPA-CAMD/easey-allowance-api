@@ -1,5 +1,12 @@
 import { Request } from 'express';
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Query,
+  Req,
+  UseInterceptors,
+  StreamableFile,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -17,15 +24,19 @@ import {
 } from '../utils/swagger-decorator.const';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AccountService } from '../account/account.service';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  AllowanceHoldingsParamsDTO,
+  PaginatedAllowanceHoldingsParamsDTO,
+} from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { fieldMappings } from '../constants/field-mappings';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Allowance Holdings')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(AllowanceHoldingsDTO)
 export class AllowanceHoldingsController {
   constructor(
     private readonly allowanceService: AllowanceHoldingsService,
@@ -57,15 +68,45 @@ export class AllowanceHoldingsController {
     required: false,
     explode: false,
   })
-  @ApiExtraModels(AllowanceHoldingsDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getAllowanceHoldings(
-    @Query() allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    @Query()
+    paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     @Req() req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
     return this.allowanceService.getAllowanceHoldings(
-      allowanceHoldingsParamsDTO,
+      paginatedAllowanceHoldingsParamsDTO,
       req,
     );
+  }
+
+  @Get('stream')
+  @ApiOkResponse({
+    description: 'Streams Allowance Holdings per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AllowanceHoldingsDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.allowances.holdings
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  streamAllowanceHoldings(
+    @Req() req: Request,
+    @Query() params: AllowanceHoldingsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.allowanceService.streamAllowanceHoldings(req, params);
   }
 
   @Get('attributes/applicable')

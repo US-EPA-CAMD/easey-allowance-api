@@ -1,61 +1,32 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { Request } from 'express';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  AllowanceHoldingsParamsDTO,
+  PaginatedAllowanceHoldingsParamsDTO,
+} from '../dto/allowance-holdings.params.dto';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
+import { ReadStream } from 'fs';
 
 @EntityRepository(AllowanceHoldingDim)
 export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
+  streamAllowanceHoldings(
+    params: AllowanceHoldingsParamsDTO,
+  ): Promise<ReadStream> {
+    return this.buildQuery(params, true).stream();
+  }
+
   async getAllowanceHoldings(
-    allowanceHoldingsParamsDTO: AllowanceHoldingsParamsDTO,
+    paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingDim[]> {
-    const { page, perPage } = allowanceHoldingsParamsDTO;
-    let query = this.createQueryBuilder('ahd')
-      .select([
-        'ahd.accountNumber',
-        'ahd.accountName',
-        'ahd.programCodeInfo',
-        'ahd.vintageYear',
-        'ahd.totalBlock',
-        'ahd.startBlock',
-        'ahd.endBlock',
-        'af.facilityId',
-        'af.stateCode',
-        'af.epaRegion',
-        'af.ownerOperator',
-        'af.accountType',
-        'atc.accountTypeDescription',
-      ])
-      .innerJoin('ahd.accountFact', 'af')
-      .innerJoin('af.accountTypeCd', 'atc');
-    query = QueryBuilderHelper.createAccountQuery(
-      query,
-      allowanceHoldingsParamsDTO,
-      [
-        'vintageYear',
-        'accountNumber',
-        'facilityId',
-        'ownerOperator',
-        'stateCode',
-        'programCodeInfo',
-        'accountType',
-      ],
-      'ahd',
-      'af',
-      false,
-      'atc',
-    );
+    const { page, perPage } = paginatedAllowanceHoldingsParamsDTO;
 
-    query
-      .orderBy('ahd.programCodeInfo')
-      .addOrderBy('ahd.accountNumber')
-      .addOrderBy('ahd.vintageYear')
-      .addOrderBy('ahd.startBlock');
+    const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO, false);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -88,5 +59,77 @@ export class AllowanceHoldingDimRepository extends Repository<
         'aod.own_display',
       ]);
     return query.getMany();
+  }
+
+  private getColumns(isStreamed: boolean): string[] {
+    const columns = [
+      'ahd.accountNumber',
+      'ahd.accountName',
+      'af.facilityId',
+      'ahd.programCodeInfo',
+      'ahd.vintageYear',
+      'ahd.totalBlock',
+      'ahd.startBlock',
+      'ahd.endBlock',
+      'af.stateCode',
+      'af.epaRegion',
+      'af.ownerOperator',
+      'af.accountType',
+      'atc.accountTypeDescription',
+    ];
+
+    const newCol = columns.map(col => {
+      if (isStreamed) {
+        if (col === 'atc.accountTypeDescription') {
+          return `${col} AS "accountType"`;
+        } else {
+          return `${col} AS "${col.split('.')[1]}"`;
+        }
+      } else {
+        return col;
+      }
+    });
+
+    if (isStreamed) {
+      newCol.splice(columns.indexOf('af.accountType'), 1);
+    }
+
+    return newCol;
+  }
+
+  private buildQuery(
+    params: AllowanceHoldingsParamsDTO | PaginatedAllowanceHoldingsParamsDTO,
+    isStreamed = false,
+  ): SelectQueryBuilder<AllowanceHoldingDim> {
+    let query = this.createQueryBuilder('ahd')
+      .select(this.getColumns(isStreamed))
+      .innerJoin('ahd.accountFact', 'af')
+      .innerJoin('af.accountTypeCd', 'atc');
+
+    query = QueryBuilderHelper.createAccountQuery(
+      query,
+      params,
+      [
+        'vintageYear',
+        'accountNumber',
+        'facilityId',
+        'ownerOperator',
+        'stateCode',
+        'programCodeInfo',
+        'accountType',
+      ],
+      'ahd',
+      'af',
+      false,
+      'atc',
+    );
+
+    query
+      .orderBy('ahd.programCodeInfo')
+      .addOrderBy('ahd.accountNumber')
+      .addOrderBy('ahd.vintageYear')
+      .addOrderBy('ahd.startBlock');
+
+    return query;
   }
 }

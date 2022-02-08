@@ -5,9 +5,17 @@ import {
   getSchemaPath,
   ApiSecurity,
 } from '@nestjs/swagger';
-import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Query,
+  Req,
+  UseInterceptors,
+  StreamableFile,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
+import { fieldMappings } from '../constants/field-mappings';
 
 import {
   BadRequestResponse,
@@ -18,13 +26,16 @@ import { AccountService } from './account.service';
 import { AccountDTO } from '../dto/account.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
-import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import {
+  AccountAttributesParamsDTO,
+  PaginatedAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Accounts')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(AccountAttributesDTO)
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
@@ -58,15 +69,45 @@ export class AccountController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryMultiSelect()
-  @ApiExtraModels(AccountAttributesDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getAllAccountAttributes(
-    @Query() accountAttributesParamsDTO: AccountAttributesParamsDTO,
+    @Query()
+    paginatedAccountAttributesParamsDTO: PaginatedAccountAttributesParamsDTO,
     @Req() req: Request,
   ): Promise<AccountAttributesDTO[]> {
     return this.accountService.getAllAccountAttributes(
-      accountAttributesParamsDTO,
+      paginatedAccountAttributesParamsDTO,
       req,
     );
+  }
+
+  @Get('attributes/stream')
+  @ApiOkResponse({
+    description: 'Streams All Valid Account Attributes',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AccountAttributesDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.allowances.accountAttributes
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryMultiSelect()
+  streamAllAccountAttributes(
+    @Req() req: Request,
+    @Query() params: AccountAttributesParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.accountService.streamAllAccountAttributes(req, params);
   }
 
   @Get('attributes/applicable')

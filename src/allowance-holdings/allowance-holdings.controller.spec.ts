@@ -5,7 +5,7 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
-import { AllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AccountService } from '../account/account.service';
 import { AccountOwnerDimRepository } from '../account/account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
@@ -16,6 +16,7 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { StreamableFile } from '@nestjs/common';
 
 const mockRequest = (url: string) => {
   return {
@@ -64,12 +65,31 @@ describe('-- Allowance Holdings Controller --', () => {
 
     it('should call the service and return allowance holdings ', async () => {
       const expectedResults: AllowanceHoldingsDTO[] = [];
-      const paramsDTO = new AllowanceHoldingsParamsDTO();
+      const paramsDTO = new PaginatedAllowanceHoldingsParamsDTO();
       jest
         .spyOn(allowanceHoldingsService, 'getAllowanceHoldings')
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceHoldingsController.getAllowanceHoldings(paramsDTO, req),
+      ).toBe(expectedResults);
+    });
+  });
+
+  describe('* getAllowanceHoldingsStream', () => {
+    const req: any = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+
+    it('should call the service and return allowance holdings ', async () => {
+      const expectedResults: StreamableFile = undefined;
+      const paramsDTO = new PaginatedAllowanceHoldingsParamsDTO();
+      jest
+        .spyOn(allowanceHoldingsService, 'streamAllowanceHoldings')
+        .mockResolvedValue(expectedResults);
+      expect(
+        await allowanceHoldingsController.streamAllowanceHoldings(
+          req,
+          paramsDTO,
+        ),
       ).toBe(expectedResults);
     });
   });
