@@ -1,11 +1,17 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsDefined, IsOptional } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
-import { IsYearFormat, IsInDateRange } from '@us-epa-camd/easey-common/pipes';
+import {
+  IsYearFormat,
+  IsInDateRange,
+  Min,
+  IsInRange,
+} from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
+import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { ComplianceParamsDTO } from './compliance.params.dto';
 
@@ -50,4 +56,24 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
   private get getCurrentDate(): Date {
     return new Date();
   }
+}
+
+export class PaginatedAllowanceComplianceParamsDTO extends AllowanceComplianceParamsDTO {
+  @ApiProperty({
+    description: propertyMetadata.page.description,
+  })
+  @IsDefined()
+  @Min(1, {
+    message: ErrorMessages.GreaterThanOrEqual('page', 1),
+  })
+  page: number;
+
+  @ApiProperty({
+    description: propertyMetadata.perPage.description,
+  })
+  @IsDefined()
+  @IsInRange(1, PAGINATION_MAX_PER_PAGE, {
+    message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
+  })
+  perPage: number;
 }

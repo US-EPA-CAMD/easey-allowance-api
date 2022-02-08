@@ -7,15 +7,16 @@ import {
   TransactionType,
 } from '@us-epa-camd/easey-common/enums';
 
-import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
-import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 const mockQueryBuilder = () => ({
   where: jest.fn(),
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getManyAndCount: jest.fn(),
   select: jest.fn(),
   innerJoin: jest.fn(),
   leftJoin: jest.fn(),
@@ -27,16 +28,20 @@ const mockQueryBuilder = () => ({
   take: jest.fn(),
 });
 
-const mockRequest = (url: string) => {
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
     url,
     res: {
       setHeader: jest.fn(),
     },
+    query: {
+      page,
+      perPage,
+    },
   };
 };
 
-let filters: AllowanceTransactionsParamsDTO = new AllowanceTransactionsParamsDTO();
+let filters = new PaginatedAllowanceTransactionsParamsDTO();
 filters.accountType = [AccountType.GENERAL];
 filters.vintageYear = [2019, 2020];
 filters.page = undefined;
@@ -51,8 +56,9 @@ filters.transactionEndDate = new Date();
 filters.transactionType = [TransactionType.ACTIVATE_CONDITIONAL_ALLOWANCES];
 
 describe('-- TransactionBlockDimRepository --', () => {
-  let transactionBlockDimRepository;
-  let queryBuilder;
+  let transactionBlockDimRepository: TransactionBlockDimRepository;
+  let queryBuilder: any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -62,12 +68,10 @@ describe('-- TransactionBlockDimRepository --', () => {
       ],
     }).compile();
 
-    transactionBlockDimRepository = module.get<TransactionBlockDimRepository>(
-      TransactionBlockDimRepository,
-    );
-    queryBuilder = module.get<SelectQueryBuilder<TransactionBlockDim>>(
-      SelectQueryBuilder,
-    );
+    transactionBlockDimRepository = module.get(TransactionBlockDimRepository);
+    queryBuilder = module.get(SelectQueryBuilder);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
 
     transactionBlockDimRepository.createQueryBuilder = jest
       .fn()
@@ -82,20 +86,24 @@ describe('-- TransactionBlockDimRepository --', () => {
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAllowanceTransactions');
+    queryBuilder.getManyAndCount.mockReturnValue([
+      'mockAllowanceTransactions',
+      0,
+    ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
   });
 
   describe('getAllowanceTransactions', () => {
-    it('calls createQueryBuilder and gets all TransactionsBlockDim results from the repository', async () => {
-      const emptyFilters: AllowanceTransactionsParamsDTO = new AllowanceTransactionsParamsDTO();
-
+    it('calls createQueryBuilder and gets all TransactionsBlockDim results from the repository with no filters', async () => {
       let result = await transactionBlockDimRepository.getAllowanceTransactions(
-        emptyFilters,
+        new PaginatedAllowanceTransactionsParamsDTO(),
+        req,
       );
 
       result = await transactionBlockDimRepository.getAllowanceTransactions(
         filters,
+        req,
       );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
@@ -103,36 +111,36 @@ describe('-- TransactionBlockDimRepository --', () => {
     });
 
     it('calls createQueryBuilder and gets page 1 of TransactionBlockDim paginated results from the repository', async () => {
-      let paginatedFilters = filters;
-      paginatedFilters.page = 1;
-      paginatedFilters.perPage = 5;
-      let req: any = mockRequest(
-        `/allowance-transactions?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-      );
-      req.res.setHeader.mockReturnValue();
-      let paginatedResult = await transactionBlockDimRepository.getAllowanceTransactions(
-        paginatedFilters,
+      ResponseHeaders.setPagination = jest
+        .fn()
+        .mockReturnValue('pagianted results');
+
+      let pagiantedFilters = filters;
+      pagiantedFilters.page = 1;
+      pagiantedFilters.perPage = 10;
+
+      const paginatedResult = await transactionBlockDimRepository.getAllowanceTransactions(
+        pagiantedFilters,
         req,
       );
-      expect(req.res.setHeader).toHaveBeenCalled();
-      expect(queryBuilder.getMany).toHaveBeenCalled();
+      expect(ResponseHeaders.setPagination).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockAllowanceTransactions');
     });
   });
   it('calls createQueryBuilder and gets page 2 of TransactionBlockDim paginated results from the repository', async () => {
-    let paginatedFilters = filters;
-    paginatedFilters.page = 2;
-    paginatedFilters.perPage = 5;
-    let req: any = mockRequest(
-      `/allowance-transactions?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-    );
-    req.res.setHeader.mockReturnValue();
-    let paginatedResult = await transactionBlockDimRepository.getAllowanceTransactions(
-      paginatedFilters,
+    ResponseHeaders.setPagination = jest
+      .fn()
+      .mockReturnValue('pagianted results');
+
+    let pagiantedFilters = filters;
+    pagiantedFilters.page = 2;
+    pagiantedFilters.perPage = 10;
+
+    const paginatedResult = await transactionBlockDimRepository.getAllowanceTransactions(
+      pagiantedFilters,
       req,
     );
-    expect(req.res.setHeader).toHaveBeenCalled();
-    expect(queryBuilder.getMany).toHaveBeenCalled();
+    expect(ResponseHeaders.setPagination).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAllowanceTransactions');
   });
 
