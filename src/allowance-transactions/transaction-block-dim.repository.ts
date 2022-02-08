@@ -94,8 +94,10 @@ export class TransactionBlockDimRepository extends Repository<
       'tbd.transactionBlockId', //primarykey
       'tbd.transactionId',
       'tf.transactionTotal',
+      'ttc.transactionTypeDescription',
       'tf.sellAccountNumber',
       'tf.sellAccountName',
+      'satc.accountTypeDescription',
       'tf.sellFacilityName',
       'tf.sellFacilityId',
       'tf.sellState',
@@ -104,6 +106,7 @@ export class TransactionBlockDimRepository extends Repository<
       'tf.sellOwner',
       'tf.buyAccountNumber',
       'tf.buyAccountName',
+      'batc.accountTypeDescription',
       'tf.buyFacilityName',
       'tf.buyFacilityId',
       'tf.buyState',
@@ -115,14 +118,19 @@ export class TransactionBlockDimRepository extends Repository<
       'tbd.startBlock',
       'tbd.endBlock',
       'tbd.totalBlock',
-      'batc.accountTypeDescription',
-      'satc.accountTypeDescription',
-      'ttc.transactionTypeDescription',
     ];
 
     return columns.map(col => {
       if (isStreamed) {
-        return `${col} AS "${col.split('.')[1]}"`;
+        if (col === 'ttc.transactionTypeDescription') {
+          return `${col} AS "transactionType"`;
+        } else if (col === 'satc.accountTypeDescription') {
+          return `${col} AS "sellAccountType"`;
+        } else if (col === 'batc.accountTypeDescription') {
+          return `${col} AS "buyAccountType"`;
+        } else {
+          return `${col} AS "${col.split('.')[1]}"`;
+        }
       } else {
         return col;
       }

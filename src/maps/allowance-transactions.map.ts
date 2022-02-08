@@ -36,7 +36,9 @@ export class AllowanceTransactionsMap extends BaseMap<
       buyEpaRegion: entity.transactionFact.buyEpaRegion,
       buySourceCategory: entity.transactionFact.buySourceCategory,
       buyOwner: entity.transactionFact.buyOwner,
-      transactionDate: entity.transactionFact.transactionDate,
+      transactionDate: entity.transactionFact.transactionDate
+        .toISOString()
+        .split('T')[0],
       vintageYear: entity.vintageYear,
       startBlock: entity.startBlock,
       endBlock: entity.endBlock,
