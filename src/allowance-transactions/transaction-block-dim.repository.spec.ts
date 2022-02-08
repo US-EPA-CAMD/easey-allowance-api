@@ -26,6 +26,7 @@ const mockQueryBuilder = () => ({
   getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
+  stream: jest.fn(),
 });
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -92,6 +93,7 @@ describe('-- TransactionBlockDimRepository --', () => {
     ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
+    queryBuilder.stream.mockReturnValue('mockStream');
   });
 
   describe('getAllowanceTransactions', () => {
@@ -144,17 +146,27 @@ describe('-- TransactionBlockDimRepository --', () => {
     expect(paginatedResult).toEqual('mockAllowanceTransactions');
   });
 
-  describe('getAllApplicableAllowanceTransactionsAttributes', () => {
-    it('calls createQueryBuilder and gets all applicable allowance transactions attributes from the repository', async () => {
-      let filters: ApplicableAllowanceTransactionsAttributesParamsDTO = new ApplicableAllowanceTransactionsAttributesParamsDTO();
-      filters.transactionBeginDate = new Date();
-      filters.transactionEndDate = new Date();
-
-      let result = await transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
-        filters,
+  describe('streamAllowanceTransactions', () => {
+    it('streams all allowance transactions', async () => {
+      const result = await transactionBlockDimRepository.streamAllowanceTransactions(
+        new PaginatedAllowanceTransactionsParamsDTO(),
       );
-      expect(queryBuilder.getMany).toHaveBeenCalled();
-      expect(result).toEqual('mockAllowanceTransactions');
+
+      expect(result).toEqual('mockStream');
+    });
+
+    describe('getAllApplicableAllowanceTransactionsAttributes', () => {
+      it('calls createQueryBuilder and gets all applicable allowance transactions attributes from the repository', async () => {
+        let filters: ApplicableAllowanceTransactionsAttributesParamsDTO = new ApplicableAllowanceTransactionsAttributesParamsDTO();
+        filters.transactionBeginDate = new Date();
+        filters.transactionEndDate = new Date();
+
+        let result = await transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
+          filters,
+        );
+        expect(queryBuilder.getMany).toHaveBeenCalled();
+        expect(result).toEqual('mockAllowanceTransactions');
+      });
     });
   });
 });
