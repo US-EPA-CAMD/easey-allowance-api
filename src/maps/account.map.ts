@@ -12,15 +12,11 @@ export class AccountMap extends BaseMap<AccountFact, any> {
       attributes = {
         programCodeInfo: entity.programCodeInfo,
         accountTypeDescription: entity.accountTypeCd.accountTypeDescription,
-        facilityId: entity.facilityId
-          ? Number(entity.facilityId)
-          : entity.facilityId,
+        facilityId: entity.facilityId,
         unitId: entity.unitId,
         ownerOperator: entity.ownerOperator,
         stateCode: entity.stateCode,
-        epaRegion: entity.epaRegion
-          ? Number(entity.epaRegion)
-          : entity.epaRegion,
+        epaRegion: entity.epaRegion,
         nercRegion: entity.nercRegion,
       };
     }

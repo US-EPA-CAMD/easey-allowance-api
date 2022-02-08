@@ -17,6 +17,13 @@ export class AllowanceHoldingsDTO {
   accountName: string;
 
   @ApiProperty({
+    description: propertyMetadata.facilityId.description,
+    example: propertyMetadata.facilityId.example,
+    name: propertyMetadata.facilityId.fieldLabels.value,
+  })
+  facilityId?: number;
+
+  @ApiProperty({
     description: propertyMetadata.programCodeInfo.description,
     example: propertyMetadata.programCodeInfo.example,
     name: propertyMetadata.programCodeInfo.fieldLabels.value,
@@ -50,13 +57,6 @@ export class AllowanceHoldingsDTO {
     name: propertyMetadata.endBlock.fieldLabels.value,
   })
   endBlock?: number;
-
-  @ApiProperty({
-    description: propertyMetadata.facilityId.description,
-    example: propertyMetadata.facilityId.example,
-    name: propertyMetadata.facilityId.fieldLabels.value,
-  })
-  facilityId?: number;
 
   @ApiProperty({
     description: propertyMetadata.stateCode.description,

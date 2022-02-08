@@ -35,7 +35,7 @@ import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attrib
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Accounts')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(AccountAttributesDTO)
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
@@ -69,7 +69,7 @@ export class AccountController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryMultiSelect()
-  @ApiExtraModels(AccountAttributesDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getAllAccountAttributes(
     @Query()
     paginatedAccountAttributesParamsDTO: PaginatedAccountAttributesParamsDTO,

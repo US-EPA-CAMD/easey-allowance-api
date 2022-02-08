@@ -56,6 +56,7 @@ export class AllowanceHoldingsService {
       },
     });
 
+
     if (req.headers.accept === 'text/csv') {
       const toCSV = new PlainToCSV(fieldMappings.allowances.holdings);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {

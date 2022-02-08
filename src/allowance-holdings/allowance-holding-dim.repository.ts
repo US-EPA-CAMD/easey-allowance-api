@@ -65,12 +65,12 @@ export class AllowanceHoldingDimRepository extends Repository<
     const columns = [
       'ahd.accountNumber',
       'ahd.accountName',
+      'af.facilityId',
       'ahd.programCodeInfo',
       'ahd.vintageYear',
       'ahd.totalBlock',
       'ahd.startBlock',
       'ahd.endBlock',
-      'af.facilityId',
       'af.stateCode',
       'af.epaRegion',
       'af.ownerOperator',

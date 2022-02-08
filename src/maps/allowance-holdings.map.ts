@@ -15,20 +15,14 @@ export class AllowanceHoldingsMap extends BaseMap<
     return {
       accountNumber: entity.accountNumber,
       accountName: entity.accountName,
+      facilityId: entity.accountFact.facilityId,
       programCodeInfo: entity.programCodeInfo,
-      vintageYear: Number(entity.vintageYear),
-      totalBlock: entity.totalBlock
-        ? Number(entity.totalBlock)
-        : entity.totalBlock,
-      startBlock: Number(entity.startBlock),
-      endBlock: entity.endBlock ? Number(entity.endBlock) : entity.endBlock,
-      facilityId: entity.accountFact.facilityId
-        ? Number(entity.accountFact.facilityId)
-        : entity.accountFact.facilityId,
+      vintageYear: entity.vintageYear,
+      totalBlock: entity.totalBlock,
+      startBlock: entity.startBlock,
+      endBlock: entity.endBlock,
       stateCode: entity.accountFact.stateCode,
-      epaRegion: entity.accountFact.epaRegion
-        ? Number(entity.accountFact.epaRegion)
-        : entity.accountFact.epaRegion,
+      epaRegion: entity.accountFact.epaRegion,
       ownerOperator: entity.accountFact.ownerOperator,
       accountTypeDescription:
         entity.accountFact.accountTypeCd.accountTypeDescription,

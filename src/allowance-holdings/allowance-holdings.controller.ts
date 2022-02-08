@@ -36,7 +36,7 @@ import { fieldMappings } from '../constants/field-mappings';
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Allowance Holdings')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(AllowanceHoldingsDTO)
 export class AllowanceHoldingsController {
   constructor(
     private readonly allowanceService: AllowanceHoldingsService,
@@ -68,7 +68,7 @@ export class AllowanceHoldingsController {
     required: false,
     explode: false,
   })
-  @ApiExtraModels(AllowanceHoldingsDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getAllowanceHoldings(
     @Query()
     paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
