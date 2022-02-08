@@ -70,19 +70,22 @@ export class AccountFactRepository extends Repository<AccountFact> {
       'af.accountNumber',
       'af.accountName',
       'af.programCodeInfo',
-      'af.accountType',
+      'atc.accountTypeDescription',
       'af.facilityId',
       'af.unitId',
       'af.ownerOperator',
       'af.stateCode',
       'af.epaRegion',
       'af.nercRegion',
-      'atc.accountTypeDescription',
     ];
 
     return columns.map(col => {
       if (isStreamed) {
-        return `${col} AS "${col.split('.')[1]}"`;
+        if (col === 'atc.accountTypeDescription') {
+          return `${col} AS "accountType"`;
+        } else {
+          return `${col} AS "${col.split('.')[1]}"`;
+        }
       } else {
         return col;
       }

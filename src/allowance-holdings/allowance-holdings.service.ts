@@ -48,14 +48,12 @@ export class AllowanceHoldingsService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        delete data.accountType;
         const dto = plainToClass(AllowanceHoldingsDTO, data, {
           enableImplicitConversion: true,
         });
         callback(null, dto);
       },
     });
-
 
     if (req.headers.accept === 'text/csv') {
       const toCSV = new PlainToCSV(fieldMappings.allowances.holdings);

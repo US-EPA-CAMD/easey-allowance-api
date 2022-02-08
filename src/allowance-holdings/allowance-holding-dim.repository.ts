@@ -78,13 +78,23 @@ export class AllowanceHoldingDimRepository extends Repository<
       'atc.accountTypeDescription',
     ];
 
-    return columns.map(col => {
+    const newCol = columns.map(col => {
       if (isStreamed) {
-        return `${col} AS "${col.split('.')[1]}"`;
+        if (col === 'atc.accountTypeDescription') {
+          return `${col} AS "accountType"`;
+        } else {
+          return `${col} AS "${col.split('.')[1]}"`;
+        }
       } else {
         return col;
       }
     });
+
+    if (isStreamed) {
+      newCol.splice(columns.indexOf('af.accountType'), 1);
+    }
+
+    return newCol;
   }
 
   private buildQuery(

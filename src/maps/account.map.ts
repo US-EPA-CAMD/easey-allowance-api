@@ -11,7 +11,7 @@ export class AccountMap extends BaseMap<AccountFact, any> {
     if (entity.programCodeInfo) {
       attributes = {
         programCodeInfo: entity.programCodeInfo,
-        accountTypeDescription: entity.accountTypeCd.accountTypeDescription,
+        accountType: entity.accountTypeCd.accountTypeDescription,
         facilityId: entity.facilityId,
         unitId: entity.unitId,
         ownerOperator: entity.ownerOperator,

@@ -24,8 +24,7 @@ export class AllowanceHoldingsMap extends BaseMap<
       stateCode: entity.accountFact.stateCode,
       epaRegion: entity.accountFact.epaRegion,
       ownerOperator: entity.accountFact.ownerOperator,
-      accountTypeDescription:
-        entity.accountFact.accountTypeCd.accountTypeDescription,
+      accountType: entity.accountFact.accountTypeCd.accountTypeDescription,
     };
   }
 }
