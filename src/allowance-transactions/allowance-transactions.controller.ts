@@ -1,5 +1,12 @@
 import { Request } from 'express';
-import { Get, Controller, Query, Req, UseInterceptors, StreamableFile } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Query,
+  Req,
+  UseInterceptors,
+  StreamableFile,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -24,6 +31,7 @@ import {
   NotFoundResponse,
   ApiQueryMultiSelect,
 } from '../utils/swagger-decorator.const';
+import { fieldMappings } from '../constants/field-mappings';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -36,7 +44,7 @@ export class AllowanceTransactionsController {
 
   @Get()
   @ApiOkResponse({
-    description: 'Retrieve Allowance Transactions per filter criteria',
+    description: 'Retrieves Allowance Transactions per filter criteria',
     content: {
       'application/json': {
         schema: {
@@ -46,6 +54,9 @@ export class AllowanceTransactionsController {
       'text/csv': {
         schema: {
           type: 'string',
+          example: fieldMappings.allowances.transactions
+            .map(i => i.label)
+            .join(','),
         },
       },
     },
@@ -67,7 +78,8 @@ export class AllowanceTransactionsController {
   })
   @UseInterceptors(Json2CsvInterceptor)
   getAllowanceTransactions(
-    @Query() paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
+    @Query()
+    paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     @Req() req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
     return this.allowanceTransactionsService.getAllowanceTransactions(
@@ -78,7 +90,7 @@ export class AllowanceTransactionsController {
 
   @Get('stream')
   @ApiOkResponse({
-    description: 'Retrieve Allowance Transactions per filter criteria',
+    description: 'Streams Allowance Transactions per filter criteria',
     content: {
       'application/json': {
         schema: {
@@ -88,6 +100,9 @@ export class AllowanceTransactionsController {
       'text/csv': {
         schema: {
           type: 'string',
+          example: fieldMappings.allowances.transactions
+            .map(i => i.label)
+            .join(','),
         },
       },
     },
