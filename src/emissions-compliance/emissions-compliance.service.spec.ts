@@ -10,6 +10,7 @@ import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-e
 
 const mockUnitComplianceDimRepository = () => ({
   getEmissionsCompliance: jest.fn(),
+  streamEmissionsCompliance: jest.fn(),
   getAllApplicableEmissionsComplianceAttributes: jest.fn(),
 });
 
@@ -17,10 +18,15 @@ const mockEmissionsComplianceMap = () => ({
   many: jest.fn(),
 });
 
-const mockRequest = () => {
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
+    url,
     res: {
       setHeader: jest.fn(),
+    },
+    query: {
+      page,
+      perPage,
     },
   };
 };

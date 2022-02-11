@@ -37,8 +37,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
   }
 
   private getColumns(isStreamed: boolean): string[] {
-    let columns;
-    columns = [
+    const columns = [
       'ucd.id',
       'uf.programCodeInfo',
       'ucd.year',
