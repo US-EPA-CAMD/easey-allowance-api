@@ -7,6 +7,7 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
+import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 
 import { UnitComplianceDim } from './unit-compliance-dim.entity';
 import { OwnerYearDim } from './owner-year-dim.entity';
@@ -15,11 +16,13 @@ import { OwnerYearDim } from './owner-year-dim.entity';
 export class UnitFact extends BaseEntity {
   @PrimaryColumn({
     name: 'unit_id',
+    transformer: new NumericColumnTransformer(),
   })
   id: number;
 
   @PrimaryColumn({
     name: 'op_year',
+    transformer: new NumericColumnTransformer(),
   })
   year: number;
 
@@ -35,11 +38,12 @@ export class UnitFact extends BaseEntity {
 
   @Column({
     name: 'orispl_code',
+    transformer: new NumericColumnTransformer(),
   })
   facilityId: number;
 
   @Column({
-    name: 'state'
+    name: 'state',
   })
   stateCode: string;
 

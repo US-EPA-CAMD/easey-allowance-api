@@ -1,14 +1,15 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
 import { State } from '@us-epa-camd/easey-common/enums';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
-import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
-import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
+import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getManyAndCount: jest.fn(),
   select: jest.fn(),
   leftJoin: jest.fn(),
   innerJoin: jest.fn(),
@@ -18,28 +19,33 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   distinctOn: jest.fn(),
+  stream: jest.fn(),
 });
-
-const mockRequest = (url: string) => {
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
     url,
     res: {
       setHeader: jest.fn(),
     },
+    query: {
+      page,
+      perPage,
+    },
   };
 };
 
-let filters: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
-      filters.year = [2019];
-      filters.page = undefined;
-      filters.perPage = undefined;
-      filters.facilityId = [0];
-      filters.stateCode = [State.AK];
-      filters.ownerOperator = [''];
+let filters = new PaginatedEmissionsComplianceParamsDTO();
+filters.year = [2019];
+filters.page = undefined;
+filters.perPage = undefined;
+filters.facilityId = [0];
+filters.stateCode = [State.AK];
+filters.ownerOperator = [''];
 
 describe('-- UnitComplianceDimRepository --', () => {
-  let unitComplianceDimRepository;
-  let queryBuilder;
+  let unitComplianceDimRepository: UnitComplianceDimRepository;
+  let queryBuilder: any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -49,12 +55,10 @@ describe('-- UnitComplianceDimRepository --', () => {
       ],
     }).compile();
 
-    unitComplianceDimRepository = module.get<UnitComplianceDimRepository>(
-      UnitComplianceDimRepository,
-    );
-    queryBuilder = module.get<SelectQueryBuilder<UnitComplianceDim>>(
-      SelectQueryBuilder,
-    );
+    unitComplianceDimRepository = module.get(UnitComplianceDimRepository);
+    queryBuilder = module.get(SelectQueryBuilder);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
 
     unitComplianceDimRepository.createQueryBuilder = jest
       .fn()
@@ -68,20 +72,25 @@ describe('-- UnitComplianceDimRepository --', () => {
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockEmissionsCompliance');
+    queryBuilder.getManyAndCount.mockReturnValue([
+      'mockEmissionsCompliance',
+      0,
+    ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
+    queryBuilder.stream.mockReturnValue('mockStream');
   });
 
   describe('getEmissionsCompliance', () => {
     it('calls createQueryBuilder and gets all UnitComplianceDim results from the repository', async () => {
-      const emptyFilters: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
-
       let result = await unitComplianceDimRepository.getEmissionsCompliance(
-        emptyFilters,
+        new PaginatedEmissionsComplianceParamsDTO(),
+        req,
       );
 
       result = await unitComplianceDimRepository.getEmissionsCompliance(
         filters,
+        req,
       );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
@@ -89,37 +98,48 @@ describe('-- UnitComplianceDimRepository --', () => {
     });
 
     it('calls createQueryBuilder and gets page 1 of UnitComplianceDim paginated results from the repository', async () => {
+      ResponseHeaders.setPagination = jest
+        .fn()
+        .mockReturnValue('paginated results');
+
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
-      let req: any = mockRequest(
-        `/emissions-compliance?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-      );
-      req.res.setHeader.mockReturnValue();
-      let paginatedResult = await unitComplianceDimRepository.getEmissionsCompliance(
+
+      const paginatedResult = await unitComplianceDimRepository.getEmissionsCompliance(
         paginatedFilters,
         req,
       );
-      expect(req.res.setHeader).toHaveBeenCalled();
-      expect(queryBuilder.getMany).toHaveBeenCalled();
+      expect(ResponseHeaders.setPagination).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockEmissionsCompliance');
     });
   });
+
   it('calls createQueryBuilder and gets page 2 of UnitComplianceDim paginated results from the repository', async () => {
+    ResponseHeaders.setPagination = jest
+      .fn()
+      .mockReturnValue('paginated results');
+
     let paginatedFilters = filters;
     paginatedFilters.page = 2;
     paginatedFilters.perPage = 5;
-    let req: any = mockRequest(
-      `/emissions-compliance?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-    );
-    req.res.setHeader.mockReturnValue();
-    let paginatedResult = await unitComplianceDimRepository.getEmissionsCompliance(
+
+    const paginatedResult = await unitComplianceDimRepository.getEmissionsCompliance(
       paginatedFilters,
       req,
     );
-    expect(req.res.setHeader).toHaveBeenCalled();
-    expect(queryBuilder.getMany).toHaveBeenCalled();
+    expect(ResponseHeaders.setPagination).toHaveBeenCalled();
+
     expect(paginatedResult).toEqual('mockEmissionsCompliance');
+  });
+
+  describe('streamEmissionsCompliance', () => {
+    it('streams all emissions compliance data', async () => {
+      const result = await unitComplianceDimRepository.streamEmissionsCompliance(
+        new PaginatedEmissionsComplianceParamsDTO(),
+      );
+      expect(result).toEqual('mockStream');
+    });
   });
 
   describe('getAllApplicableEmissionsComplianceAttributes', () => {

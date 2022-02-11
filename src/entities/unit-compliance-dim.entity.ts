@@ -6,6 +6,8 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
+import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
+
 import { UnitFact } from './unit-fact.entity';
 import { OwnerDisplayFact } from './owner-display-fact.entity';
 
@@ -13,11 +15,13 @@ import { OwnerDisplayFact } from './owner-display-fact.entity';
 export class UnitComplianceDim extends BaseEntity {
   @PrimaryColumn({
     name: 'unit_id',
+    transformer: new NumericColumnTransformer(),
   })
   id: number;
 
   @PrimaryColumn({
     name: 'op_year',
+    transformer: new NumericColumnTransformer(),
   })
   year: number;
 
@@ -28,6 +32,7 @@ export class UnitComplianceDim extends BaseEntity {
 
   @Column({
     name: 'avg_plan_id',
+    transformer: new NumericColumnTransformer(),
   })
   avgPlanId: number;
 
@@ -38,16 +43,19 @@ export class UnitComplianceDim extends BaseEntity {
 
   @Column({
     name: 'act_emiss_rate',
+    transformer: new NumericColumnTransformer(),
   })
   actualEmissionsRate: number;
 
   @Column({
     name: 'avg_plan_act_emiss_rate',
+    transformer: new NumericColumnTransformer(),
   })
   avgPlanActual: number;
 
   @Column({
     name: 'emiss_limit_display',
+    transformer: new NumericColumnTransformer(),
   })
   emissionsLimitDisplay: number;
 

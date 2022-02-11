@@ -1,42 +1,85 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { Request } from 'express';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { ReadStream } from 'typeorm/platform/PlatformTools';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
-import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import {
+  EmissionsComplianceParamsDTO,
+  PaginatedEmissionsComplianceParamsDTO,
+} from '../dto/emissions-compliance.params.dto';
 
 @EntityRepository(UnitComplianceDim)
 export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
+  streamEmissionsCompliance(
+    params: EmissionsComplianceParamsDTO,
+  ): Promise<ReadStream> {
+    return this.buildQuery(params, true).stream();
+  }
   async getEmissionsCompliance(
-    emissionsComplianceParamsDTO: EmissionsComplianceParamsDTO,
+    params: PaginatedEmissionsComplianceParamsDTO,
     req: Request,
   ): Promise<UnitComplianceDim[]> {
-    const { page, perPage } = emissionsComplianceParamsDTO;
+    let totalCount: number;
+    let results: UnitComplianceDim[];
+    const { page, perPage } = params;
+
+    const query = this.buildQuery(params);
+
+    if (page && perPage) {
+      [results, totalCount] = await query.getManyAndCount();
+      ResponseHeaders.setPagination(page, perPage, totalCount, req);
+    } else {
+      results = await query.getMany();
+    }
+    return results;
+  }
+
+  private getColumns(isStreamed: boolean): string[] {
+    const columns = [
+      'ucd.id',
+      'uf.programCodeInfo',
+      'ucd.year',
+      'uf.facilityName',
+      'uf.facilityId',
+      'uf.unitId',
+      'odf.owner',
+      'odf.operator',
+      'uf.stateCode',
+      'ucd.complianceApproach',
+      'ucd.avgPlanId',
+      'ucd.emissionsLimitDisplay',
+      'ucd.actualEmissionsRate',
+      'ucd.avgPlanActual',
+      'ucd.inCompliance',
+    ];
+
+    return columns.map(col => {
+      if (isStreamed) {
+        if (col === 'odf.owner') {
+          return `${col} AS "ownerOperator"`;
+        } else {
+          return `${col} AS "${col.split('.')[1]}"`;
+        }
+      } else {
+        return col;
+      }
+    });
+  }
+
+  private buildQuery(
+    params: EmissionsComplianceParamsDTO,
+    isStreamed = false,
+  ): SelectQueryBuilder<UnitComplianceDim> {
     let query = this.createQueryBuilder('ucd')
-      .select([
-        'ucd.year',
-        'ucd.id',
-        'ucd.complianceApproach',
-        'ucd.avgPlanId',
-        'ucd.emissionsLimitDisplay',
-        'ucd.actualEmissionsRate',
-        'ucd.avgPlanActual',
-        'ucd.inCompliance',
-        'uf.stateCode',
-        'uf.facilityName',
-        'uf.facilityId',
-        'uf.unitId',
-        'uf.programCodeInfo',
-        'odf.owner',
-        'odf.operator',
-      ])
+      .select(this.getColumns(isStreamed))
       .leftJoin('ucd.unitFact', 'uf')
       .leftJoin('ucd.ownerDisplayFact', 'odf');
 
     query = QueryBuilderHelper.createAccountQuery(
       query,
-      emissionsComplianceParamsDTO,
+      params,
       ['facilityId', 'stateCode'],
       'ucd',
       'uf',
@@ -44,7 +87,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     );
     query = QueryBuilderHelper.createComplianceQuery(
       query,
-      emissionsComplianceParamsDTO,
+      params,
       ['year', 'ownerOperator'],
       'ucd',
     );
@@ -54,20 +97,19 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
       .addOrderBy('ucd.year')
       .addOrderBy('uf.facilityId')
       .addOrderBy('uf.unitId');
-
-    if (page && perPage) {
-      const totalCount = await query.getCount();
-      ResponseHeaders.setPagination(page, perPage, totalCount, req);
-    }
-
-    return query.getMany();
+    return query;
   }
 
   async getAllApplicableEmissionsComplianceAttributes(): Promise<
     UnitComplianceDim[]
   > {
     const query = this.createQueryBuilder('ucd')
-      .select(['ucd.year', 'uf.facilityId', 'uf.stateCode', 'oyd.ownerOperator'])
+      .select([
+        'ucd.year',
+        'uf.facilityId',
+        'uf.stateCode',
+        'oyd.ownerOperator',
+      ])
       .innerJoin('ucd.unitFact', 'uf')
       .leftJoin('uf.ownerYearDim', 'oyd')
       .distinctOn([
