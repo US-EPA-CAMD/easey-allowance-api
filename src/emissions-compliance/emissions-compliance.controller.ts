@@ -1,11 +1,18 @@
 import { Request } from 'express';
-import { Get, Controller, UseInterceptors, Query, Req } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  UseInterceptors,
+  Query,
+  Req,
+  StreamableFile,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
   ApiExtraModels,
   getSchemaPath,
-  ApiSecurity
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
@@ -17,14 +24,18 @@ import {
 import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
-import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import {
+  EmissionsComplianceParamsDTO,
+  PaginatedEmissionsComplianceParamsDTO,
+} from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
+import { fieldMappings } from '../constants/field-mappings';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Emissions Compliance')
-@UseInterceptors(Json2CsvInterceptor)
+@ApiExtraModels(EmissionsComplianceDTO)
 export class EmissionsComplianceController {
   constructor(
     private readonly allowanceComplianceService: AllowanceComplianceService,
@@ -33,7 +44,7 @@ export class EmissionsComplianceController {
 
   @Get()
   @ApiOkResponse({
-    description: 'Retrieve Emissions Compliance Data per filter criteria',
+    description: 'Retrieves Emissions Compliance Data per filter criteria',
     content: {
       'application/json': {
         schema: {
@@ -43,6 +54,9 @@ export class EmissionsComplianceController {
       'text/csv': {
         schema: {
           type: 'string',
+          example: fieldMappings.compliance.emissions
+            .map(i => i.label)
+            .join(','),
         },
       },
     },
@@ -50,12 +64,45 @@ export class EmissionsComplianceController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryComplianceMultiSelect()
-  @ApiExtraModels(EmissionsComplianceDTO)
+  @UseInterceptors(Json2CsvInterceptor)
   getEmissionsCompliance(
-    @Query() emissionsComplianceParamsDTO: EmissionsComplianceParamsDTO,
+    @Query()
+    paginatedEmissionsComplianceParamsDTO: PaginatedEmissionsComplianceParamsDTO,
     @Req() req: Request,
   ): Promise<EmissionsComplianceDTO[]> {
     return this.emissionsComplianceService.getEmissionsCompliance(
+      paginatedEmissionsComplianceParamsDTO,
+      req,
+    );
+  }
+
+  @Get('stream')
+  @ApiOkResponse({
+    description: 'Streams Allowance Emissions Data per filter criteria',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(EmissionsComplianceDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.compliance.emissions
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryComplianceMultiSelect()
+  streamEmissionsCompliance(
+    @Query() emissionsComplianceParamsDTO: EmissionsComplianceParamsDTO,
+    @Req() req: Request,
+  ): Promise<StreamableFile> {
+    return this.emissionsComplianceService.streamEmissionsCompliance(
       emissionsComplianceParamsDTO,
       req,
     );

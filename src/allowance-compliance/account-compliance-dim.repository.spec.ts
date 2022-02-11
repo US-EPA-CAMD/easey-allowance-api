@@ -21,6 +21,7 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   distinctOn: jest.fn(),
+  stream: jest.fn(),
 });
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -83,12 +84,11 @@ describe('-- AccountComplianceDimRepository --', () => {
     ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
+    queryBuilder.stream.mockReturnValue('mockStream');
   });
 
   describe('getAllowanceCompliance', () => {
     it('calls createQueryBuilder and gets all AccountComplianceDim results from the repository with no filters', async () => {
-      // const emptyFilters: AllowanceComplianceParamsDTO = new AllowanceComplianceParamsDTO();
-
       let result = await repository.getAllowanceCompliance(
         new PaginatedAllowanceComplianceParamsDTO(),
         req,
@@ -139,6 +139,16 @@ describe('-- AccountComplianceDimRepository --', () => {
 
     expect(ResponseHeaders.setPagination).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAllowanceCompliance');
+  });
+
+  describe('streamAllowanceCompliance', () => {
+    it('streams all allowance compliance', async () => {
+      const result = await repository.streamAllowanceCompliance(
+        new PaginatedAllowanceComplianceParamsDTO(),
+      );
+
+      expect(result).toEqual('mockStream');
+    });
   });
 
   describe('getAllApplicableAllowanceComplianceAttributes', () => {

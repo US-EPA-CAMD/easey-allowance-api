@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { StreamableFile } from '@nestjs/common';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -11,7 +12,10 @@ import { AccountComplianceDimRepository } from '../allowance-compliance/account-
 import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.repository';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
-import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import {
+  EmissionsComplianceParamsDTO,
+  PaginatedEmissionsComplianceParamsDTO,
+} from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
@@ -65,7 +69,7 @@ describe('-- Emissions Compliance Controller --', () => {
 
     it('should call the service and return emissions compliance data ', async () => {
       const expectedResults: EmissionsComplianceDTO[] = [];
-      const paramsDTO: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      const paramsDTO = new PaginatedEmissionsComplianceParamsDTO();
       paramsDTO.year = [2019];
       paramsDTO.page = undefined;
       paramsDTO.perPage = undefined;
@@ -78,6 +82,25 @@ describe('-- Emissions Compliance Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await emissionsComplianceController.getEmissionsCompliance(
+          paramsDTO,
+          req,
+        ),
+      ).toBe(expectedResults);
+    });
+  });
+
+  describe('* streamEmissionsCompliance', () => {
+    const req: any = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+
+    it('should call the service and return all emissions compliance data ', async () => {
+      const expectedResults: StreamableFile = undefined;
+      const paramsDTO = new EmissionsComplianceParamsDTO();
+      jest
+        .spyOn(emissionsComplianceService, 'streamEmissionsCompliance')
+        .mockResolvedValue(expectedResults);
+      expect(
+        await emissionsComplianceController.streamEmissionsCompliance(
           paramsDTO,
           req,
         ),
