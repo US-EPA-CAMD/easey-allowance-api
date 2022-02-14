@@ -23,7 +23,6 @@ import {
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
-import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 
@@ -36,7 +35,6 @@ export class AllowanceTransactionsService {
     @InjectRepository(TransactionOwnerDimRepository)
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
-    private readonly applicableAllowanceTransactionsAttributesMap: ApplicableAllowanceTransactionsAttributesMap,
     private readonly logger: Logger,
   ) {}
 
@@ -121,6 +119,17 @@ export class AllowanceTransactionsService {
       this.logger.error(InternalServerErrorException, e.message);
     }
 
-    return this.applicableAllowanceTransactionsAttributesMap.many(query);
+    return query.map(item => {
+      const data = plainToClass(
+        ApplicableAllowanceTransactionsAttributesDTO,
+        item,
+        {
+          enableImplicitConversion: true,
+        },
+      );
+      const transactionDate = new Date(data.transactionDate);
+      data.transactionDate = transactionDate.toISOString().split('T')[0];
+      return data;
+    });
   }
 }

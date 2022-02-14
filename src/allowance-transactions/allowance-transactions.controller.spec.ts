@@ -13,7 +13,6 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { ApplicableAllowanceTransactionsAttributesMap } from '../maps/applicable-allowance-transactions-attributtes.map';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { StreamableFile } from '@nestjs/common';
@@ -38,7 +37,6 @@ describe('-- Allowance Transactions Controller --', () => {
       providers: [
         AllowanceTransactionsService,
         AllowanceTransactionsMap,
-        ApplicableAllowanceTransactionsAttributesMap,
         TransactionBlockDimRepository,
         TransactionOwnerDimRepository,
         OwnerOperatorsMap,
