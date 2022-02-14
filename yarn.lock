@@ -1073,10 +1073,10 @@
     "@typescript-eslint/types" "5.1.0"
     eslint-visitor-keys "^3.0.0"
 
-"@us-epa-camd/easey-common@^2.9.0":
-  version "2.9.0"
-  resolved "https://npm.pkg.github.com/download/@us-epa-camd/easey-common/2.9.0/4964431cc2c9e5d4a625cf279951cf733cfdc46ac4ddd94852e353ff56ea3ef3#a55575e2148b4175974dea7af6e2bad2d2f582f3"
-  integrity sha512-U+M0CFPcXHVYTvXM/9sZmsTEJ5c4C3wUcvR5gjb/nSQ0OrzYJLJBYuf2xIywBE0iooI3rCFR0AQ5g52P4FKrGw==
+"@us-epa-camd/easey-common@^2.13.0":
+  version "2.13.0"
+  resolved "https://npm.pkg.github.com/download/@us-epa-camd/easey-common/2.13.0/5438e0cdd81e4d2351bc3cbbab9c9fa4f32870b320fdd2f4c59257c026d216ba#7027f8b64a144a2d41d8929a658165d54bb36364"
+  integrity sha512-vjBL09kxcMOaEWexqhi7KL6lR0PSmMuWakWj0ojLsAIDiGt6i1og2m0No9OraOD12sK1dctz4aQmH33qH5kkMw==
   dependencies:
     "@nestjs/axios" "0.0.3"
     "@nestjs/common" "^8.1.1"
@@ -1084,6 +1084,7 @@
     "@nestjs/core" "^8.1.1"
     "@nestjs/swagger" "^5.1.2"
     class-validator "^0.13.1"
+    dotenv "^10.0.0"
     express "^4.17.1"
     helmet "^4.6.0"
     json2csv "^5.0.6"
