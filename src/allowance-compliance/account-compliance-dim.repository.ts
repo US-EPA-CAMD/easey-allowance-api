@@ -13,6 +13,7 @@ import {
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { AccountFact } from '../entities/account-fact.entity';
 import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
+import { UnitFact } from '../entities/unit-fact.entity';
 
 @EntityRepository(AccountComplianceDim)
 export class AccountComplianceDimRepository extends Repository<
@@ -148,7 +149,8 @@ export class AccountComplianceDimRepository extends Repository<
         'af',
         ' af.accountNumber = acd.accountNumber AND af.programCodeInfo = acd.programCodeInfo',
       )
-      .leftJoin(OwnerYearDim, 'oyd', 'oyd.year = acd.year AND oyd.id = af.id')
+      .leftJoin(UnitFact, 'uf', 'uf.year = acd.year AND uf.facilityId = af.facilityId')
+      .leftJoin(OwnerYearDim, 'oyd', 'oyd.year = uf.year AND oyd.id = uf.id')
       .distinctOn([
         'acd.op_year',
         'af.prg_code',
@@ -156,6 +158,7 @@ export class AccountComplianceDimRepository extends Repository<
         'af.stateCode',
         'oyd.own_display',
       ]);
+      
     return query.getRawMany();
   }
 }
