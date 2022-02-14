@@ -6,6 +6,7 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
+import { UnitFact } from '../entities/unit-fact.entity';
 import {
   AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
@@ -148,7 +149,12 @@ export class AccountComplianceDimRepository extends Repository<
         'af',
         ' af.accountNumber = acd.accountNumber AND af.programCodeInfo = acd.programCodeInfo',
       )
-      .leftJoin(OwnerYearDim, 'oyd', 'oyd.year = acd.year AND oyd.id = af.id')
+      .leftJoin(
+        UnitFact,
+        'uf',
+        'uf.year = acd.year AND uf.facilityId = af.facilityId',
+      )
+      .leftJoin(OwnerYearDim, 'oyd', 'oyd.year = uf.year AND oyd.id = uf.id')
       .distinctOn([
         'acd.op_year',
         'af.prg_code',
@@ -156,6 +162,7 @@ export class AccountComplianceDimRepository extends Repository<
         'af.stateCode',
         'oyd.own_display',
       ]);
+
     return query.getRawMany();
   }
 }
