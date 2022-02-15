@@ -30,7 +30,7 @@ export class AllowanceHoldingDimRepository extends Repository<
 
     if (page && perPage) {
       const totalCount = await query.getCount();
-      ResponseHeaders.setPagination(page, perPage, totalCount, req);
+      ResponseHeaders.setPagination(req, page, perPage, totalCount);
     }
 
     return query.getMany();
