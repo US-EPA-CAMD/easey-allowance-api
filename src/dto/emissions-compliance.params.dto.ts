@@ -1,17 +1,19 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
-import {
-  ApiHideProperty,
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger';
+import { IsDefined, IsOptional } from 'class-validator';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
-import { IsYearFormat, IsInDateRange } from '@us-epa-camd/easey-common/pipes';
+import {
+  IsYearFormat,
+  IsInDateRange,
+  Min,
+  IsInRange,
+} from '@us-epa-camd/easey-common/pipes';
 
 import { ComplianceParamsDTO } from './compliance.params.dto';
+import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
 
 export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
   @ApiHideProperty()
@@ -40,16 +42,24 @@ export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
   private get getCurrentDate(): Date {
     return new Date();
   }
+}
 
-  @IsOptional()
-  @ApiPropertyOptional({
+export class PaginatedEmissionsComplianceParamsDTO extends EmissionsComplianceParamsDTO {
+  @ApiProperty({
     description: propertyMetadata.page.description,
+  })
+  @IsDefined()
+  @Min(1, {
+    message: ErrorMessages.GreaterThanOrEqual('page', 1),
   })
   page: number;
 
-  @IsOptional()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: propertyMetadata.perPage.description,
+  })
+  @IsDefined()
+  @IsInRange(1, PAGINATION_MAX_PER_PAGE, {
+    message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
   })
   perPage: number;
 }

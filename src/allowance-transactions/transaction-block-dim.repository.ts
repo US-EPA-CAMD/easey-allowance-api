@@ -44,21 +44,29 @@ export class TransactionBlockDimRepository extends Repository<
     applicableAllowanceTransactionsAttributesParamsDTO: ApplicableAllowanceTransactionsAttributesParamsDTO,
   ): Promise<any> {
     const query = this.createQueryBuilder('tbd')
-      .select([
-        'tbd.vintageYear',
-        'tf.programCodeInfo',
-        'tf.buyAccountNumber',
-        'tf.sellAccountNumber',
-        'tf.buyAccountTypeCode',
-        'tf.sellAccountTypeCode',
-        'tf.buyFacilityId',
-        'tf.sellFacilityId',
-        'tf.buyState',
-        'tf.sellState',
-        'tf.transactionTypeCode',
-        'tf.transactionDate',
-        'tod.ownerOperator',
-      ])
+      .select(
+        [
+          'tf.transactionDate',
+          'tbd.vintageYear',
+          'tf.programCodeInfo',
+          'tf.buyAccountNumber',
+          'tf.sellAccountNumber',
+          'tf.buyAccountTypeCode',
+          'tf.sellAccountTypeCode',
+          'tf.buyFacilityId',
+          'tf.sellFacilityId',
+          'tf.buyState',
+          'tf.sellState',
+          'tf.transactionTypeCode',
+          'tod.ownerOperator',
+        ].map(col => {
+          if (col === 'tf.programCodeInfo') {
+            return `${col} AS "programCode"`;
+          } else {
+            return `${col} AS "${col.split('.')[1]}"`;
+          }
+        }),
+      )
       .innerJoin('tbd.transactionFact', 'tf')
       .leftJoin('tf.transactionOwnerDim', 'tod')
       .distinctOn([
@@ -84,8 +92,7 @@ export class TransactionBlockDimRepository extends Repository<
         transactionEndDate:
           applicableAllowanceTransactionsAttributesParamsDTO.transactionEndDate,
       });
-
-    return query.getMany();
+    return query.getRawMany();
   }
 
   private getColumns(isStreamed: boolean): string[] {

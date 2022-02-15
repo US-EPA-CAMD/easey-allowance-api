@@ -16,6 +16,7 @@ const mockQueryBuilder = () => ({
   where: jest.fn(),
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getRawMany: jest.fn(),
   getManyAndCount: jest.fn(),
   select: jest.fn(),
   innerJoin: jest.fn(),
@@ -87,6 +88,7 @@ describe('-- TransactionBlockDimRepository --', () => {
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAllowanceTransactions');
+    queryBuilder.getRawMany.mockReturnValue('mockRawAllowanceTransactions');
     queryBuilder.getManyAndCount.mockReturnValue([
       'mockAllowanceTransactions',
       0,
@@ -164,8 +166,8 @@ describe('-- TransactionBlockDimRepository --', () => {
         let result = await transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
           filters,
         );
-        expect(queryBuilder.getMany).toHaveBeenCalled();
-        expect(result).toEqual('mockAllowanceTransactions');
+        expect(queryBuilder.getRawMany).toHaveBeenCalled();
+        expect(result).toEqual('mockRawAllowanceTransactions');
       });
     });
   });

@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 
 import { UnitFact } from './unit-fact.entity';
 
@@ -6,6 +7,7 @@ import { UnitFact } from './unit-fact.entity';
 export class OwnerYearDim extends BaseEntity {
   @PrimaryColumn({
     name: 'own_yr_id',
+    transformer: new NumericColumnTransformer(),
   })
   ownYearId: number;
 
@@ -16,6 +18,7 @@ export class OwnerYearDim extends BaseEntity {
 
   @PrimaryColumn({
     name: 'op_year',
+    transformer: new NumericColumnTransformer(),
   })
   year: number;
 
@@ -26,6 +29,7 @@ export class OwnerYearDim extends BaseEntity {
 
   @Column({
     name: 'own_id',
+    transformer: new NumericColumnTransformer(),
   })
   ownId: number;
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
-
 import { BaseMap } from '@us-epa-camd/easey-common/maps';
+
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 
@@ -22,34 +21,18 @@ export class EmissionsComplianceMap extends BaseMap<
     const ownOprUniqueList = [...new Set(ownOprList)];
     const ownerOperator = ownOprUniqueList.join('),');
     return {
-      [propertyMetadata.year.fieldLabels.value]: Number(entity.year),
-      [propertyMetadata.facilityName.fieldLabels.value]:
-        entity.unitFact?.facilityName || null,
-      [propertyMetadata.facilityId.fieldLabels.value]:
-        Number(entity.unitFact?.facilityId) || null,
-      [propertyMetadata.unitId.fieldLabels.value]:
-        entity.unitFact?.unitId || null,
-      [propertyMetadata.ownerOperator.fieldLabels.value]:
-        ownerOperator.length > 0 ? `${ownerOperator})` : null,
-      [propertyMetadata.stateCode.fieldLabels.value]:
-        entity.unitFact?.stateCode || null,
-      [propertyMetadata.complianceApproach.fieldLabels.value]:
-        entity.complianceApproach,
-      [propertyMetadata.avgPlanId.fieldLabels.value]: entity.avgPlanId
-        ? Number(entity.avgPlanId)
-        : entity.avgPlanId,
-      [propertyMetadata.emissionsLimitDisplay.fieldLabels
-        .value]: entity.emissionsLimitDisplay
-        ? Number(entity.emissionsLimitDisplay)
-        : entity.emissionsLimitDisplay,
-      [propertyMetadata.actualEmissionsRate.fieldLabels
-        .value]: entity.actualEmissionsRate
-        ? Number(entity.actualEmissionsRate)
-        : entity.actualEmissionsRate,
-      [propertyMetadata.avgPlanActual.fieldLabels.value]: entity.avgPlanActual
-        ? Number(entity.avgPlanActual)
-        : entity.avgPlanActual,
-      [propertyMetadata.inCompliance.fieldLabels.value]: entity.inCompliance,
+      year: entity.year,
+      facilityName: entity.unitFact?.facilityName || null,
+      facilityId: entity.unitFact?.facilityId,
+      unitId: entity.unitFact?.unitId || null,
+      ownerOperator: ownerOperator.length > 0 ? `${ownerOperator})` : null,
+      stateCode: entity.unitFact?.stateCode || null,
+      complianceApproach: entity.complianceApproach,
+      avgPlanId: entity.avgPlanId,
+      emissionsLimitDisplay: entity.emissionsLimitDisplay,
+      actualEmissionsRate: entity.actualEmissionsRate,
+      avgPlanActual: entity.avgPlanActual,
+      inCompliance: entity.inCompliance,
     };
   }
 }

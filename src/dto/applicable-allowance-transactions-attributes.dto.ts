@@ -14,7 +14,7 @@ export class ApplicableAllowanceTransactionsAttributesDTO {
     example: propertyMetadata.vintageYear.example,
     name: propertyMetadata.vintageYear.fieldLabels.value,
   })
-  vintageYear: string;
+  vintageYear: number;
 
   @ApiProperty({
     description: propertyMetadata.programCode.description,

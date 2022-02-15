@@ -5,11 +5,12 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
-import { EmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-emissions-compliance-map';
 
 const mockUnitComplianceDimRepository = () => ({
   getEmissionsCompliance: jest.fn(),
+  streamEmissionsCompliance: jest.fn(),
   getAllApplicableEmissionsComplianceAttributes: jest.fn(),
 });
 
@@ -17,10 +18,15 @@ const mockEmissionsComplianceMap = () => ({
   many: jest.fn(),
 });
 
-const mockRequest = () => {
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
+    url,
     res: {
       setHeader: jest.fn(),
+    },
+    query: {
+      page,
+      perPage,
     },
   };
 };
@@ -69,7 +75,7 @@ describe('-- Emissions Compliance Service --', () => {
       );
       emissionsComplianceMap.many.mockReturnValue('mapped DTOs');
 
-      let filters: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      let filters = new PaginatedEmissionsComplianceParamsDTO();
       filters.year = [2019];
       filters.page = undefined;
       filters.perPage = undefined;
@@ -82,7 +88,7 @@ describe('-- Emissions Compliance Service --', () => {
         req,
       );
 
-      let filtersOtc: EmissionsComplianceParamsDTO = new EmissionsComplianceParamsDTO();
+      let filtersOtc = new PaginatedEmissionsComplianceParamsDTO();
       filtersOtc.year = [2019];
       filtersOtc.page = undefined;
       filtersOtc.perPage = undefined;
