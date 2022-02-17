@@ -14,6 +14,7 @@ import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getRawMany: jest.fn(),
   select: jest.fn(),
   innerJoin: jest.fn(),
   leftJoin: jest.fn(),
@@ -78,6 +79,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAllowanceHoldings');
+    queryBuilder.getRawMany.mockReturnValue('mockRawAllowanceHoldings');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
@@ -121,7 +123,6 @@ describe('-- AllowanceHoldingDimRepository --', () => {
         paginatedFilters,
         req,
       );
-      expect(req.res.setHeader).toHaveBeenCalled();
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockAllowanceHoldings');
     });
@@ -138,7 +139,6 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       paginatedFilters,
       req,
     );
-    expect(req.res.setHeader).toHaveBeenCalled();
     expect(queryBuilder.getMany).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAllowanceHoldings');
   });
@@ -146,8 +146,8 @@ describe('-- AllowanceHoldingDimRepository --', () => {
   describe('getAllApplicableAllowanceHoldingsAttributes', () => {
     it('calls createQueryBuilder and gets all applicable allowance holdings attributes from the repository', async () => {
       let result = await allowanceHoldingDimRepository.getAllApplicableAllowanceHoldingsAttributes();
-      expect(queryBuilder.getMany).toHaveBeenCalled();
-      expect(result).toEqual('mockAllowanceHoldings');
+      expect(queryBuilder.getRawMany).toHaveBeenCalled();
+      expect(result).toEqual('mockRawAllowanceHoldings');
     });
   });
 });

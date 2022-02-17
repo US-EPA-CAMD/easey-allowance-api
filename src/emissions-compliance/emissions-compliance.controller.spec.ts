@@ -19,7 +19,6 @@ import {
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
-import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-emissions-compliance-map';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 
 const mockRequest = (url: string) => {
@@ -50,7 +49,6 @@ describe('-- Emissions Compliance Controller --', () => {
         OwnerYearDimRepository,
         OwnerOperatorsMap,
         ApplicableAllowanceComplianceAttributesMap,
-        ApplicableEmissionsComplianceAttributesMap,
       ],
     }).compile();
 

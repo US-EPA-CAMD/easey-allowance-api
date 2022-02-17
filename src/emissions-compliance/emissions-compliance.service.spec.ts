@@ -6,7 +6,6 @@ import { EmissionsComplianceService } from './emissions-compliance.service';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
-import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-emissions-compliance-map';
 
 const mockUnitComplianceDimRepository = () => ({
   getEmissionsCompliance: jest.fn(),
@@ -35,7 +34,6 @@ describe('-- Emissions Compliance Service --', () => {
   let emissionsComplianceService;
   let unitComplianceDimRepository;
   let emissionsComplianceMap;
-  let applicableEmissionsComplianceAttributesMap;
   let req: any;
 
   beforeEach(async () => {
@@ -51,19 +49,12 @@ describe('-- Emissions Compliance Service --', () => {
           provide: EmissionsComplianceMap,
           useFactory: mockEmissionsComplianceMap,
         },
-        {
-          provide: ApplicableEmissionsComplianceAttributesMap,
-          useFactory: mockEmissionsComplianceMap,
-        },
       ],
     }).compile();
 
     emissionsComplianceService = module.get(EmissionsComplianceService);
     unitComplianceDimRepository = module.get(UnitComplianceDimRepository);
     emissionsComplianceMap = module.get(EmissionsComplianceMap);
-    applicableEmissionsComplianceAttributesMap = module.get(
-      ApplicableEmissionsComplianceAttributesMap,
-    );
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
@@ -102,24 +93,6 @@ describe('-- Emissions Compliance Service --', () => {
       );
 
       expect(emissionsComplianceMap.many).toHaveBeenCalled();
-      expect(result).toEqual('mapped DTOs');
-    });
-  });
-
-  describe('getAllApplicableEmissionsComplianceAttributes', () => {
-    it('call unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes() and gets all applicable emissions compliance attributes', async () => {
-      unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes.mockResolvedValue(
-        'list of applicable emissions compliance attributes',
-      );
-
-      applicableEmissionsComplianceAttributesMap.many.mockReturnValue(
-        'mapped DTOs',
-      );
-
-      const result = await emissionsComplianceService.getAllApplicableEmissionsComplianceAttributes();
-      expect(
-        applicableEmissionsComplianceAttributesMap.many,
-      ).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
     });
   });

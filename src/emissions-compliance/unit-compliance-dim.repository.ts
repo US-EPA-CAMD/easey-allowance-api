@@ -104,12 +104,13 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     UnitComplianceDim[]
   > {
     const query = this.createQueryBuilder('ucd')
-      .select([
-        'ucd.year',
-        'uf.facilityId',
-        'uf.stateCode',
-        'oyd.ownerOperator',
-      ])
+      .select(
+        ['ucd.year', 'uf.facilityId', 'uf.stateCode', 'oyd.ownerOperator'].map(
+          col => {
+            return `${col} AS "${col.split('.')[1]}"`;
+          },
+        ),
+      )
       .innerJoin('ucd.unitFact', 'uf')
       .leftJoin('uf.ownerYearDim', 'oyd')
       .distinctOn([
@@ -119,6 +120,6 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
         'oyd.own_display',
       ]);
 
-    return query.getMany();
+    return query.getRawMany();
   }
 }

@@ -38,15 +38,23 @@ export class AllowanceHoldingDimRepository extends Repository<
 
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<any> {
     const query = this.createQueryBuilder('ahd')
-      .select([
-        'ahd.vintageYear',
-        'ahd.programCodeInfo',
-        'af.accountNumber',
-        'af.accountTypeCode',
-        'af.facilityId',
-        'af.stateCode',
-        'aod.ownerOperator',
-      ])
+      .select(
+        [
+          'ahd.vintageYear',
+          'ahd.programCodeInfo',
+          'af.accountNumber',
+          'af.accountTypeCode',
+          'af.facilityId',
+          'af.stateCode',
+          'aod.ownerOperator',
+        ].map(col => {
+          if (col === 'ahd.programCodeInfo') {
+            return `${col} AS "programCode"`;
+          } else {
+            return `${col} AS "${col.split('.')[1]}"`;
+          }
+        }),
+      )
       .innerJoin('ahd.accountFact', 'af')
       .leftJoin('af.accountOwnerDim', 'aod')
       .distinctOn([
@@ -58,7 +66,8 @@ export class AllowanceHoldingDimRepository extends Repository<
         'af.stateCode',
         'aod.own_display',
       ]);
-    return query.getMany();
+
+    return query.getRawMany();
   }
 
   private getColumns(isStreamed: boolean): string[] {
