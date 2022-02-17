@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { StreamableFile } from '@nestjs/common';
 
 import { AccountMap } from '../maps/account.map';
 import { AccountFactRepository } from './account-fact.repository';
@@ -14,9 +15,7 @@ import {
   PaginatedAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
-import { StreamableFile } from '@nestjs/common';
 
 const mockRequest = (url: string) => {
   return {
@@ -41,7 +40,6 @@ describe('-- Account Controller --', () => {
         AccountFactRepository,
         AccountOwnerDimRepository,
         OwnerOperatorsMap,
-        ApplicableAccountAttributesMap,
       ],
     }).compile();
 

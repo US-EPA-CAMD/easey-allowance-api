@@ -11,7 +11,6 @@ import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
-import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-emissions-compliance-map';
 
 @Module({
   imports: [
@@ -29,7 +28,6 @@ import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-e
     OwnerOperatorsMap,
     EmissionsComplianceMap,
     ApplicableAllowanceComplianceAttributesMap,
-    ApplicableEmissionsComplianceAttributesMap,
   ],
 })
 export class EmissionsComplianceModule {}

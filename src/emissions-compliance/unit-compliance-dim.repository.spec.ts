@@ -9,6 +9,7 @@ import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getRawMany: jest.fn(),
   getManyAndCount: jest.fn(),
   select: jest.fn(),
   leftJoin: jest.fn(),
@@ -72,6 +73,7 @@ describe('-- UnitComplianceDimRepository --', () => {
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockEmissionsCompliance');
+    queryBuilder.getRawMany.mockReturnValue('mockRawEmissionsCompliance');
     queryBuilder.getManyAndCount.mockReturnValue([
       'mockEmissionsCompliance',
       0,
@@ -145,8 +147,8 @@ describe('-- UnitComplianceDimRepository --', () => {
   describe('getAllApplicableEmissionsComplianceAttributes', () => {
     it('calls createQueryBuilder and gets all applicable emissions compliance attributes from the repository', async () => {
       const result = await unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes();
-      expect(queryBuilder.getMany).toHaveBeenCalled();
-      expect(result).toEqual('mockEmissionsCompliance');
+      expect(queryBuilder.getRawMany).toHaveBeenCalled();
+      expect(result).toEqual('mockRawEmissionsCompliance');
     });
   });
 });

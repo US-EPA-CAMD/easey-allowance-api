@@ -12,8 +12,6 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountMap } from '../maps/account.map';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
-import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 
 @Module({
   imports: [
@@ -30,10 +28,8 @@ import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-all
     AccountService,
     AllowanceHoldingsMap,
     AccountMap,
-    ApplicableAccountAttributesMap,
     OwnerOperatorsMap,
     ConfigService,
-    ApplicableAllowanceHoldingsAttributesMap,
   ],
 })
 export class AllowanceHoldingsModule {}

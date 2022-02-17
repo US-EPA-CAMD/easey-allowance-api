@@ -18,7 +18,6 @@ import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repositor
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { fieldMappings } from '../constants/field-mappings';
 import { Logger } from '@us-epa-camd/easey-common/logger';
-import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { Transform } from 'stream';
 
@@ -29,7 +28,6 @@ export class AllowanceHoldingsService {
     private readonly allowanceHoldingsRepository: AllowanceHoldingDimRepository,
     private readonly allowanceHoldingsMap: AllowanceHoldingsMap,
     private readonly logger: Logger,
-    private readonly applicableAllowanceHoldingsAttributesMap: ApplicableAllowanceHoldingsAttributesMap,
   ) {}
 
   async streamAllowanceHoldings(
@@ -106,6 +104,10 @@ export class AllowanceHoldingsService {
 
     this.logger.info('Got all applicable allowance holding attributes');
 
-    return this.applicableAllowanceHoldingsAttributesMap.many(query);
+    return query.map(item => {
+      return plainToClass(ApplicableAllowanceHoldingsAttributesDTO, item, {
+        enableImplicitConversion: true,
+      });
+    });
   }
 }

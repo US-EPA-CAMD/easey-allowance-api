@@ -17,6 +17,7 @@ const mockQueryBuilder = () => ({
   distinctOn: jest.fn(),
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getRawMany: jest.fn(),
   innerJoin: jest.fn(),
   leftJoin: jest.fn(),
   orderBy: jest.fn(),
@@ -79,6 +80,7 @@ describe('AccountFactRepository', () => {
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAccount');
+    queryBuilder.getRawMany.mockReturnValue('mockRawAccount');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
@@ -128,7 +130,6 @@ describe('AccountFactRepository', () => {
         paginatedFilters,
         req,
       );
-      expect(req.res.setHeader).toHaveBeenCalled();
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockAccount');
     });
@@ -145,7 +146,6 @@ describe('AccountFactRepository', () => {
       paginatedFilters,
       req,
     );
-    expect(req.res.setHeader).toHaveBeenCalled();
     expect(queryBuilder.getMany).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAccount');
   });
@@ -153,8 +153,8 @@ describe('AccountFactRepository', () => {
   describe('getAllApplicableAccountAttributes', () => {
     it('calls createQueryBuilder and gets all applicable account attributes from the repository', async () => {
       let result = await accountFactRepository.getAllApplicableAccountAttributes();
-      expect(queryBuilder.getMany).toHaveBeenCalled();
-      expect(result).toEqual('mockAccount');
+      expect(queryBuilder.getRawMany).toHaveBeenCalled();
+      expect(result).toEqual('mockRawAccount');
     });
   });
 });

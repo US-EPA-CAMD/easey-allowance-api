@@ -1,11 +1,10 @@
 import { Test } from '@nestjs/testing';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
-import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 
 const mockAllowanceHoldingDimRepository = () => ({
   getAllowanceHoldings: jest.fn(),
@@ -29,7 +28,6 @@ describe('-- Allowance Holdings Service --', () => {
   let allowanceHoldingsService;
   let allowanceHoldingDimRepository;
   let allowanceHoldingsMap;
-  let applicableAllowanceHoldingsAttributesMap;
   let req: any;
 
   beforeEach(async () => {
@@ -42,19 +40,13 @@ describe('-- Allowance Holdings Service --', () => {
           useFactory: mockAllowanceHoldingDimRepository,
         },
         { provide: AllowanceHoldingsMap, useFactory: mockAllowanceHoldingsMap },
-        {
-          provide: ApplicableAllowanceHoldingsAttributesMap,
-          useFactory: mockAllowanceHoldingsMap,
-        },
       ],
     }).compile();
 
     allowanceHoldingsService = module.get(AllowanceHoldingsService);
     allowanceHoldingDimRepository = module.get(AllowanceHoldingDimRepository);
     allowanceHoldingsMap = module.get(AllowanceHoldingsMap);
-    applicableAllowanceHoldingsAttributesMap = module.get(
-      ApplicableAllowanceHoldingsAttributesMap,
-    );
+
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
@@ -73,22 +65,6 @@ describe('-- Allowance Holdings Service --', () => {
         req,
       );
       expect(allowanceHoldingsMap.many).toHaveBeenCalled();
-      expect(result).toEqual('mapped DTOs');
-    });
-  });
-
-  describe('getAllApplicableAllowanceHoldingsAttributes', () => {
-    it('calls AllowanceHoldingsRepository.getAllApplicableAllowanceHoldingsAttributes() and gets all applicable allowance holdings attributes from the repository', async () => {
-      allowanceHoldingDimRepository.getAllApplicableAllowanceHoldingsAttributes.mockResolvedValue(
-        'list of applicable allowance holdings',
-      );
-
-      applicableAllowanceHoldingsAttributesMap.many.mockReturnValue(
-        'mapped DTOs',
-      );
-
-      const result = await allowanceHoldingsService.getAllApplicableAllowanceHoldingsAttributes();
-      expect(applicableAllowanceHoldingsAttributesMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
     });
   });
