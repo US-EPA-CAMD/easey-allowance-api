@@ -1,4 +1,6 @@
 import { Test } from '@nestjs/testing';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { StreamableFile } from '@nestjs/common';
 
 import { AllowanceHoldingsController } from './allowance-holdings.controller';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
@@ -12,11 +14,7 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountFactRepository } from '../account/account-fact.repository';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
-import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { ApplicableAccountAttributesMap } from '../maps/applicable-account-attributes.map';
-import { ApplicableAllowanceHoldingsAttributesMap } from '../maps/applicable-allowance-holdings-attributes.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
-import { StreamableFile } from '@nestjs/common';
 
 const mockRequest = (url: string) => {
   return {
@@ -45,8 +43,6 @@ describe('-- Allowance Holdings Controller --', () => {
         OwnerOperatorsMap,
         AccountFactRepository,
         AccountMap,
-        ApplicableAccountAttributesMap,
-        ApplicableAllowanceHoldingsAttributesMap,
       ],
     }).compile();
 

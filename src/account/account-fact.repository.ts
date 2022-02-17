@@ -44,14 +44,22 @@ export class AccountFactRepository extends Repository<AccountFact> {
 
   async getAllApplicableAccountAttributes(): Promise<any> {
     const query = this.createQueryBuilder('af')
-      .select([
-        'af.accountNumber',
-        'af.programCodeInfo',
-        'af.accountTypeCode',
-        'af.facilityId',
-        'af.stateCode',
-        'aod.ownerOperator',
-      ])
+      .select(
+        [
+          'af.programCodeInfo',
+          'af.facilityId',
+          'af.stateCode',
+          'af.accountNumber',
+          'af.accountTypeCode',
+          'aod.ownerOperator',
+        ].map(col => {
+          if (col === 'af.programCodeInfo') {
+            return `${col} AS "programCode"`;
+          } else {
+            return `${col} AS "${col.split('.')[1]}"`;
+          }
+        }),
+      )
       .leftJoin('af.accountOwnerDim', 'aod')
       .distinctOn([
         'af.account_number',
@@ -62,7 +70,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
         'aod.own_display',
       ]);
 
-    return query.getMany();
+    return query.getRawMany();
   }
 
   private getColumns(isStreamed: boolean): string[] {

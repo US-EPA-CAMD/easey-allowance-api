@@ -20,7 +20,6 @@ import {
 } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
-import { ApplicableEmissionsComplianceAttributesMap } from '../maps/applicable-emissions-compliance-map';
 
 @Injectable()
 export class EmissionsComplianceService {
@@ -28,7 +27,6 @@ export class EmissionsComplianceService {
     @InjectRepository(UnitComplianceDimRepository)
     private readonly unitComplianceDimRepository: UnitComplianceDimRepository,
     private readonly emissionsComplianceMap: EmissionsComplianceMap,
-    private readonly applicableEmissionsComplianceAttributesMap: ApplicableEmissionsComplianceAttributesMap,
     private readonly logger: Logger,
   ) {}
 
@@ -116,6 +114,10 @@ export class EmissionsComplianceService {
       this.logger.error(InternalServerErrorException, e.message);
     }
 
-    return this.applicableEmissionsComplianceAttributesMap.many(query);
+    return query.map(item => {
+      return plainToClass(ApplicableComplianceAttributesDTO, item, {
+        enableImplicitConversion: true,
+      });
+    });
   }
 }
