@@ -1073,10 +1073,10 @@
     "@typescript-eslint/types" "5.1.0"
     eslint-visitor-keys "^3.0.0"
 
-"@us-epa-camd/easey-common@^4.1.1":
-  version "4.1.1"
-  resolved "https://npm.pkg.github.com/download/@us-epa-camd/easey-common/4.1.1/f0d7b53780c5580d19e866b0ccc32242588870b48e0e47f8993218499d3fbe17#58cc57e719d72b8eadfdef4c0e5276dd3b83e072"
-  integrity sha512-Snf419iXyr83G+SMPq+YiwTXKI9zG8v9FBSDvOCdFxBb/Z1TwVmgVVzP0ka+tzzHht+BWaeZvCiphdvGGY42OQ==
+"@us-epa-camd/easey-common@^4.1.2":
+  version "4.1.2"
+  resolved "https://npm.pkg.github.com/download/@us-epa-camd/easey-common/4.1.2/9d7347acc0d4c1485c20c23aa81b6513b4dfb56e04629ad46cfc11771d3ff33f#aa58d9b6bc61e3f2f57a74e9b54b59ea91db2914"
+  integrity sha512-Voy2TduZsnhQtj5w+vfn2q4I7oFLU/Lcl8VUPiM1D6VfnT5ypKdDC5lZAUlGvI6ku2fcR6Ulk+UI1/CwY6U2gQ==
   dependencies:
     "@nestjs/axios" "0.0.3"
     "@nestjs/common" "^8.1.1"
