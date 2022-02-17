@@ -10,8 +10,6 @@ export class AllowanceHoldingsMap extends BaseMap<
   AllowanceHoldingsDTO
 > {
   public async one(entity: AllowanceHoldingDim): Promise<any> {
-    console.log(entity);
-
     return {
       accountNumber: entity.accountNumber,
       accountName: entity.accountName,
