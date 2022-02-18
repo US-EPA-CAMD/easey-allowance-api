@@ -1,17 +1,19 @@
+require('dotenv').config();
 import { registerAs } from '@nestjs/config';
+import { parseBool } from '@us-epa-camd/easey-common/utilities';
 
 const path = process.env.EASEY_ACCOUNT_API_PATH || 'account-mgmt';
 const host = process.env.EASEY_ACCOUNT_API_HOST || 'localhost';
-const port = process.env.EASEY_ACCOUNT_API_PORT || 8030;
+const port = +process.env.EASEY_ACCOUNT_API_PORT || 8030;
+
+export const PAGINATION_MAX_PER_PAGE =
+  +process.env.EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE || 25000;
 
 let uri = `https://${host}/${path}`;
 
 if (host === 'localhost') {
   uri = `http://localhost:${port}/${path}`;
 }
-
-export const PAGINATION_MAX_PER_PAGE =
-  +process.env.EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE || 25000;
 
 export default registerAs('app', () => ({
   name: 'account-api',
@@ -22,11 +24,18 @@ export default registerAs('app', () => ({
   port,
   uri,
   env: process.env.EASEY_ACCOUNT_API_ENV || 'local-dev',
-  enableCors: process.env.EASEY_ACCOUNT_API_ENABLE_CORS || true,
-  enableApiKey: process.env.EASEY_ACCOUNT_API_ENABLE_API_KEY || true,
-  enableAuthToken: process.env.EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN || false,
-  enableGlobalValidationPipes:
-    process.env.EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE || true,
+  enableCors: parseBool(process.env.EASEY_NOTIFICATIONS_API_ENABLE_CORS, true),
+  enableApiKey: parseBool(
+    process.env.EASEY_NOTIFICATIONS_API_ENABLE_API_KEY,
+    true,
+  ),
+  enableAuthToken: parseBool(
+    process.env.EASEY_NOTIFICATIONS_API_ENABLE_AUTH_TOKEN,
+  ),
+  enableGlobalValidationPipes: parseBool(
+    process.env.EASEY_NOTIFICATIONS_API_ENABLE_GLOBAL_VALIDATION_PIPE,
+    true,
+  ),
   version: process.env.EASEY_ACCOUNT_API_VERSION || 'v0.0.0',
   published: process.env.EASEY_ACCOUNT_API_PUBLISHED || 'local',
   perPageLimit: PAGINATION_MAX_PER_PAGE,
