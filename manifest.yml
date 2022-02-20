@@ -18,7 +18,6 @@ applications:
       EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN: false
       EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE: 25000
       EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE: true
-      NODE_OPTIONS: --max-old-space-size=((heap))
     routes:
       - route: ((host))/((path))
     services:
