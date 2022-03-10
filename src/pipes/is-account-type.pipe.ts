@@ -3,7 +3,7 @@ import {
   ValidationOptions,
   ValidationArguments,
 } from 'class-validator';
-import { getManager, Raw } from 'typeorm';
+import { getManager, ILike } from 'typeorm';
 
 import { AccountTypeCode } from '../entities/account-type-code.entity';
 
@@ -19,9 +19,7 @@ export function IsAccountType(validationOptions?: ValidationOptions) {
           const manager = getManager();
 
           const found = await manager.findOne(AccountTypeCode, {
-            accountTypeDescription: Raw(
-              alias => `UPPER(${alias}) LIKE '${value.toUpperCase()}'`,
-            ),
+            accountTypeDescription: ILike(value),
           });
 
           return found != null;
