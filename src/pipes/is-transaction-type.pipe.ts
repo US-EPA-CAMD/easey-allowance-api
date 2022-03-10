@@ -3,7 +3,7 @@ import {
   ValidationOptions,
   ValidationArguments,
 } from 'class-validator';
-import { getManager, Raw } from 'typeorm';
+import { getManager, ILike } from 'typeorm';
 
 import { TransactionTypeCode } from '../entities/transaction-type-code.entity';
 
@@ -19,9 +19,7 @@ export function IsTransactionType(validationOptions?: ValidationOptions) {
           const manager = getManager();
 
           const found = await manager.findOne(TransactionTypeCode, {
-            transactionTypeDescription: Raw(
-              alias => `UPPER(${alias}) LIKE '${value.toUpperCase()}'`,
-            ),
+            transactionTypeDescription: ILike(value),
           });
 
           return found != null;
