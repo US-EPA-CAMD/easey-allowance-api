@@ -20,6 +20,7 @@ import {
   ApiQueryComplianceMultiSelect,
   BadRequestResponse,
   NotFoundResponse,
+  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -31,7 +32,6 @@ import {
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
-import { ExcludeQuery } from '../utils/swagger-decorator.const';
 
 @Controller()
 @ApiSecurity('APIKey')
