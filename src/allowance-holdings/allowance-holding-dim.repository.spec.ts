@@ -7,7 +7,10 @@ import {
   AccountType,
 } from '@us-epa-camd/easey-common/enums';
 
-import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  PaginatedAllowanceHoldingsParamsDTO,
+  StreamAllowanceHoldingsParamsDTO,
+} from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 
@@ -88,7 +91,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
   describe('streamAllowanceHoldings', () => {
     it('streams allowance holdings', async () => {
       const result = await allowanceHoldingDimRepository.streamAllowanceHoldings(
-        new PaginatedAllowanceHoldingsParamsDTO(),
+        new StreamAllowanceHoldingsParamsDTO(),
       );
 
       expect(result).toEqual('mockStream');

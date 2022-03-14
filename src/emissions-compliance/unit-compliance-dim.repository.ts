@@ -8,12 +8,13 @@ import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import {
   EmissionsComplianceParamsDTO,
   PaginatedEmissionsComplianceParamsDTO,
+  StreamEmissionsComplianceParamsDTO,
 } from '../dto/emissions-compliance.params.dto';
 
 @EntityRepository(UnitComplianceDim)
 export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
   streamEmissionsCompliance(
-    params: EmissionsComplianceParamsDTO,
+    params: StreamEmissionsComplianceParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }

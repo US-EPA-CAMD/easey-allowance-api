@@ -17,13 +17,16 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
+import { Transform } from 'stream';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { ExcludeAccountAttributes } from '@us-epa-camd/easey-common/enums';
+
 import {
-  AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
+  StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
-import { Transform } from 'stream';
 
 @Injectable()
 export class AccountService {
@@ -51,7 +54,7 @@ export class AccountService {
 
   async streamAllAccountAttributes(
     req: Request,
-    params: AccountAttributesParamsDTO,
+    params: StreamAccountAttributesParamsDTO,
   ): Promise<StreamableFile> {
     const stream = await this.accountFactRepository.streamAllAccountAttributes(
       params,
@@ -65,6 +68,7 @@ export class AccountService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
+        data = exclude(data, params, ExcludeAccountAttributes);
         delete data.id;
         const dto = plainToClass(AccountAttributesDTO, data, {
           enableImplicitConversion: true,
@@ -74,7 +78,14 @@ export class AccountService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      const toCSV = new PlainToCSV(fieldMappings.allowances.accountAttributes);
+      let fieldMappingValues;
+      fieldMappingValues = fieldMappings.allowances.accountAttributes;
+      const fieldMappingsList = params.exclude
+        ? fieldMappingValues.filter(
+            item => !params.exclude.includes(item.value),
+          )
+        : fieldMappings.allowances.accountAttributes;
+      const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
         disposition: `attachment; filename="account-attributes-${uuid()}.csv"`,

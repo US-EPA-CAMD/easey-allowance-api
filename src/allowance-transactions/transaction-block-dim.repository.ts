@@ -8,6 +8,7 @@ import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import {
   AllowanceTransactionsParamsDTO,
   PaginatedAllowanceTransactionsParamsDTO,
+  StreamAllowanceTransactionsParamsDTO,
 } from '../dto/allowance-transactions.params.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
@@ -16,7 +17,7 @@ export class TransactionBlockDimRepository extends Repository<
   TransactionBlockDim
 > {
   streamAllowanceTransactions(
-    params: AllowanceTransactionsParamsDTO,
+    params: StreamAllowanceTransactionsParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }

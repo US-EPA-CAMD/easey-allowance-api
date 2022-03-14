@@ -10,6 +10,7 @@ import { UnitFact } from '../entities/unit-fact.entity';
 import {
   AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
+  StreamAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { AccountFact } from '../entities/account-fact.entity';
@@ -20,7 +21,7 @@ export class AccountComplianceDimRepository extends Repository<
   AccountComplianceDim
 > {
   streamAllowanceCompliance(
-    params: AllowanceComplianceParamsDTO,
+    params: StreamAllowanceComplianceParamsDTO,
   ): Promise<ReadStream> {
     const isOtcNbp = includesOtcNbp(params);
     return this.buildQuery(params, isOtcNbp, true).stream();

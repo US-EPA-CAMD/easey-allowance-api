@@ -5,10 +5,17 @@ import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
-import { IsYearFormat, Min, IsInRange } from '@us-epa-camd/easey-common/pipes';
+import {
+  IsYearFormat,
+  Min,
+  IsInRange,
+  IsInEnum,
+  IsInResponse,
+} from '@us-epa-camd/easey-common/pipes';
 import {
   TransactionType,
   AllowanceProgram,
+  ExcludeAllowanceTransactions,
 } from '@us-epa-camd/easey-common/enums';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
@@ -17,6 +24,7 @@ import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
+import { fieldMappings } from '../constants/field-mappings';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @ApiHideProperty()
@@ -107,4 +115,22 @@ export class PaginatedAllowanceTransactionsParamsDTO extends AllowanceTransactio
     message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
   })
   perPage: number;
+}
+
+export class StreamAllowanceTransactionsParamsDTO extends AllowanceTransactionsParamsDTO {
+  @ApiProperty({
+    enum: ExcludeAllowanceTransactions,
+    description: propertyMetadata.exclude.description,
+  })
+  @IsOptional()
+  @IsInEnum(ExcludeAllowanceTransactions, {
+    each: true,
+    message: ErrorMessages.RemovableParameter(),
+  })
+  @IsInResponse(fieldMappings.allowances.transactions, {
+    each: true,
+    message: ErrorMessages.ValidParameter(),
+  })
+  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  exclude?: ExcludeAllowanceTransactions[];
 }

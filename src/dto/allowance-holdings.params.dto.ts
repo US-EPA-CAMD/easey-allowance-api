@@ -5,13 +5,23 @@ import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
-import { IsInRange, IsYearFormat, Min } from '@us-epa-camd/easey-common/pipes';
+import {
+  IsInEnum,
+  IsInRange,
+  IsInResponse,
+  IsYearFormat,
+  Min,
+} from '@us-epa-camd/easey-common/pipes';
+import {
+  ActiveAllowanceProgram,
+  ExcludeAllowanceHoldings,
+} from '@us-epa-camd/easey-common/enums';
 
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-import { ActiveAllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
+import { fieldMappings } from '../constants/field-mappings';
 
 export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({
@@ -71,4 +81,22 @@ export class PaginatedAllowanceHoldingsParamsDTO extends AllowanceHoldingsParams
     description: propertyMetadata.perPage.description,
   })
   perPage: number;
+}
+
+export class StreamAllowanceHoldingsParamsDTO extends AllowanceHoldingsParamsDTO {
+  @ApiProperty({
+    enum: ExcludeAllowanceHoldings,
+    description: propertyMetadata.exclude.description,
+  })
+  @IsOptional()
+  @IsInEnum(ExcludeAllowanceHoldings, {
+    each: true,
+    message: ErrorMessages.RemovableParameter(),
+  })
+  @IsInResponse(fieldMappings.allowances.holdings, {
+    each: true,
+    message: ErrorMessages.ValidParameter(),
+  })
+  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  exclude?: ExcludeAllowanceHoldings[];
 }

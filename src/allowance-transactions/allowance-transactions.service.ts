@@ -10,6 +10,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { ExcludeAllowanceTransactions } from '@us-epa-camd/easey-common/enums';
 
 import { fieldMappings } from '../constants/field-mappings';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
@@ -17,8 +19,8 @@ import { TransactionOwnerDimRepository } from './transaction-owner-dim.repositor
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import {
-  AllowanceTransactionsParamsDTO,
   PaginatedAllowanceTransactionsParamsDTO,
+  StreamAllowanceTransactionsParamsDTO,
 } from '../dto/allowance-transactions.params.dto';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -62,11 +64,11 @@ export class AllowanceTransactionsService {
   }
 
   async streamAllowanceTransactions(
-    allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    params: StreamAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<StreamableFile> {
     const stream = await this.transactionBlockDimRepository.streamAllowanceTransactions(
-      allowanceTransactionsParamsDTO,
+      params,
     );
 
     req.res.setHeader(
@@ -77,6 +79,7 @@ export class AllowanceTransactionsService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
+        data = exclude(data, params, ExcludeAllowanceTransactions);
         delete data.transactionBlockId;
         const dto = plainToClass(AllowanceTransactionsDTO, data, {
           enableImplicitConversion: true,
@@ -88,7 +91,14 @@ export class AllowanceTransactionsService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      const toCSV = new PlainToCSV(fieldMappings.allowances.transactions);
+      let fieldMappingValues;
+      fieldMappingValues = fieldMappings.allowances.transactions;
+      const fieldMappingsList = params.exclude
+        ? fieldMappingValues.filter(
+            item => !params.exclude.includes(item.value),
+          )
+        : fieldMappings.allowances.transactions;
+      const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
         disposition: `attachment; filename="allowance-transactions-${uuid()}.csv"`,

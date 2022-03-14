@@ -3,7 +3,10 @@ import { SelectQueryBuilder } from 'typeorm';
 
 import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 
-import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import {
+  PaginatedAllowanceComplianceParamsDTO,
+  StreamAllowanceComplianceParamsDTO,
+} from '../dto/allowance-compliance.params.dto';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
@@ -144,7 +147,7 @@ describe('-- AccountComplianceDimRepository --', () => {
   describe('streamAllowanceCompliance', () => {
     it('streams all allowance compliance', async () => {
       const result = await repository.streamAllowanceCompliance(
-        new PaginatedAllowanceComplianceParamsDTO(),
+        new StreamAllowanceComplianceParamsDTO(),
       );
 
       expect(result).toEqual('mockStream');

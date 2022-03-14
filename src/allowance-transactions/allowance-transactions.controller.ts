@@ -20,8 +20,8 @@ import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import {
-  AllowanceTransactionsParamsDTO,
   PaginatedAllowanceTransactionsParamsDTO,
+  StreamAllowanceTransactionsParamsDTO,
 } from '../dto/allowance-transactions.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
@@ -30,6 +30,7 @@ import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryMultiSelect,
+  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { fieldMappings } from '../constants/field-mappings';
 
@@ -122,12 +123,13 @@ export class AllowanceTransactionsController {
     required: false,
     explode: false,
   })
+  @ExcludeQuery()
   streamAllowanceTransactions(
-    @Query() allowanceTransactionsParamsDTO: AllowanceTransactionsParamsDTO,
+    @Query() params: StreamAllowanceTransactionsParamsDTO,
     @Req() req: Request,
   ): Promise<StreamableFile> {
     return this.allowanceTransactionsService.streamAllowanceTransactions(
-      allowanceTransactionsParamsDTO,
+      params,
       req,
     );
   }

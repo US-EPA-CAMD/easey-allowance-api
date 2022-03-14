@@ -8,18 +8,20 @@ import { Request } from 'express';
 import { plainToClass } from 'class-transformer';
 import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
 import { v4 as uuid } from 'uuid';
+import { Transform } from 'stream';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { ExcludeAllowanceHoldings } from '@us-epa-camd/easey-common/enums';
 
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import {
-  AllowanceHoldingsParamsDTO,
   PaginatedAllowanceHoldingsParamsDTO,
+  StreamAllowanceHoldingsParamsDTO,
 } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { fieldMappings } from '../constants/field-mappings';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
-import { Transform } from 'stream';
 
 @Injectable()
 export class AllowanceHoldingsService {
@@ -32,7 +34,7 @@ export class AllowanceHoldingsService {
 
   async streamAllowanceHoldings(
     req: Request,
-    params: AllowanceHoldingsParamsDTO,
+    params: StreamAllowanceHoldingsParamsDTO,
   ): Promise<StreamableFile> {
     const stream = await this.allowanceHoldingsRepository.streamAllowanceHoldings(
       params,
@@ -46,6 +48,7 @@ export class AllowanceHoldingsService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
+        data = exclude(data, params, ExcludeAllowanceHoldings);
         const dto = plainToClass(AllowanceHoldingsDTO, data, {
           enableImplicitConversion: true,
         });
@@ -54,7 +57,14 @@ export class AllowanceHoldingsService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      const toCSV = new PlainToCSV(fieldMappings.allowances.holdings);
+      let fieldMappingValues;
+      fieldMappingValues = fieldMappings.allowances.holdings;
+      const fieldMappingsList = params.exclude
+        ? fieldMappingValues.filter(
+            item => !params.exclude.includes(item.value),
+          )
+        : fieldMappings.allowances.holdings;
+      const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
         disposition: `attachment; filename="allowance-holdings-${uuid()}.csv"`,
