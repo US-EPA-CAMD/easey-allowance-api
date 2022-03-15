@@ -97,7 +97,7 @@ export class EmissionsComplianceService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      let fieldMappingValues;
+      let fieldMappingValues = [];
       fieldMappingValues = fieldMappings.compliance.emissions;
       const fieldMappingsList = params.exclude
         ? fieldMappingValues.filter(

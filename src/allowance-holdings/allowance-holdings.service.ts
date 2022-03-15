@@ -57,7 +57,7 @@ export class AllowanceHoldingsService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      let fieldMappingValues;
+      let fieldMappingValues = [];
       fieldMappingValues = fieldMappings.allowances.holdings;
       const fieldMappingsList = params.exclude
         ? fieldMappingValues.filter(

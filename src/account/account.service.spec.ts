@@ -9,12 +9,22 @@ import { AccountOwnerDim } from '../entities/account-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import {
+  PaginatedAccountAttributesParamsDTO,
+  StreamAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
+import {
+  AccountType,
+  State,
+  AllowanceProgram,
+  ExcludeAccountAttributes,
+} from '@us-epa-camd/easey-common/enums';
 
 const mockAccountFactRepository = () => ({
   getAllAccounts: jest.fn(),
   getAllAccountAttributes: jest.fn(),
   getAllApplicableAccountAttributes: jest.fn(),
+  streamAllAccountAttributes: jest.fn(),
 });
 
 const mockAccountMap = () => ({
@@ -25,10 +35,18 @@ const mockAccountOwnerDimRepository = () => ({
   getAllOwnerOperators: jest.fn(),
 });
 
-const mockRequest = () => {
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
+    url,
     res: {
       setHeader: jest.fn(),
+    },
+    query: {
+      page,
+      perPage,
+    },
+    headers: {
+      accept: 'text/csv',
     },
   };
 };
@@ -122,6 +140,51 @@ describe('-- Account Service --', () => {
 
       expect(accountOwnerDimRepository.getAllOwnerOperators).toHaveBeenCalled();
       expect(result).toEqual([ownerOperatorsDTO]);
+    });
+  });
+
+  describe('streamAccountAttributes', () => {
+    it('streams all account attributes', async () => {
+      let streamFilters = new StreamAccountAttributesParamsDTO();
+      (streamFilters.accountType = [AccountType.GENERAL]),
+        (streamFilters.accountNumber = ['000127FACLTY']),
+        (streamFilters.facilityId = [0]),
+        (streamFilters.ownerOperator = ['']),
+        (streamFilters.stateCode = [State.AK]),
+        (streamFilters.programCodeInfo = [AllowanceProgram.ARP]),
+        (streamFilters.exclude = [ExcludeAccountAttributes.ACCOUNT_TYPE]);
+
+      const mockResult: any = {
+        pipe: toDto => {
+          return {
+            pipe: toCSV => {
+              return {
+                accountNumber: '000003FACLTY',
+                accountName: 'Barry',
+                programCodeInfo: 'ARP,CSNOX,CSSO2G2,MATS',
+                accountType: 'Facility Account',
+                facilityId: 3,
+                unitId: '5',
+                ownerOperator:
+                  'Alabama Power Company (Operator), Alabama Power Company (Owner)',
+                stateCode: 'AK',
+                epaRegion: 5,
+                nercRegion: 'Mid-Continent Area Power Pool',
+              };
+            },
+          };
+        },
+      };
+      const req: any = mockRequest(`/accounts/attributes/stream`);
+      req.res.setHeader.mockReturnValue();
+      accountFactRepository.streamAllAccountAttributes.mockResolvedValue(
+        mockResult,
+      );
+
+      const result = await accountService.streamAllAccountAttributes(
+        req,
+        streamFilters,
+      );
     });
   });
 });
