@@ -15,20 +15,21 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
-import { fieldMappings } from '../constants/field-mappings';
 
+import { fieldMappings } from '../constants/field-mappings';
 import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryMultiSelect,
+  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AccountService } from './account.service';
 import { AccountDTO } from '../dto/account.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import {
-  AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
+  StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 
@@ -103,9 +104,10 @@ export class AccountController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryMultiSelect()
+  @ExcludeQuery()
   streamAllAccountAttributes(
     @Req() req: Request,
-    @Query() params: AccountAttributesParamsDTO,
+    @Query() params: StreamAccountAttributesParamsDTO,
   ): Promise<StreamableFile> {
     return this.accountService.streamAllAccountAttributes(req, params);
   }

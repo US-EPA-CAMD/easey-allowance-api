@@ -35,3 +35,9 @@ export const ApiQueryComplianceMultiSelect = () => {
     ApiQuery({ style: 'pipeDelimited', name: 'year', required: false, explode: false }),
   );
 }
+
+export function ExcludeQuery() {
+  return applyDecorators(
+    ApiQuery({style: 'pipeDelimited', name: 'exclude', required: false, explode: false,})
+  );
+}

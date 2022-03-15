@@ -22,11 +22,12 @@ import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryComplianceMultiSelect,
+  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import {
-  AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
+  StreamAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
@@ -109,12 +110,13 @@ export class AllowanceComplianceController {
     required: false,
     explode: false,
   })
+  @ExcludeQuery()
   streamAllowanceCompliance(
-    @Query() allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
+    @Query() params: StreamAllowanceComplianceParamsDTO,
     @Req() req: Request,
   ): Promise<StreamableFile> {
     return this.allowanceComplianceService.streamAllowanceCompliance(
-      allowanceComplianceParamsDTO,
+      params,
       req,
     );
   }

@@ -21,12 +21,13 @@ import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryMultiSelect,
+  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AccountService } from '../account/account.service';
 import {
-  AllowanceHoldingsParamsDTO,
   PaginatedAllowanceHoldingsParamsDTO,
+  StreamAllowanceHoldingsParamsDTO,
 } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -102,9 +103,10 @@ export class AllowanceHoldingsController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryMultiSelect()
+  @ExcludeQuery()
   streamAllowanceHoldings(
     @Req() req: Request,
-    @Query() params: AllowanceHoldingsParamsDTO,
+    @Query() params: StreamAllowanceHoldingsParamsDTO,
   ): Promise<StreamableFile> {
     return this.allowanceService.streamAllowanceHoldings(req, params);
   }

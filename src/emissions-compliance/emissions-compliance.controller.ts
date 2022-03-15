@@ -20,13 +20,14 @@ import {
   ApiQueryComplianceMultiSelect,
   BadRequestResponse,
   NotFoundResponse,
+  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import {
-  EmissionsComplianceParamsDTO,
   PaginatedEmissionsComplianceParamsDTO,
+  StreamEmissionsComplianceParamsDTO,
 } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
@@ -98,12 +99,13 @@ export class EmissionsComplianceController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryComplianceMultiSelect()
+  @ExcludeQuery()
   streamEmissionsCompliance(
-    @Query() emissionsComplianceParamsDTO: EmissionsComplianceParamsDTO,
+    @Query() params: StreamEmissionsComplianceParamsDTO,
     @Req() req: Request,
   ): Promise<StreamableFile> {
     return this.emissionsComplianceService.streamEmissionsCompliance(
-      emissionsComplianceParamsDTO,
+      params,
       req,
     );
   }

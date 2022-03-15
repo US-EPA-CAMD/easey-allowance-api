@@ -10,6 +10,8 @@ import { Transform } from 'stream';
 import { plainToClass } from 'class-transformer';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { ExcludeAllowanceCompliance } from '@us-epa-camd/easey-common/enums';
 
 import { fieldMappings } from '../constants/field-mappings';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
@@ -17,8 +19,8 @@ import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import {
-  AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
+  StreamAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
@@ -69,14 +71,14 @@ export class AllowanceComplianceService {
   }
 
   async streamAllowanceCompliance(
-    allowanceComplianceParamsDTO: AllowanceComplianceParamsDTO,
+    params: StreamAllowanceComplianceParamsDTO,
     req: Request,
   ): Promise<StreamableFile> {
     const stream = await this.accountComplianceDimRepository.streamAllowanceCompliance(
-      allowanceComplianceParamsDTO,
+      params,
     );
     let fieldMapping;
-    if (includesOtcNbp(allowanceComplianceParamsDTO)) {
+    if (includesOtcNbp(params)) {
       fieldMapping = fieldMappings.compliance.allowanceNbpOtc;
     } else {
       fieldMapping = fieldMappings.compliance.allowance;
@@ -85,7 +87,8 @@ export class AllowanceComplianceService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        if (!includesOtcNbp(allowanceComplianceParamsDTO)) {
+        data = exclude(data, params, ExcludeAllowanceCompliance);
+        if (!includesOtcNbp(params)) {
           delete data.bankedHeld;
           delete data.currentHeld;
           delete data.totalRequiredDeductions;
@@ -101,7 +104,10 @@ export class AllowanceComplianceService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      const toCSV = new PlainToCSV(fieldMapping);
+      const fieldMappingsList = params.exclude
+        ? fieldMapping.filter(item => !params.exclude.includes(item.value))
+        : fieldMapping;
+      const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
         disposition: `attachment; filename="allowance-compliance-${uuid()}.csv"`,

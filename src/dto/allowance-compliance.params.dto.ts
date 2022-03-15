@@ -2,18 +2,24 @@ import { Transform } from 'class-transformer';
 import { IsDefined, IsOptional } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
-import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import {
+  AllowanceProgram,
+  ExcludeAllowanceCompliance,
+} from '@us-epa-camd/easey-common/enums';
 import {
   IsYearFormat,
   IsInDateRange,
   Min,
   IsInRange,
+  IsInEnum,
+  IsInResponse,
 } from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
 import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { ComplianceParamsDTO } from './compliance.params.dto';
+import { fieldMappings } from '../constants/field-mappings';
 
 export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
   @ApiHideProperty()
@@ -76,4 +82,22 @@ export class PaginatedAllowanceComplianceParamsDTO extends AllowanceCompliancePa
     message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
   })
   perPage: number;
+}
+
+export class StreamAllowanceComplianceParamsDTO extends AllowanceComplianceParamsDTO {
+  @ApiProperty({
+    enum: ExcludeAllowanceCompliance,
+    description: propertyMetadata.exclude.description,
+  })
+  @IsOptional()
+  @IsInEnum(ExcludeAllowanceCompliance, {
+    each: true,
+    message: ErrorMessages.RemovableParameter(),
+  })
+  @IsInResponse(fieldMappings.compliance.allowanceNbpOtc, {
+    each: true,
+    message: ErrorMessages.ValidParameter(),
+  })
+  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  exclude?: ExcludeAllowanceCompliance[];
 }

@@ -6,8 +6,8 @@ import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import {
-  AllowanceTransactionsParamsDTO,
   PaginatedAllowanceTransactionsParamsDTO,
+  StreamAllowanceTransactionsParamsDTO,
 } from '../dto/allowance-transactions.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
@@ -78,7 +78,7 @@ describe('-- Allowance Transactions Controller --', () => {
 
     it('should call the service and return all allowance transactions ', async () => {
       const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new AllowanceTransactionsParamsDTO();
+      const paramsDTO = new StreamAllowanceTransactionsParamsDTO();
       jest
         .spyOn(allowanceTransactionsService, 'streamAllowanceTransactions')
         .mockResolvedValue(expectedResults);

@@ -9,8 +9,10 @@ import {
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
-import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
-import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import {
+  PaginatedAccountAttributesParamsDTO,
+  StreamAccountAttributesParamsDTO,
+} from '../dto/account-attributes.params.dto';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -89,7 +91,7 @@ describe('AccountFactRepository', () => {
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
       const result = await accountFactRepository.streamAllAccountAttributes(
-        new PaginatedAllowanceHoldingsParamsDTO(),
+        new StreamAccountAttributesParamsDTO(),
       );
 
       expect(result).toEqual('mockStream');

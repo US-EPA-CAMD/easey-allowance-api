@@ -6,6 +6,7 @@ import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import {
   AllowanceHoldingsParamsDTO,
   PaginatedAllowanceHoldingsParamsDTO,
+  StreamAllowanceHoldingsParamsDTO,
 } from '../dto/allowance-holdings.params.dto';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { ReadStream } from 'fs';
@@ -15,7 +16,7 @@ export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
   streamAllowanceHoldings(
-    params: AllowanceHoldingsParamsDTO,
+    params: StreamAllowanceHoldingsParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }
