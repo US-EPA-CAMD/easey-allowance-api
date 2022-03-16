@@ -13,8 +13,8 @@ import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.r
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import {
-  EmissionsComplianceParamsDTO,
   PaginatedEmissionsComplianceParamsDTO,
+  StreamEmissionsComplianceParamsDTO,
 } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
@@ -93,7 +93,7 @@ describe('-- Emissions Compliance Controller --', () => {
 
     it('should call the service and return all emissions compliance data ', async () => {
       const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new EmissionsComplianceParamsDTO();
+      const paramsDTO = new StreamEmissionsComplianceParamsDTO();
       jest
         .spyOn(emissionsComplianceService, 'streamEmissionsCompliance')
         .mockResolvedValue(expectedResults);

@@ -7,7 +7,10 @@ import {
   TransactionType,
 } from '@us-epa-camd/easey-common/enums';
 
-import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
+import {
+  PaginatedAllowanceTransactionsParamsDTO,
+  StreamAllowanceTransactionsParamsDTO,
+} from '../dto/allowance-transactions.params.dto';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
@@ -151,7 +154,7 @@ describe('-- TransactionBlockDimRepository --', () => {
   describe('streamAllowanceTransactions', () => {
     it('streams all allowance transactions', async () => {
       const result = await transactionBlockDimRepository.streamAllowanceTransactions(
-        new PaginatedAllowanceTransactionsParamsDTO(),
+        new StreamAllowanceTransactionsParamsDTO(),
       );
 
       expect(result).toEqual('mockStream');

@@ -10,13 +10,15 @@ import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
 import { Transform } from 'stream';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { ExcludeEmissionsCompliance } from '@us-epa-camd/easey-common/enums';
 
 import { fieldMappings } from '../constants/field-mappings';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import {
-  EmissionsComplianceParamsDTO,
   PaginatedEmissionsComplianceParamsDTO,
+  StreamEmissionsComplianceParamsDTO,
 } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
@@ -55,11 +57,11 @@ export class EmissionsComplianceService {
   }
 
   async streamEmissionsCompliance(
-    emissionsComplianceParamsDTO: EmissionsComplianceParamsDTO,
+    params: StreamEmissionsComplianceParamsDTO,
     req: Request,
   ): Promise<StreamableFile> {
     const stream = await this.unitComplianceDimRepository.streamEmissionsCompliance(
-      emissionsComplianceParamsDTO,
+      params,
     );
     req.res.setHeader(
       'X-Field-Mappings',
@@ -68,21 +70,25 @@ export class EmissionsComplianceService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
+        data = exclude(data, params, ExcludeEmissionsCompliance);
         delete data.id;
         delete data.programCodeInfo;
 
         const ownOprArray = [data.ownerOperator, data.operator];
         delete data.operator;
-        const ownOprList = ownOprArray
-          .filter(e => e)
-          .join(',')
-          .slice(0, -1)
-          .split('),');
-        const ownOprUniqueList = [...new Set(ownOprList)];
-        const ownerOperator = ownOprUniqueList.join('),');
-        data.ownerOperator =
-          ownerOperator.length > 0 ? `${ownerOperator})` : null;
-
+        if (
+          !params.exclude?.includes(ExcludeEmissionsCompliance.OWNER_OPERATOR)
+        ) {
+          const ownOprList = ownOprArray
+            .filter(e => e)
+            .join(',')
+            .slice(0, -1)
+            .split('),');
+          const ownOprUniqueList = [...new Set(ownOprList)];
+          const ownerOperator = ownOprUniqueList.join('),');
+          data.ownerOperator =
+            ownerOperator.length > 0 ? `${ownerOperator})` : null;
+        }
         const dto = plainToClass(EmissionsComplianceDTO, data, {
           enableImplicitConversion: true,
         });
@@ -91,7 +97,14 @@ export class EmissionsComplianceService {
     });
 
     if (req.headers.accept === 'text/csv') {
-      const toCSV = new PlainToCSV(fieldMappings.compliance.emissions);
+      let fieldMappingValues = [];
+      fieldMappingValues = fieldMappings.compliance.emissions;
+      const fieldMappingsList = params.exclude
+        ? fieldMappingValues.filter(
+            item => !params.exclude.includes(item.value),
+          )
+        : fieldMappings.compliance.emissions;
+      const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
         disposition: `attachment; filename="emissions-compliance-${uuid()}.csv"`,

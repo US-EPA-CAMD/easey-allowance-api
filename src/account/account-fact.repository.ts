@@ -9,6 +9,7 @@ import { ReadStream } from 'fs';
 import {
   AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
+  StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
 
 @EntityRepository(AccountFact)
@@ -22,7 +23,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   streamAllAccountAttributes(
-    params: AccountAttributesParamsDTO,
+    params: StreamAccountAttributesParamsDTO,
   ): Promise<ReadStream> {
     return this.buildQuery(params, true).stream();
   }

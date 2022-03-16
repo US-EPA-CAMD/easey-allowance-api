@@ -5,12 +5,21 @@ import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
-import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
-import { Min, IsInRange } from '@us-epa-camd/easey-common/pipes';
+import {
+  AllowanceProgram,
+  ExcludeAccountAttributes,
+} from '@us-epa-camd/easey-common/enums';
+import {
+  Min,
+  IsInRange,
+  IsInEnum,
+  IsInResponse,
+} from '@us-epa-camd/easey-common/pipes';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
+import { fieldMappings } from '../constants/field-mappings';
 
 export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({
@@ -54,4 +63,22 @@ export class PaginatedAccountAttributesParamsDTO extends AccountAttributesParams
     description: propertyMetadata.perPage.description,
   })
   perPage: number;
+}
+
+export class StreamAccountAttributesParamsDTO extends AccountAttributesParamsDTO {
+  @ApiProperty({
+    enum: ExcludeAccountAttributes,
+    description: propertyMetadata.exclude.description,
+  })
+  @IsOptional()
+  @IsInEnum(ExcludeAccountAttributes, {
+    each: true,
+    message: ErrorMessages.RemovableParameter(),
+  })
+  @IsInResponse(fieldMappings.allowances.accountAttributes, {
+    each: true,
+    message: ErrorMessages.ValidParameter(),
+  })
+  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  exclude?: ExcludeAccountAttributes[];
 }

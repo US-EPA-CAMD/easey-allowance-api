@@ -11,8 +11,8 @@ import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import {
-  AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
+  StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
@@ -61,13 +61,13 @@ describe('-- Account Controller --', () => {
     });
   });
 
-  describe('* getAllAccountAttributesStream', () => {
+  describe('* streamAllAccountAttributes', () => {
     const req: any = mockRequest('');
     req.res.setHeader.mockReturnValue();
 
     it('should call the service and return all account attributes ', async () => {
       const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new AccountAttributesParamsDTO();
+      const paramsDTO = new StreamAccountAttributesParamsDTO();
       jest
         .spyOn(accountService, 'streamAllAccountAttributes')
         .mockResolvedValue(expectedResults);

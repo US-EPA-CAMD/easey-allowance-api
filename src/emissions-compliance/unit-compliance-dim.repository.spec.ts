@@ -3,7 +3,10 @@ import { SelectQueryBuilder } from 'typeorm';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
-import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import {
+  PaginatedEmissionsComplianceParamsDTO,
+  StreamEmissionsComplianceParamsDTO,
+} from '../dto/emissions-compliance.params.dto';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 const mockQueryBuilder = () => ({
@@ -138,7 +141,7 @@ describe('-- UnitComplianceDimRepository --', () => {
   describe('streamEmissionsCompliance', () => {
     it('streams all emissions compliance data', async () => {
       const result = await unitComplianceDimRepository.streamEmissionsCompliance(
-        new PaginatedEmissionsComplianceParamsDTO(),
+        new StreamEmissionsComplianceParamsDTO(),
       );
       expect(result).toEqual('mockStream');
     });

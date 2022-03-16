@@ -10,8 +10,8 @@ import { AllowanceComplianceController } from './allowance-compliance.controller
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
 import {
-  AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
+  StreamAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
@@ -105,7 +105,7 @@ describe('-- Allowance Compliance Controller --', () => {
 
     it('should call the service and return all allowance compliance data ', async () => {
       const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new AllowanceComplianceParamsDTO();
+      const paramsDTO = new StreamAllowanceComplianceParamsDTO();
       jest
         .spyOn(allowanceComplianceService, 'streamAllowanceCompliance')
         .mockResolvedValue(expectedResults);
