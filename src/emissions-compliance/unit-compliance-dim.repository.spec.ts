@@ -24,6 +24,7 @@ const mockQueryBuilder = () => ({
   take: jest.fn(),
   distinctOn: jest.fn(),
   stream: jest.fn(),
+  getQueryAndParameters: jest.fn(),
 });
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
@@ -84,6 +85,7 @@ describe('-- UnitComplianceDimRepository --', () => {
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
+    queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
   describe('getEmissionsCompliance', () => {
@@ -140,10 +142,10 @@ describe('-- UnitComplianceDimRepository --', () => {
 
   describe('streamEmissionsCompliance', () => {
     it('streams all emissions compliance data', async () => {
-      const result = await unitComplianceDimRepository.streamEmissionsCompliance(
+      const result = unitComplianceDimRepository.getStreamQuery(
         new StreamEmissionsComplianceParamsDTO(),
       );
-      expect(result).toEqual('mockStream');
+      expect(result).toEqual('');
     });
   });
 

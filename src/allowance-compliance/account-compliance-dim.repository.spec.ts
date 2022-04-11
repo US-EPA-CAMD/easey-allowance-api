@@ -25,6 +25,7 @@ const mockQueryBuilder = () => ({
   take: jest.fn(),
   distinctOn: jest.fn(),
   stream: jest.fn(),
+  getQueryAndParameters: jest.fn(),
 });
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -88,6 +89,7 @@ describe('-- AccountComplianceDimRepository --', () => {
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
+    queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
   describe('getAllowanceCompliance', () => {
@@ -146,11 +148,11 @@ describe('-- AccountComplianceDimRepository --', () => {
 
   describe('streamAllowanceCompliance', () => {
     it('streams all allowance compliance', async () => {
-      const result = await repository.streamAllowanceCompliance(
+      const result = repository.getStreamQuery(
         new StreamAllowanceComplianceParamsDTO(),
       );
 
-      expect(result).toEqual('mockStream');
+      expect(result).toEqual('');
     });
   });
 

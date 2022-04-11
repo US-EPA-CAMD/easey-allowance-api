@@ -28,6 +28,7 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   stream: jest.fn(),
+  getQueryAndParameters: jest.fn(),
 });
 
 const mockRequest = (url: string) => {
@@ -86,15 +87,16 @@ describe('AccountFactRepository', () => {
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
+    queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
-      const result = await accountFactRepository.streamAllAccountAttributes(
+      const result = accountFactRepository.getStreamQuery(
         new StreamAccountAttributesParamsDTO(),
       );
 
-      expect(result).toEqual('mockStream');
+      expect(result).toEqual('');
     });
   });
 

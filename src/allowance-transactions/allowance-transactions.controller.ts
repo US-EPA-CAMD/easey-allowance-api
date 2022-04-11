@@ -129,8 +129,8 @@ export class AllowanceTransactionsController {
     @Req() req: Request,
   ): Promise<StreamableFile> {
     return this.allowanceTransactionsService.streamAllowanceTransactions(
-      params,
       req,
+      params,
     );
   }
 

@@ -18,6 +18,7 @@ import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -35,7 +36,7 @@ describe('-- Allowance Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule],
+      imports: [LoggerModule, StreamModule],
       controllers: [AllowanceComplianceController],
       providers: [
         AllowanceComplianceService,
@@ -111,8 +112,8 @@ describe('-- Allowance Compliance Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceComplianceService.streamAllowanceCompliance(
-          paramsDTO,
           req,
+          paramsDTO,
         ),
       ).toBe(expectedResults);
     });

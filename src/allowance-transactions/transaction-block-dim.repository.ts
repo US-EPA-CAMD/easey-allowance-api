@@ -1,5 +1,4 @@
 import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
-import { ReadStream } from 'fs';
 import { Request } from 'express';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
@@ -16,10 +15,8 @@ import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/appli
 export class TransactionBlockDimRepository extends Repository<
   TransactionBlockDim
 > {
-  streamAllowanceTransactions(
-    params: StreamAllowanceTransactionsParamsDTO,
-  ): Promise<ReadStream> {
-    return this.buildQuery(params, true).stream();
+  getStreamQuery(params: StreamAllowanceTransactionsParamsDTO) {
+    return this.buildQuery(params, true).getQueryAndParameters();
   }
 
   async getAllowanceTransactions(

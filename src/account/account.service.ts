@@ -20,6 +20,7 @@ import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { Transform } from 'stream';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeAccountAttributes } from '@us-epa-camd/easey-common/enums';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 import {
   PaginatedAccountAttributesParamsDTO,
@@ -27,6 +28,7 @@ import {
 } from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class AccountService {
@@ -38,6 +40,7 @@ export class AccountService {
     private readonly accountOwnerDimRepository: AccountOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly logger: Logger,
+    private readonly streamService: StreamService,
   ) {}
 
   async getAllAccounts(): Promise<AccountDTO[]> {
@@ -56,9 +59,12 @@ export class AccountService {
     req: Request,
     params: StreamAccountAttributesParamsDTO,
   ): Promise<StreamableFile> {
-    const stream = await this.accountFactRepository.streamAllAccountAttributes(
-      params,
-    );
+    const query = this.accountFactRepository.getStreamQuery(params);
+    let stream: ReadStream = await this.streamService.getStream(query);
+
+    req.on('close', () => {
+      stream.emit('end');
+    });
 
     req.res.setHeader(
       'X-Field-Mappings',
