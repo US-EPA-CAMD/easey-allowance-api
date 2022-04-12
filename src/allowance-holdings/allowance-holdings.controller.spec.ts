@@ -15,6 +15,7 @@ import { AccountFactRepository } from '../account/account-fact.repository';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -32,7 +33,7 @@ describe('-- Allowance Holdings Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule],
+      imports: [LoggerModule, StreamModule],
       controllers: [AllowanceHoldingsController],
       providers: [
         AllowanceHoldingsService,

@@ -116,8 +116,8 @@ export class AllowanceComplianceController {
     @Req() req: Request,
   ): Promise<StreamableFile> {
     return this.allowanceComplianceService.streamAllowanceCompliance(
-      params,
       req,
+      params,
     );
   }
 

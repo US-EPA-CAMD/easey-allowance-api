@@ -10,6 +10,7 @@ import { AllowanceComplianceService } from './allowance-compliance.service';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-a
       OwnerYearDimRepository,
     ]),
     HttpModule,
+    StreamModule,
   ],
   controllers: [AllowanceComplianceController],
   providers: [

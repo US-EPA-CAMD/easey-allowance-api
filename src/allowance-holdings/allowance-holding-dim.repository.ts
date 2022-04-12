@@ -15,10 +15,8 @@ import { ReadStream } from 'fs';
 export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
-  streamAllowanceHoldings(
-    params: StreamAllowanceHoldingsParamsDTO,
-  ): Promise<ReadStream> {
-    return this.buildQuery(params, true).stream();
+  getStreamQuery(params: StreamAllowanceHoldingsParamsDTO) {
+    return this.buildQuery(params, true).getQueryAndParameters();
   }
 
   async getAllowanceHoldings(

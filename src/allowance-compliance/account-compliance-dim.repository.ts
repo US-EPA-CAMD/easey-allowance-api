@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs';
 import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { Request } from 'express';
 
@@ -20,11 +19,9 @@ import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
 export class AccountComplianceDimRepository extends Repository<
   AccountComplianceDim
 > {
-  streamAllowanceCompliance(
-    params: StreamAllowanceComplianceParamsDTO,
-  ): Promise<ReadStream> {
+  getStreamQuery(params: StreamAllowanceComplianceParamsDTO) {
     const isOtcNbp = includesOtcNbp(params);
-    return this.buildQuery(params, isOtcNbp, true).stream();
+    return this.buildQuery(params, isOtcNbp, true).getQueryAndParameters();
   }
 
   async getAllowanceCompliance(

@@ -16,6 +16,7 @@ import {
 } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -32,7 +33,7 @@ describe('-- Account Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule],
+      imports: [LoggerModule, StreamModule],
       controllers: [AccountController],
       providers: [
         AccountService,
