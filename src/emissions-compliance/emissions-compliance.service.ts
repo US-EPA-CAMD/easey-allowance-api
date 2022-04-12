@@ -22,6 +22,8 @@ import {
 } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class EmissionsComplianceService {
@@ -30,6 +32,7 @@ export class EmissionsComplianceService {
     private readonly unitComplianceDimRepository: UnitComplianceDimRepository,
     private readonly emissionsComplianceMap: EmissionsComplianceMap,
     private readonly logger: Logger,
+    private readonly streamService: StreamService,
   ) {}
 
   async getEmissionsCompliance(
@@ -57,12 +60,16 @@ export class EmissionsComplianceService {
   }
 
   async streamEmissionsCompliance(
-    params: StreamEmissionsComplianceParamsDTO,
     req: Request,
+    params: StreamEmissionsComplianceParamsDTO,
   ): Promise<StreamableFile> {
-    const stream = await this.unitComplianceDimRepository.streamEmissionsCompliance(
-      params,
-    );
+    const query = this.unitComplianceDimRepository.getStreamQuery(params);
+    let stream: ReadStream = await this.streamService.getStream(query);
+
+    req.on('close', () => {
+      stream.emit('end');
+    });
+
     req.res.setHeader(
       'X-Field-Mappings',
       JSON.stringify(fieldMappings.compliance.emissions),

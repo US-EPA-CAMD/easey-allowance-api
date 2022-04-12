@@ -16,6 +16,7 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { StreamableFile } from '@nestjs/common';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -32,7 +33,7 @@ describe('-- Allowance Transactions Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule],
+      imports: [LoggerModule, StreamModule],
       controllers: [AllowanceTransactionsController],
       providers: [
         AllowanceTransactionsService,

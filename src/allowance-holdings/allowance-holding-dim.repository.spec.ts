@@ -28,6 +28,7 @@ const mockQueryBuilder = () => ({
   take: jest.fn(),
   distinctOn: jest.fn(),
   stream: jest.fn(),
+  getQueryAndParameters: jest.fn(),
 });
 
 const mockRequest = (url: string) => {
@@ -86,15 +87,16 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
+    queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
   describe('streamAllowanceHoldings', () => {
     it('streams allowance holdings', async () => {
-      const result = await allowanceHoldingDimRepository.streamAllowanceHoldings(
+      const result = allowanceHoldingDimRepository.getStreamQuery(
         new StreamAllowanceHoldingsParamsDTO(),
       );
 
-      expect(result).toEqual('mockStream');
+      expect(result).toEqual('');
     });
   });
 

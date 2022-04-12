@@ -31,6 +31,7 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   stream: jest.fn(),
+  getQueryAndParameters: jest.fn(),
 });
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -99,6 +100,7 @@ describe('-- TransactionBlockDimRepository --', () => {
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.stream.mockReturnValue('mockStream');
+    queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
   describe('getAllowanceTransactions', () => {
@@ -153,11 +155,11 @@ describe('-- TransactionBlockDimRepository --', () => {
 
   describe('streamAllowanceTransactions', () => {
     it('streams all allowance transactions', async () => {
-      const result = await transactionBlockDimRepository.streamAllowanceTransactions(
+      const result = await transactionBlockDimRepository.getStreamQuery(
         new StreamAllowanceTransactionsParamsDTO(),
       );
 
-      expect(result).toEqual('mockStream');
+      expect(result).toEqual('');
     });
 
     describe('getAllApplicableAllowanceTransactionsAttributes', () => {

@@ -14,15 +14,28 @@ import {
   ExcludeAllowanceHoldings,
   State,
 } from '@us-epa-camd/easey-common/enums';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { StreamableFile } from '@nestjs/common';
 
 const mockAllowanceHoldingDimRepository = () => ({
   getAllowanceHoldings: jest.fn(),
   streamAllowanceHoldings: jest.fn(),
   getAllApplicableAllowanceHoldingsAttributes: jest.fn(),
+  getStreamQuery: jest.fn(),
 });
+
+const mockStream = {
+  pipe: jest.fn().mockReturnValue({
+    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
+  }),
+};
 
 const mockAllowanceHoldingsMap = () => ({
   many: jest.fn(),
+});
+
+jest.mock('uuid', () => {
+  return { v4: jest.fn().mockReturnValue(0) };
 });
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -38,19 +51,30 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
     headers: {
       accept: 'text/csv',
     },
+    on: jest.fn(),
   };
 };
+
+let req: any;
+
 describe('-- Allowance Holdings Service --', () => {
   let allowanceHoldingsService;
   let allowanceHoldingDimRepository;
   let allowanceHoldingsMap;
-  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
         AllowanceHoldingsService,
+        {
+          provide: StreamService,
+          useFactory: () => ({
+            getStream: () => {
+              return mockStream;
+            },
+          }),
+        },
         {
           provide: AllowanceHoldingDimRepository,
           useFactory: mockAllowanceHoldingDimRepository,
@@ -87,48 +111,22 @@ describe('-- Allowance Holdings Service --', () => {
 
   describe('streamAllowanceHoldings', () => {
     it('streams all allowance holdings', async () => {
-      let streamFilters = new StreamAllowanceHoldingsParamsDTO();
-      (streamFilters.accountType = [AccountType.GENERAL]),
-        (streamFilters.vintageYear = [2019, 2020]),
-        (streamFilters.accountNumber = ['000127FACLTY']),
-        (streamFilters.facilityId = [0]),
-        (streamFilters.ownerOperator = ['']),
-        (streamFilters.stateCode = [State.AK]),
-        (streamFilters.programCodeInfo = [ActiveAllowanceProgram.ARP]),
-        (streamFilters.exclude = [ExcludeAllowanceHoldings.FACILITY_ID]);
+      allowanceHoldingDimRepository.getStreamQuery.mockResolvedValue('');
 
-      const mockResult: any = {
-        pipe: toDto => {
-          return {
-            pipe: toCSV => {
-              return {
-                accountNumber: '000003FACLTY',
-                accountName: 'Barry',
-                facilityId: 3,
-                programCodeInfo: 'ARP,CSNOX,CSSO2G2,MATS',
-                vintageYear: 2016,
-                totalBlock: 10033,
-                startBlock: 266955,
-                endBlock: 276987,
-                stateCode: 'AK',
-                epaRegion: 5,
-                ownerOperator:
-                  'Alabama Power Company (Operator), Alabama Power Company (Owner)',
-                accountType: 'Facility Account',
-              };
-            },
-          };
-        },
-      };
-      const req: any = mockRequest(`/allowance-holdings/stream`);
-      req.res.setHeader.mockReturnValue();
-      allowanceHoldingDimRepository.streamAllowanceHoldings.mockResolvedValue(
-        mockResult,
+      let filters = new StreamAllowanceHoldingsParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await allowanceHoldingsService.streamAllowanceHoldings(
+        req,
+        filters,
       );
 
-      const result = await allowanceHoldingsService.streamAllowanceHoldings(
-        req,
-        streamFilters,
+      expect(result).toEqual(
+        new StreamableFile(Buffer.from('stream'), {
+          type: req.headers.accept,
+          disposition: `attachment; filename="allowance-holdings-${0}.json"`,
+        }),
       );
     });
   });

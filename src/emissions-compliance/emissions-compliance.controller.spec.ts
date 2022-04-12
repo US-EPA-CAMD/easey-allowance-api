@@ -20,6 +20,7 @@ import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -37,7 +38,7 @@ describe('-- Emissions Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule],
+      imports: [LoggerModule, StreamModule],
       controllers: [EmissionsComplianceController],
       providers: [
         AllowanceComplianceService,
@@ -99,8 +100,8 @@ describe('-- Emissions Compliance Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await emissionsComplianceController.streamEmissionsCompliance(
-          paramsDTO,
           req,
+          paramsDTO,
         ),
       ).toBe(expectedResults);
     });

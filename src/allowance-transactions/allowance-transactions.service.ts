@@ -27,6 +27,8 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class AllowanceTransactionsService {
@@ -38,6 +40,7 @@ export class AllowanceTransactionsService {
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly logger: Logger,
+    private readonly streamService: StreamService,
   ) {}
 
   async getAllowanceTransactions(
@@ -64,12 +67,15 @@ export class AllowanceTransactionsService {
   }
 
   async streamAllowanceTransactions(
-    params: StreamAllowanceTransactionsParamsDTO,
     req: Request,
+    params: StreamAllowanceTransactionsParamsDTO,
   ): Promise<StreamableFile> {
-    const stream = await this.transactionBlockDimRepository.streamAllowanceTransactions(
-      params,
-    );
+    const query = this.transactionBlockDimRepository.getStreamQuery(params);
+    let stream: ReadStream = await this.streamService.getStream(query);
+
+    req.on('close', () => {
+      stream.emit('end');
+    });
 
     req.res.setHeader(
       'X-Field-Mappings',

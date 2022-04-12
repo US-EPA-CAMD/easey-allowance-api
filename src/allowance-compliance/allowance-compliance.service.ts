@@ -28,6 +28,8 @@ import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-al
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
+import { ReadStream } from 'fs';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 @Injectable()
 export class AllowanceComplianceService {
@@ -40,6 +42,7 @@ export class AllowanceComplianceService {
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly applicableAllowanceComplianceAttributesMap: ApplicableAllowanceComplianceAttributesMap,
     private readonly logger: Logger,
+    private readonly streamService: StreamService,
   ) {}
 
   async getAllowanceCompliance(
@@ -71,12 +74,16 @@ export class AllowanceComplianceService {
   }
 
   async streamAllowanceCompliance(
-    params: StreamAllowanceComplianceParamsDTO,
     req: Request,
+    params: StreamAllowanceComplianceParamsDTO,
   ): Promise<StreamableFile> {
-    const stream = await this.accountComplianceDimRepository.streamAllowanceCompliance(
-      params,
-    );
+    const query = this.accountComplianceDimRepository.getStreamQuery(params);
+    let stream: ReadStream = await this.streamService.getStream(query);
+
+    req.on('close', () => {
+      stream.emit('end');
+    });
+
     let fieldMapping;
     if (includesOtcNbp(params)) {
       fieldMapping = fieldMappings.compliance.allowanceNbpOtc;

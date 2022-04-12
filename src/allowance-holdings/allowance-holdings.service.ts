@@ -22,6 +22,8 @@ import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
 import { fieldMappings } from '../constants/field-mappings';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class AllowanceHoldingsService {
@@ -30,15 +32,19 @@ export class AllowanceHoldingsService {
     private readonly allowanceHoldingsRepository: AllowanceHoldingDimRepository,
     private readonly allowanceHoldingsMap: AllowanceHoldingsMap,
     private readonly logger: Logger,
+    private readonly streamService: StreamService,
   ) {}
 
   async streamAllowanceHoldings(
     req: Request,
     params: StreamAllowanceHoldingsParamsDTO,
   ): Promise<StreamableFile> {
-    const stream = await this.allowanceHoldingsRepository.streamAllowanceHoldings(
-      params,
-    );
+    const query = this.allowanceHoldingsRepository.getStreamQuery(params);
+    let stream: ReadStream = await this.streamService.getStream(query);
+
+    req.on('close', () => {
+      stream.emit('end');
+    });
 
     req.res.setHeader(
       'X-Field-Mappings',

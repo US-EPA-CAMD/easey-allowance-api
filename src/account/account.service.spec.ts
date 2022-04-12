@@ -13,18 +13,14 @@ import {
   PaginatedAccountAttributesParamsDTO,
   StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
-import {
-  AccountType,
-  State,
-  AllowanceProgram,
-  ExcludeAccountAttributes,
-} from '@us-epa-camd/easey-common/enums';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { StreamableFile } from '@nestjs/common';
 
 const mockAccountFactRepository = () => ({
   getAllAccounts: jest.fn(),
   getAllAccountAttributes: jest.fn(),
   getAllApplicableAccountAttributes: jest.fn(),
-  streamAllAccountAttributes: jest.fn(),
+  getStreamQuery: jest.fn(),
 });
 
 const mockAccountMap = () => ({
@@ -33,6 +29,16 @@ const mockAccountMap = () => ({
 
 const mockAccountOwnerDimRepository = () => ({
   getAllOwnerOperators: jest.fn(),
+});
+
+const mockStream = {
+  pipe: jest.fn().mockReturnValue({
+    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
+  }),
+};
+
+jest.mock('uuid', () => {
+  return { v4: jest.fn().mockReturnValue(0) };
 });
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -48,15 +54,17 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
     headers: {
       accept: 'text/csv',
     },
+    on: jest.fn(),
   };
 };
+
+let req: any;
 
 describe('-- Account Service --', () => {
   let accountService;
   let accountFactRepository;
   let accountOwnerDimRepository;
   let accountMap;
-  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -66,6 +74,14 @@ describe('-- Account Service --', () => {
         {
           provide: AccountFactRepository,
           useFactory: mockAccountFactRepository,
+        },
+        {
+          provide: StreamService,
+          useFactory: () => ({
+            getStream: () => {
+              return mockStream;
+            },
+          }),
         },
         {
           provide: AccountOwnerDimRepository,
@@ -145,45 +161,22 @@ describe('-- Account Service --', () => {
 
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
-      let streamFilters = new StreamAccountAttributesParamsDTO();
-      (streamFilters.accountType = [AccountType.GENERAL]),
-        (streamFilters.accountNumber = ['000127FACLTY']),
-        (streamFilters.facilityId = [0]),
-        (streamFilters.ownerOperator = ['']),
-        (streamFilters.stateCode = [State.AK]),
-        (streamFilters.programCodeInfo = [AllowanceProgram.ARP]),
-        (streamFilters.exclude = [ExcludeAccountAttributes.ACCOUNT_TYPE]);
+      accountFactRepository.getStreamQuery.mockResolvedValue('');
 
-      const mockResult: any = {
-        pipe: toDto => {
-          return {
-            pipe: toCSV => {
-              return {
-                accountNumber: '000003FACLTY',
-                accountName: 'Barry',
-                programCodeInfo: 'ARP,CSNOX,CSSO2G2,MATS',
-                accountType: 'Facility Account',
-                facilityId: 3,
-                unitId: '5',
-                ownerOperator:
-                  'Alabama Power Company (Operator), Alabama Power Company (Owner)',
-                stateCode: 'AK',
-                epaRegion: 5,
-                nercRegion: 'Mid-Continent Area Power Pool',
-              };
-            },
-          };
-        },
-      };
-      const req: any = mockRequest(`/accounts/attributes/stream`);
-      req.res.setHeader.mockReturnValue();
-      accountFactRepository.streamAllAccountAttributes.mockResolvedValue(
-        mockResult,
+      let filters = new StreamAccountAttributesParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await accountService.streamAllAccountAttributes(
+        req,
+        filters,
       );
 
-      const result = await accountService.streamAllAccountAttributes(
-        req,
-        streamFilters,
+      expect(result).toEqual(
+        new StreamableFile(Buffer.from('stream'), {
+          type: req.headers.accept,
+          disposition: `attachment; filename="account-attributes-${0}.json"`,
+        }),
       );
     });
   });

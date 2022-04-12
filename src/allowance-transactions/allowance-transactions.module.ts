@@ -9,6 +9,7 @@ import { TransactionOwnerDimRepository } from './transaction-owner-dim.repositor
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ConfigService } from '@nestjs/config';
       TransactionOwnerDimRepository,
     ]),
     HttpModule,
+    StreamModule,
   ],
   controllers: [AllowanceTransactionsController],
   providers: [

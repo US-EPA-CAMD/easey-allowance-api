@@ -5,7 +5,6 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AccountFact } from '../entities/account-fact.entity';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { ReadStream } from 'fs';
 import {
   AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
@@ -22,10 +21,8 @@ export class AccountFactRepository extends Repository<AccountFact> {
     return query.getMany();
   }
 
-  streamAllAccountAttributes(
-    params: StreamAccountAttributesParamsDTO,
-  ): Promise<ReadStream> {
-    return this.buildQuery(params, true).stream();
+  getStreamQuery(params: StreamAccountAttributesParamsDTO) {
+    return this.buildQuery(params, true).getQueryAndParameters();
   }
 
   async getAllAccountAttributes(

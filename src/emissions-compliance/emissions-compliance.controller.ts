@@ -101,12 +101,12 @@ export class EmissionsComplianceController {
   @ApiQueryComplianceMultiSelect()
   @ExcludeQuery()
   streamEmissionsCompliance(
-    @Query() params: StreamEmissionsComplianceParamsDTO,
     @Req() req: Request,
+    @Query() params: StreamEmissionsComplianceParamsDTO,
   ): Promise<StreamableFile> {
     return this.emissionsComplianceService.streamEmissionsCompliance(
-      params,
       req,
+      params,
     );
   }
 
