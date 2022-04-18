@@ -86,7 +86,7 @@ export class StreamAllowanceComplianceParamsDTO extends AllowanceComplianceParam
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.compliance.allowanceNbpOtc, {
+  @IsInResponse(fieldMappings.compliance.allowanceNbpOtc.data, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

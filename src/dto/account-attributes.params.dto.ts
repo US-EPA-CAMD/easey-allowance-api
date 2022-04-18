@@ -64,7 +64,7 @@ export class StreamAccountAttributesParamsDTO extends AccountAttributesParamsDTO
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.allowances.accountAttributes, {
+  @IsInResponse(fieldMappings.allowances.accountAttributes.data, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

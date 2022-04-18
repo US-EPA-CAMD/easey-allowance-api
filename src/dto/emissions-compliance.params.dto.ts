@@ -70,7 +70,7 @@ export class StreamEmissionsComplianceParamsDTO extends EmissionsComplianceParam
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.compliance.emissions, {
+  @IsInResponse(fieldMappings.compliance.emissions.data, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

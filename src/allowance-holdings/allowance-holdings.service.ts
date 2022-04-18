@@ -19,7 +19,11 @@ import {
 } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
-import { fieldMappings } from '../constants/field-mappings';
+import {
+  excludableColumnHeader,
+  fieldMappingHeader,
+  fieldMappings,
+} from '../constants/field-mappings';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { StreamService } from '@us-epa-camd/easey-common/stream';
@@ -47,8 +51,8 @@ export class AllowanceHoldingsService {
     });
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.holdings),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.allowances.holdings.data),
     );
 
     const toDto = new Transform({
@@ -64,12 +68,12 @@ export class AllowanceHoldingsService {
 
     if (req.headers.accept === 'text/csv') {
       let fieldMappingValues = [];
-      fieldMappingValues = fieldMappings.allowances.holdings;
+      fieldMappingValues = fieldMappings.allowances.holdings.data;
       const fieldMappingsList = params.exclude
         ? fieldMappingValues.filter(
             item => !params.exclude.includes(item.value),
           )
-        : fieldMappings.allowances.holdings;
+        : fieldMappings.allowances.holdings.data;
       const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
@@ -100,8 +104,12 @@ export class AllowanceHoldingsService {
     }
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.holdings),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.allowances.holdings.data),
+    );
+    req.res.setHeader(
+      excludableColumnHeader,
+      JSON.stringify(fieldMappings.allowances.holdings.excludableColumns),
     );
     this.logger.info('Got allowance holdings');
     return this.allowanceHoldingsMap.many(query);

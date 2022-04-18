@@ -85,7 +85,7 @@ export class StreamAllowanceHoldingsParamsDTO extends AllowanceHoldingsParamsDTO
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.allowances.holdings, {
+  @IsInResponse(fieldMappings.allowances.holdings.data, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

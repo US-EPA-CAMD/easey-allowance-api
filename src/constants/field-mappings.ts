@@ -116,15 +116,88 @@ const emissionsCompliance = [
   { ...propertyMetadata.avgPlanActual.fieldLabels },
   { ...propertyMetadata.inCompliance.fieldLabels },
 ];
+
+const excludableHoldingsColumns = [
+  { ...propertyMetadata.epaRegion.fieldLabels },
+  { ...propertyMetadata.facilityId.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
+];
+
+const excludableTransactionsColumns = [
+  { ...propertyMetadata.buyAccountType.fieldLabels },
+  { ...propertyMetadata.buyEpaRegion.fieldLabels },
+  { ...propertyMetadata.buyOwner.fieldLabels },
+  { ...propertyMetadata.buySourceCategory.fieldLabels },
+  { ...propertyMetadata.buyState.fieldLabels },
+  { ...propertyMetadata.sellAccountType.fieldLabels },
+  { ...propertyMetadata.sellEpaRegion.fieldLabels },
+  { ...propertyMetadata.sellOwner.fieldLabels },
+  { ...propertyMetadata.sellSourceCategory.fieldLabels },
+  { ...propertyMetadata.sellState.fieldLabels },
+];
+
+const excludableAccountAttributesColumns = [
+  { ...propertyMetadata.accountType.fieldLabels },
+  { ...propertyMetadata.epaRegion.fieldLabels },
+  { ...propertyMetadata.nercRegion.fieldLabels },
+  { ...propertyMetadata.stateCode.fieldLabels },
+  { ...propertyMetadata.unitId.fieldLabels },
+];
+
+const excludableAllowanceComplianceColumns = [
+  { ...propertyMetadata.allocated.fieldLabels },
+  { ...propertyMetadata.facilityId.fieldLabels },
+  { ...propertyMetadata.facilityName.fieldLabels },
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
+  { ...propertyMetadata.totalAllowancesDeducted.fieldLabels },
+  { ...propertyMetadata.unitsAffected.fieldLabels },
+];
+
+const excludableAllowanceComplianceNbpOtcColumns = [
+  ...excludableAllowanceComplianceColumns,
+  { ...propertyMetadata.bankedHeld.fieldLabels },
+  { ...propertyMetadata.currentDeductions.fieldLabels },
+  { ...propertyMetadata.currentHeld.fieldLabels },
+  { ...propertyMetadata.deductOneToOne.fieldLabels },
+  { ...propertyMetadata.deductTwoToOne.fieldLabels },
+  { ...propertyMetadata.totalRequiredDeductions.fieldLabels },
+];
+
+const excludableEmissionsComplianceColumsn = [
+  { ...propertyMetadata.ownerOperatorInfo.fieldLabels },
+];
+
 export const fieldMappings = {
   allowances: {
-    holdings: holdings,
-    transactions: transactions,
-    accountAttributes: accountAttributes,
+    holdings: {
+      data: holdings,
+      excludableColumns: excludableHoldingsColumns,
+    },
+    transactions: {
+      data: transactions,
+      excludableColumns: excludableTransactionsColumns,
+    },
+    accountAttributes: {
+      data: accountAttributes,
+      excludableColumns: excludableAccountAttributesColumns,
+    },
   },
   compliance: {
-    allowance: allowanceCompliance,
-    allowanceNbpOtc: allowanceComplianceNbpOtc,
-    emissions: emissionsCompliance,
+    allowance: {
+      data: allowanceCompliance,
+      excludableColumns: excludableAllowanceComplianceColumns,
+    },
+    allowanceNbpOtc: {
+      data: allowanceComplianceNbpOtc,
+      excludableColumns: excludableAllowanceComplianceNbpOtcColumns,
+    },
+    emissions: {
+      data: emissionsCompliance,
+      excludableColumns: excludableEmissionsComplianceColumsn,
+    },
   },
 };
+
+export const fieldMappingHeader = 'X-Field-Mappings';
+export const excludableColumnHeader = 'X-Excludable-Columns';
