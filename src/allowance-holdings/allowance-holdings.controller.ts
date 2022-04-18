@@ -93,7 +93,7 @@ export class AllowanceHoldingsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.allowances.holdings
+          example: fieldMappings.allowances.holdings.data
             .map(i => i.label)
             .join(','),
         },

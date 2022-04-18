@@ -13,7 +13,11 @@ import { v4 as uuid } from 'uuid';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeEmissionsCompliance } from '@us-epa-camd/easey-common/enums';
 
-import { fieldMappings } from '../constants/field-mappings';
+import {
+  excludableColumnHeader,
+  fieldMappingHeader,
+  fieldMappings,
+} from '../constants/field-mappings';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import {
@@ -51,8 +55,12 @@ export class EmissionsComplianceService {
     }
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.compliance.emissions),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.compliance.emissions.data),
+    );
+    req.res.setHeader(
+      excludableColumnHeader,
+      JSON.stringify(fieldMappings.compliance.emissions.excludableColumns),
     );
 
     this.logger.info('Got emissions Compliance');
@@ -71,8 +79,8 @@ export class EmissionsComplianceService {
     });
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.compliance.emissions),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.compliance.emissions.data),
     );
     const toDto = new Transform({
       objectMode: true,
@@ -105,12 +113,12 @@ export class EmissionsComplianceService {
 
     if (req.headers.accept === 'text/csv') {
       let fieldMappingValues = [];
-      fieldMappingValues = fieldMappings.compliance.emissions;
+      fieldMappingValues = fieldMappings.compliance.emissions.data;
       const fieldMappingsList = params.exclude
         ? fieldMappingValues.filter(
             item => !params.exclude.includes(item.value),
           )
-        : fieldMappings.compliance.emissions;
+        : fieldMappings.compliance.emissions.data;
       const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,

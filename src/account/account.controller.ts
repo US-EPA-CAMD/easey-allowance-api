@@ -94,7 +94,7 @@ export class AccountController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.allowances.accountAttributes
+          example: fieldMappings.allowances.accountAttributes.data
             .map(i => i.label)
             .join(','),
         },

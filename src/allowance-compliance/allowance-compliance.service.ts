@@ -13,7 +13,11 @@ import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeAllowanceCompliance } from '@us-epa-camd/easey-common/enums';
 
-import { fieldMappings } from '../constants/field-mappings';
+import {
+  excludableColumnHeader,
+  fieldMappingHeader,
+  fieldMappings,
+} from '../constants/field-mappings';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
@@ -52,6 +56,7 @@ export class AllowanceComplianceService {
     this.logger.info('Getting allowance compliance');
     let entities: AccountComplianceDim[];
     let fieldMapping;
+    let excludableColumns;
     try {
       entities = await this.accountComplianceDimRepository.getAllowanceCompliance(
         paginatedAllowanceComplianceParamsDTO,
@@ -62,12 +67,19 @@ export class AllowanceComplianceService {
     }
 
     if (includesOtcNbp(paginatedAllowanceComplianceParamsDTO)) {
-      fieldMapping = fieldMappings.compliance.allowanceNbpOtc;
+      fieldMapping = fieldMappings.compliance.allowanceNbpOtc.data;
+      excludableColumns =
+        fieldMappings.compliance.allowanceNbpOtc.excludableColumns;
     } else {
-      fieldMapping = fieldMappings.compliance.allowance;
+      fieldMapping = fieldMappings.compliance.allowance.data;
+      excludableColumns = fieldMappings.compliance.allowance.excludableColumns;
     }
     this.logger.info('Setting header without program code info');
-    req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMapping));
+    req.res.setHeader(fieldMappingHeader, JSON.stringify(fieldMapping));
+    req.res.setHeader(
+      excludableColumnHeader,
+      JSON.stringify(excludableColumns),
+    );
 
     this.logger.info('Got allowance compliance');
     return this.allowanceComplianceMap.many(entities);
@@ -86,11 +98,11 @@ export class AllowanceComplianceService {
 
     let fieldMapping;
     if (includesOtcNbp(params)) {
-      fieldMapping = fieldMappings.compliance.allowanceNbpOtc;
+      fieldMapping = fieldMappings.compliance.allowanceNbpOtc.data;
     } else {
-      fieldMapping = fieldMappings.compliance.allowance;
+      fieldMapping = fieldMappings.compliance.allowance.data;
     }
-    req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMapping));
+    req.res.setHeader(fieldMappingHeader, JSON.stringify(fieldMapping));
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {

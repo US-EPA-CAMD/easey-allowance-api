@@ -55,7 +55,7 @@ export class AllowanceTransactionsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.allowances.transactions
+          example: fieldMappings.allowances.transactions.data
             .map(i => i.label)
             .join(','),
         },
@@ -101,7 +101,7 @@ export class AllowanceTransactionsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.allowances.transactions
+          example: fieldMappings.allowances.transactions.data
             .map(i => i.label)
             .join(','),
         },
