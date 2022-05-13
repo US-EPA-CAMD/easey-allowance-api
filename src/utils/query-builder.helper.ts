@@ -206,9 +206,9 @@ export class QueryBuilderHelper {
         const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
-          string += `(UPPER(${ownerAlias}.owner) ~* ${regex}) `;
+          string += `(UPPER(${ownerAlias}.owner) ~* ${regex} OR UPPER(${ownerAlias}.operator) ~* ${regex}) `;
         } else {
-          string += `OR (UPPER(${ownerAlias}.operator) ~* ${regex}) `;
+          string += `OR (UPPER(${ownerAlias}.owner) ~* ${regex} OR UPPER(${ownerAlias}.operator) ~* ${regex}) `;
         }
       }
       string += ')';
