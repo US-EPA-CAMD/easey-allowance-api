@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsDefined, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
@@ -8,16 +8,14 @@ import {
 import {
   IsYearFormat,
   IsInDateRange,
-  Min,
-  IsInRange,
   IsInEnum,
   IsInResponse,
 } from '@us-epa-camd/easey-common/pipes';
 import { ExcludeEmissionsCompliance } from '@us-epa-camd/easey-common/enums';
 
 import { ComplianceParamsDTO } from './compliance.params.dto';
-import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
 import { fieldMappings } from '../constants/field-mappings';
+import { Page, PerPage } from '../utils/validator.const';
 
 export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
   @ApiHideProperty()
@@ -52,19 +50,13 @@ export class PaginatedEmissionsComplianceParamsDTO extends EmissionsCompliancePa
   @ApiProperty({
     description: propertyMetadata.page.description,
   })
-  @IsDefined()
-  @Min(1, {
-    message: ErrorMessages.GreaterThanOrEqual('page', 1),
-  })
+  @Page()
   page: number;
 
   @ApiProperty({
     description: propertyMetadata.perPage.description,
   })
-  @IsDefined()
-  @IsInRange(1, PAGINATION_MAX_PER_PAGE, {
-    message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
-  })
+  @PerPage()
   perPage: number;
 }
 
@@ -78,7 +70,7 @@ export class StreamEmissionsComplianceParamsDTO extends EmissionsComplianceParam
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.compliance.emissions, {
+  @IsInResponse(fieldMappings.compliance.emissions.data, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

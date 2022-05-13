@@ -54,7 +54,7 @@ export class AllowanceComplianceController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.compliance.allowanceNbpOtc
+          example: fieldMappings.compliance.allowanceNbpOtc.data
             .map(i => i.label)
             .join(','),
         },
@@ -94,7 +94,7 @@ export class AllowanceComplianceController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.compliance.allowanceNbpOtc
+          example: fieldMappings.compliance.allowanceNbpOtc.data
             .map(i => i.label)
             .join(','),
         },

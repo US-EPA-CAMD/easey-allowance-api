@@ -26,7 +26,11 @@ import {
   PaginatedAccountAttributesParamsDTO,
   StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
-import { fieldMappings } from '../constants/field-mappings';
+import {
+  excludableColumnHeader,
+  fieldMappingHeader,
+  fieldMappings,
+} from '../constants/field-mappings';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { ReadStream } from 'fs';
 
@@ -67,8 +71,8 @@ export class AccountService {
     });
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.accountAttributes),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.allowances.accountAttributes.data),
     );
 
     const toDto = new Transform({
@@ -85,12 +89,12 @@ export class AccountService {
 
     if (req.headers.accept === 'text/csv') {
       let fieldMappingValues = [];
-      fieldMappingValues = fieldMappings.allowances.accountAttributes;
+      fieldMappingValues = fieldMappings.allowances.accountAttributes.data;
       const fieldMappingsList = params.exclude
         ? fieldMappingValues.filter(
             item => !params.exclude.includes(item.value),
           )
-        : fieldMappings.allowances.accountAttributes;
+        : fieldMappings.allowances.accountAttributes.data;
       const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,
@@ -122,8 +126,15 @@ export class AccountService {
     this.logger.info('Got all account attributes');
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.accountAttributes),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.allowances.accountAttributes.data),
+    );
+
+    req.res.setHeader(
+      excludableColumnHeader,
+      JSON.stringify(
+        fieldMappings.allowances.accountAttributes.excludableColumns,
+      ),
     );
 
     return this.accountFactMap.many(query);

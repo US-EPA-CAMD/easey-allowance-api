@@ -13,7 +13,11 @@ import { PlainToCSV, PlainToJSON } from '@us-epa-camd/easey-common/transforms';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeAllowanceTransactions } from '@us-epa-camd/easey-common/enums';
 
-import { fieldMappings } from '../constants/field-mappings';
+import {
+  excludableColumnHeader,
+  fieldMappingHeader,
+  fieldMappings,
+} from '../constants/field-mappings';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
@@ -59,8 +63,12 @@ export class AllowanceTransactionsService {
     }
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.transactions),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.allowances.transactions.data),
+    );
+    req.res.setHeader(
+      excludableColumnHeader,
+      JSON.stringify(fieldMappings.allowances.transactions.excludableColumns),
     );
     this.logger.info('Got allowance transactions');
     return this.allowanceTransactionsMap.many(entities);
@@ -78,8 +86,8 @@ export class AllowanceTransactionsService {
     });
 
     req.res.setHeader(
-      'X-Field-Mappings',
-      JSON.stringify(fieldMappings.allowances.transactions),
+      fieldMappingHeader,
+      JSON.stringify(fieldMappings.allowances.transactions.data),
     );
 
     const toDto = new Transform({
@@ -98,12 +106,12 @@ export class AllowanceTransactionsService {
 
     if (req.headers.accept === 'text/csv') {
       let fieldMappingValues = [];
-      fieldMappingValues = fieldMappings.allowances.transactions;
+      fieldMappingValues = fieldMappings.allowances.transactions.data;
       const fieldMappingsList = params.exclude
         ? fieldMappingValues.filter(
             item => !params.exclude.includes(item.value),
           )
-        : fieldMappings.allowances.transactions;
+        : fieldMappings.allowances.transactions.data;
       const toCSV = new PlainToCSV(fieldMappingsList);
       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
         type: req.headers.accept,

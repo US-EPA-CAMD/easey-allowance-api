@@ -1,4 +1,4 @@
-import { IsDefined, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -9,17 +9,12 @@ import {
   AllowanceProgram,
   ExcludeAccountAttributes,
 } from '@us-epa-camd/easey-common/enums';
-import {
-  Min,
-  IsInRange,
-  IsInEnum,
-  IsInResponse,
-} from '@us-epa-camd/easey-common/pipes';
+import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-import { PAGINATION_MAX_PER_PAGE } from '../config/app.config';
 import { fieldMappings } from '../constants/field-mappings';
+import { Page, PerPage } from '../utils/validator.const';
 
 export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({
@@ -46,19 +41,13 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
 }
 
 export class PaginatedAccountAttributesParamsDTO extends AccountAttributesParamsDTO {
-  @Min(1, {
-    message: ErrorMessages.GreaterThanOrEqual('page', 1),
-  })
-  @IsDefined()
+  @Page()
   @ApiProperty({
     description: propertyMetadata.page.description,
   })
   page: number;
 
-  @IsInRange(1, PAGINATION_MAX_PER_PAGE, {
-    message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
-  })
-  @IsDefined()
+  @PerPage()
   @ApiProperty({
     description: propertyMetadata.perPage.description,
   })
@@ -75,7 +64,7 @@ export class StreamAccountAttributesParamsDTO extends AccountAttributesParamsDTO
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.allowances.accountAttributes, {
+  @IsInResponse(fieldMappings.allowances.accountAttributes.data, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

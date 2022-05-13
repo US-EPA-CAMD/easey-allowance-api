@@ -55,7 +55,7 @@ export class EmissionsComplianceController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.compliance.emissions
+          example: fieldMappings.compliance.emissions.data
             .map(i => i.label)
             .join(','),
         },
@@ -89,7 +89,7 @@ export class EmissionsComplianceController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.compliance.emissions
+          example: fieldMappings.compliance.emissions.data
             .map(i => i.label)
             .join(','),
         },
