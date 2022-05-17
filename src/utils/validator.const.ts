@@ -48,10 +48,10 @@ export function EndDate() {
     IsDateGreaterThanEqualTo('transactionBeginDate', {
       message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
-    IsDateInRangeLimit('transactionBeginDate', TRANSACTION_DATE_LIMIT_YEARS, {
+    IsDateInRangeLimit('transactionBeginDate', Number(TRANSACTION_DATE_LIMIT_YEARS), {
       message: ErrorMessages.DateRangeLimit(
         'transactionBeginDate',
-        TRANSACTION_DATE_LIMIT_YEARS,
+        Number(TRANSACTION_DATE_LIMIT_YEARS),
       ),
     }),
     IsInDateRange(
@@ -92,8 +92,8 @@ export function Page() {
 export function PerPage() {
   return applyDecorators(
     IsNotEmpty({ message: ErrorMessages.RequiredProperty() }),
-    IsInRange(1, PAGINATION_MAX_PER_PAGE, {
-      message: ErrorMessages.Between('perPage', 1, PAGINATION_MAX_PER_PAGE),
+    IsInRange(1, Number(PAGINATION_MAX_PER_PAGE), {
+      message: ErrorMessages.Between('perPage', 1, Number(PAGINATION_MAX_PER_PAGE)),
     }),
   );
 }
