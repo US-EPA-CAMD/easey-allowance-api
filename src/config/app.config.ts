@@ -9,6 +9,9 @@ const port = +process.env.EASEY_ACCOUNT_API_PORT || 8030;
 export const PAGINATION_MAX_PER_PAGE =
   +process.env.EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE || 25000;
 
+export const TRANSACTION_DATE_LIMIT_YEARS =
+  +process.env.EASEY_ACCOUNT_API_TRANSACTION_DATE_LIMIT_YEARS || 2;
+
 let uri = `https://${host}/${path}`;
 
 if (host === 'localhost') {
@@ -24,16 +27,16 @@ export default registerAs('app', () => ({
   port,
   uri,
   env: process.env.EASEY_ACCOUNT_API_ENV || 'local-dev',
-  enableCors: parseBool(process.env.EASEY_NOTIFICATIONS_API_ENABLE_CORS, true),
+  enableCors: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_CORS, true),
   enableApiKey: parseBool(
-    process.env.EASEY_NOTIFICATIONS_API_ENABLE_API_KEY,
+    process.env.EASEY_ACCOUNT_API_ENABLE_API_KEY,
     true,
   ),
   enableAuthToken: parseBool(
-    process.env.EASEY_NOTIFICATIONS_API_ENABLE_AUTH_TOKEN,
+    process.env.EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN,
   ),
   enableGlobalValidationPipes: parseBool(
-    process.env.EASEY_NOTIFICATIONS_API_ENABLE_GLOBAL_VALIDATION_PIPE,
+    process.env.EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE,
     true,
   ),
   version: process.env.EASEY_ACCOUNT_API_VERSION || 'v0.0.0',
