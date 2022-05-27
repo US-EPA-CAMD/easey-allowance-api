@@ -89,7 +89,7 @@ export class TransactionBlockDimRepository extends Repository<
   }
 
   private getColumns(): string[] {
-    const columns = [
+    return [
       'tbd.programCodeInfo',
       'tbd.transactionBlockId', //primarykey
       'tbd.transactionId',
@@ -119,8 +119,6 @@ export class TransactionBlockDimRepository extends Repository<
       'tbd.endBlock',
       'tbd.totalBlock',
     ];
-
-    return columns;
   }
 
   private buildQuery(

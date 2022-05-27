@@ -31,7 +31,7 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
   }
 
   private getColumns(): string[] {
-    const columns = [
+    return [
       'ucd.id',
       'uf.programCodeInfo',
       'ucd.year',
@@ -48,8 +48,6 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
       'ucd.avgPlanActual',
       'ucd.inCompliance',
     ];
-
-    return columns;
   }
 
   private buildQuery(

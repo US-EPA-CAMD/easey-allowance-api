@@ -7,13 +7,10 @@ import {
 } from '@us-epa-camd/easey-common/constants';
 import {
   AllowanceProgram,
-  ExcludeAccountAttributes,
 } from '@us-epa-camd/easey-common/enums';
-import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
-import { fieldMappings } from '../constants/field-mappings';
 import { Page, PerPage } from '../utils/validator.const';
 
 export class AccountAttributesParamsDTO extends AllowanceParamsDTO {

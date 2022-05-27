@@ -8,13 +8,9 @@ import {
 import {
   IsYearFormat,
   IsInDateRange,
-  IsInEnum,
-  IsInResponse,
 } from '@us-epa-camd/easey-common/pipes';
-import { ExcludeEmissionsCompliance } from '@us-epa-camd/easey-common/enums';
 
 import { ComplianceParamsDTO } from './compliance.params.dto';
-import { fieldMappings } from '../constants/field-mappings';
 import { Page, PerPage } from '../utils/validator.const';
 
 export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {

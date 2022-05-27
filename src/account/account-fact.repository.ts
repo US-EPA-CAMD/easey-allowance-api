@@ -67,7 +67,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
   }
 
   private getColumns(): string[] {
-    const columns = [
+    return [
       'af.accountNumber',
       'af.accountName',
       'af.programCodeInfo',
@@ -79,8 +79,6 @@ export class AccountFactRepository extends Repository<AccountFact> {
       'af.epaRegion',
       'af.nercRegion',
     ];
-
-    return columns;
   }
 
   private buildQuery(

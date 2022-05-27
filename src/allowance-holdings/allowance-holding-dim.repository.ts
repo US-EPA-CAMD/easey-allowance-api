@@ -64,7 +64,7 @@ export class AllowanceHoldingDimRepository extends Repository<
   }
 
   private getColumns(): string[] {
-    const columns = [
+    return [
       'ahd.accountNumber',
       'ahd.accountName',
       'af.facilityId',
@@ -79,8 +79,6 @@ export class AllowanceHoldingDimRepository extends Repository<
       'af.accountType',
       'atc.accountTypeDescription',
     ];
-
-    return columns;
   }
 
   private buildQuery(
