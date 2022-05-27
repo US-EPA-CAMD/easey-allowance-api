@@ -1,12 +1,5 @@
 import { Request } from 'express';
-import {
-  Get,
-  Controller,
-  Query,
-  Req,
-  UseInterceptors,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -19,10 +12,7 @@ import { Json2CsvInterceptor } from '@us-epa-camd/easey-common/interceptors';
 
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
-import {
-  PaginatedAllowanceTransactionsParamsDTO,
-  StreamAllowanceTransactionsParamsDTO,
-} from '../dto/allowance-transactions.params.dto';
+import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
@@ -30,7 +20,6 @@ import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryMultiSelect,
-  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { fieldMappings } from '../constants/field-mappings';
 
@@ -86,51 +75,6 @@ export class AllowanceTransactionsController {
     return this.allowanceTransactionsService.getAllowanceTransactions(
       paginatedAllowanceTransactionsParamsDTO,
       req,
-    );
-  }
-
-  @Get('stream')
-  @ApiOkResponse({
-    description: 'Streams Allowance Transactions per filter criteria',
-    content: {
-      'application/json': {
-        schema: {
-          $ref: getSchemaPath(AllowanceTransactionsDTO),
-        },
-      },
-      'text/csv': {
-        schema: {
-          type: 'string',
-          example: fieldMappings.allowances.transactions.data
-            .map(i => i.label)
-            .join(','),
-        },
-      },
-    },
-  })
-  @BadRequestResponse()
-  @NotFoundResponse()
-  @ApiQueryMultiSelect()
-  @ApiQuery({
-    style: 'pipeDelimited',
-    name: 'transactionType',
-    required: false,
-    explode: false,
-  })
-  @ApiQuery({
-    style: 'pipeDelimited',
-    name: 'vintageYear',
-    required: false,
-    explode: false,
-  })
-  @ExcludeQuery()
-  streamAllowanceTransactions(
-    @Query() params: StreamAllowanceTransactionsParamsDTO,
-    @Req() req: Request,
-  ): Promise<StreamableFile> {
-    return this.allowanceTransactionsService.streamAllowanceTransactions(
-      req,
-      params,
     );
   }
 

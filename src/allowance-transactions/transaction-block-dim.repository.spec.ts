@@ -7,10 +7,7 @@ import {
   TransactionType,
 } from '@us-epa-camd/easey-common/enums';
 
-import {
-  PaginatedAllowanceTransactionsParamsDTO,
-  StreamAllowanceTransactionsParamsDTO,
-} from '../dto/allowance-transactions.params.dto';
+import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
@@ -30,7 +27,6 @@ const mockQueryBuilder = () => ({
   getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
@@ -99,7 +95,6 @@ describe('-- TransactionBlockDimRepository --', () => {
     ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
     queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
@@ -153,27 +148,17 @@ describe('-- TransactionBlockDimRepository --', () => {
     expect(paginatedResult).toEqual('mockAllowanceTransactions');
   });
 
-  describe('streamAllowanceTransactions', () => {
-    it('streams all allowance transactions', async () => {
-      const result = await transactionBlockDimRepository.getStreamQuery(
-        new StreamAllowanceTransactionsParamsDTO(),
+  describe('getAllApplicableAllowanceTransactionsAttributes', () => {
+    it('calls createQueryBuilder and gets all applicable allowance transactions attributes from the repository', async () => {
+      let filters: ApplicableAllowanceTransactionsAttributesParamsDTO = new ApplicableAllowanceTransactionsAttributesParamsDTO();
+      filters.transactionBeginDate = new Date();
+      filters.transactionEndDate = new Date();
+
+      let result = await transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
+        filters,
       );
-
-      expect(result).toEqual('');
-    });
-
-    describe('getAllApplicableAllowanceTransactionsAttributes', () => {
-      it('calls createQueryBuilder and gets all applicable allowance transactions attributes from the repository', async () => {
-        let filters: ApplicableAllowanceTransactionsAttributesParamsDTO = new ApplicableAllowanceTransactionsAttributesParamsDTO();
-        filters.transactionBeginDate = new Date();
-        filters.transactionEndDate = new Date();
-
-        let result = await transactionBlockDimRepository.getAllApplicableAllowanceTransactionsAttributes(
-          filters,
-        );
-        expect(queryBuilder.getRawMany).toHaveBeenCalled();
-        expect(result).toEqual('mockRawAllowanceTransactions');
-      });
+      expect(queryBuilder.getRawMany).toHaveBeenCalled();
+      expect(result).toEqual('mockRawAllowanceTransactions');
     });
   });
 });

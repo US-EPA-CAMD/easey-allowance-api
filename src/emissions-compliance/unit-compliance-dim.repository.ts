@@ -1,22 +1,16 @@
 import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { Request } from 'express';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
-import { ReadStream } from 'typeorm/platform/PlatformTools';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import {
   EmissionsComplianceParamsDTO,
   PaginatedEmissionsComplianceParamsDTO,
-  StreamEmissionsComplianceParamsDTO,
 } from '../dto/emissions-compliance.params.dto';
 
 @EntityRepository(UnitComplianceDim)
 export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
-  getStreamQuery(params: StreamEmissionsComplianceParamsDTO) {
-    return this.buildQuery(params, true).getQueryAndParameters();
-  }
-
   async getEmissionsCompliance(
     params: PaginatedEmissionsComplianceParamsDTO,
     req: Request,
@@ -36,8 +30,8 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     return results;
   }
 
-  private getColumns(isStreamed: boolean): string[] {
-    const columns = [
+  private getColumns(): string[] {
+    return [
       'ucd.id',
       'uf.programCodeInfo',
       'ucd.year',
@@ -54,26 +48,13 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
       'ucd.avgPlanActual',
       'ucd.inCompliance',
     ];
-
-    return columns.map(col => {
-      if (isStreamed) {
-        if (col === 'odf.owner') {
-          return `${col} AS "ownerOperator"`;
-        } else {
-          return `${col} AS "${col.split('.')[1]}"`;
-        }
-      } else {
-        return col;
-      }
-    });
   }
 
   private buildQuery(
     params: EmissionsComplianceParamsDTO,
-    isStreamed = false,
   ): SelectQueryBuilder<UnitComplianceDim> {
     let query = this.createQueryBuilder('ucd')
-      .select(this.getColumns(isStreamed))
+      .select(this.getColumns())
       .leftJoin('ucd.unitFact', 'uf')
       .leftJoin('ucd.ownerDisplayFact', 'odf');
 

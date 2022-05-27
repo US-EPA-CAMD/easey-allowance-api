@@ -9,10 +9,7 @@ import {
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
-import {
-  PaginatedAccountAttributesParamsDTO,
-  StreamAccountAttributesParamsDTO,
-} from '../dto/account-attributes.params.dto';
+import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -27,7 +24,6 @@ const mockQueryBuilder = () => ({
   getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
@@ -86,18 +82,7 @@ describe('AccountFactRepository', () => {
     queryBuilder.getRawMany.mockReturnValue('mockRawAccount');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
     queryBuilder.getQueryAndParameters.mockReturnValue('');
-  });
-
-  describe('streamAccountAttributes', () => {
-    it('streams all account attributes', async () => {
-      const result = accountFactRepository.getStreamQuery(
-        new StreamAccountAttributesParamsDTO(),
-      );
-
-      expect(result).toEqual('');
-    });
   });
 
   describe('getAllAccounts', () => {

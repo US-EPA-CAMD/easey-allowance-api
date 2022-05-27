@@ -7,10 +7,7 @@ import {
   AccountType,
 } from '@us-epa-camd/easey-common/enums';
 
-import {
-  PaginatedAllowanceHoldingsParamsDTO,
-  StreamAllowanceHoldingsParamsDTO,
-} from '../dto/allowance-holdings.params.dto';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 
@@ -27,7 +24,6 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   distinctOn: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
@@ -86,18 +82,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     queryBuilder.getRawMany.mockReturnValue('mockRawAllowanceHoldings');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
     queryBuilder.getQueryAndParameters.mockReturnValue('');
-  });
-
-  describe('streamAllowanceHoldings', () => {
-    it('streams allowance holdings', async () => {
-      const result = allowanceHoldingDimRepository.getStreamQuery(
-        new StreamAllowanceHoldingsParamsDTO(),
-      );
-
-      expect(result).toEqual('');
-    });
   });
 
   describe('getAllowanceHoldings', () => {

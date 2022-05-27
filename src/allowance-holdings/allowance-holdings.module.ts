@@ -12,7 +12,6 @@ import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountMap } from '../maps/account.map';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 @Module({
   imports: [
@@ -22,7 +21,6 @@ import { StreamModule } from '@us-epa-camd/easey-common/stream';
       AccountFactRepository,
     ]),
     HttpModule,
-    StreamModule,
   ],
   controllers: [AllowanceHoldingsController],
   providers: [

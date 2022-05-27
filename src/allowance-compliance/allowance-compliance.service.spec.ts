@@ -5,29 +5,17 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
-import {
-  PaginatedAllowanceComplianceParamsDTO,
-  StreamAllowanceComplianceParamsDTO,
-} from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
-import { StreamableFile } from '@nestjs/common';
 
 const mockAccountComplianceDimRepository = () => ({
   getAllowanceCompliance: jest.fn(),
   getAllApplicableAllowanceComplianceAttributes: jest.fn(),
-  getStreamQuery: jest.fn(),
 });
-
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -77,14 +65,6 @@ describe('-- Allowance Compliance Service --', () => {
           useFactory: mockAccountComplianceDimRepository,
         },
         {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: AllowanceComplianceMap,
           useFactory: mockAllowanceComplianceMap,
         },
@@ -109,29 +89,6 @@ describe('-- Allowance Compliance Service --', () => {
     );
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
-  });
-
-  describe('streamAllowanceCompliance', () => {
-    it('streams allowance compliance', async () => {
-      accountComplianceDimRepository.getStreamQuery.mockResolvedValue('');
-
-      let filters = new StreamAllowanceComplianceParamsDTO();
-
-      req.headers.accept = '';
-      req.on = jest.fn().mockResolvedValue('');
-
-      let result = await allowanceComplianceService.streamAllowanceCompliance(
-        req,
-        filters,
-      );
-
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="allowance-compliance-${0}.json"`,
-        }),
-      );
-    });
   });
 
   describe('getAllowanceCompliance', () => {

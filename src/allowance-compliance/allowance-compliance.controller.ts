@@ -1,12 +1,5 @@
 import { Request } from 'express';
-import {
-  Get,
-  Controller,
-  Query,
-  Req,
-  UseInterceptors,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Controller, Query, Req, UseInterceptors } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -22,13 +15,9 @@ import {
   BadRequestResponse,
   NotFoundResponse,
   ApiQueryComplianceMultiSelect,
-  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
-import {
-  PaginatedAllowanceComplianceParamsDTO,
-  StreamAllowanceComplianceParamsDTO,
-} from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
@@ -79,45 +68,6 @@ export class AllowanceComplianceController {
     return this.allowanceComplianceService.getAllowanceCompliance(
       paginatedAllowanceComplianceParamsDTO,
       req,
-    );
-  }
-
-  @Get('stream')
-  @ApiOkResponse({
-    description: 'Streams Allowance Compliance Data per filter criteria',
-    content: {
-      'application/json': {
-        schema: {
-          $ref: getSchemaPath(AllowanceComplianceDTO),
-        },
-      },
-      'text/csv': {
-        schema: {
-          type: 'string',
-          example: fieldMappings.compliance.allowanceNbpOtc.data
-            .map(i => i.label)
-            .join(','),
-        },
-      },
-    },
-  })
-  @BadRequestResponse()
-  @NotFoundResponse()
-  @ApiQueryComplianceMultiSelect()
-  @ApiQuery({
-    style: 'pipeDelimited',
-    name: 'programCodeInfo',
-    required: false,
-    explode: false,
-  })
-  @ExcludeQuery()
-  streamAllowanceCompliance(
-    @Query() params: StreamAllowanceComplianceParamsDTO,
-    @Req() req: Request,
-  ): Promise<StreamableFile> {
-    return this.allowanceComplianceService.streamAllowanceCompliance(
-      req,
-      params,
     );
   }
 

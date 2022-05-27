@@ -3,10 +3,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
-import {
-  PaginatedEmissionsComplianceParamsDTO,
-  StreamEmissionsComplianceParamsDTO,
-} from '../dto/emissions-compliance.params.dto';
+import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 const mockQueryBuilder = () => ({
@@ -23,7 +20,6 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   distinctOn: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
@@ -84,7 +80,6 @@ describe('-- UnitComplianceDimRepository --', () => {
     ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
     queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
@@ -138,15 +133,6 @@ describe('-- UnitComplianceDimRepository --', () => {
     expect(ResponseHeaders.setPagination).toHaveBeenCalled();
 
     expect(paginatedResult).toEqual('mockEmissionsCompliance');
-  });
-
-  describe('streamEmissionsCompliance', () => {
-    it('streams all emissions compliance data', async () => {
-      const result = unitComplianceDimRepository.getStreamQuery(
-        new StreamEmissionsComplianceParamsDTO(),
-      );
-      expect(result).toEqual('');
-    });
   });
 
   describe('getAllApplicableEmissionsComplianceAttributes', () => {

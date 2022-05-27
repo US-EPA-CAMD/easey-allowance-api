@@ -8,13 +8,9 @@ import {
 import {
   IsYearFormat,
   IsInDateRange,
-  IsInEnum,
-  IsInResponse,
 } from '@us-epa-camd/easey-common/pipes';
-import { ExcludeEmissionsCompliance } from '@us-epa-camd/easey-common/enums';
 
 import { ComplianceParamsDTO } from './compliance.params.dto';
-import { fieldMappings } from '../constants/field-mappings';
 import { Page, PerPage } from '../utils/validator.const';
 
 export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
@@ -58,22 +54,4 @@ export class PaginatedEmissionsComplianceParamsDTO extends EmissionsCompliancePa
   })
   @PerPage()
   perPage: number;
-}
-
-export class StreamEmissionsComplianceParamsDTO extends EmissionsComplianceParamsDTO {
-  @ApiProperty({
-    enum: ExcludeEmissionsCompliance,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeEmissionsCompliance, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.compliance.emissions.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeEmissionsCompliance[];
 }

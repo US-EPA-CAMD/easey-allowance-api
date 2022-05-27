@@ -7,7 +7,6 @@ import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import {
   AllowanceTransactionsParamsDTO,
   PaginatedAllowanceTransactionsParamsDTO,
-  StreamAllowanceTransactionsParamsDTO,
 } from '../dto/allowance-transactions.params.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 
@@ -15,10 +14,6 @@ import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/appli
 export class TransactionBlockDimRepository extends Repository<
   TransactionBlockDim
 > {
-  getStreamQuery(params: StreamAllowanceTransactionsParamsDTO) {
-    return this.buildQuery(params, true).getQueryAndParameters();
-  }
-
   async getAllowanceTransactions(
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
@@ -93,8 +88,8 @@ export class TransactionBlockDimRepository extends Repository<
     return query.getRawMany();
   }
 
-  private getColumns(isStreamed: boolean): string[] {
-    const columns = [
+  private getColumns(): string[] {
+    return [
       'tbd.programCodeInfo',
       'tbd.transactionBlockId', //primarykey
       'tbd.transactionId',
@@ -124,30 +119,13 @@ export class TransactionBlockDimRepository extends Repository<
       'tbd.endBlock',
       'tbd.totalBlock',
     ];
-
-    return columns.map(col => {
-      if (isStreamed) {
-        if (col === 'ttc.transactionTypeDescription') {
-          return `${col} AS "transactionType"`;
-        } else if (col === 'satc.accountTypeDescription') {
-          return `${col} AS "sellAccountType"`;
-        } else if (col === 'batc.accountTypeDescription') {
-          return `${col} AS "buyAccountType"`;
-        } else {
-          return `${col} AS "${col.split('.')[1]}"`;
-        }
-      } else {
-        return col;
-      }
-    });
   }
 
   private buildQuery(
     params: AllowanceTransactionsParamsDTO,
-    isStreamed = false,
   ): SelectQueryBuilder<TransactionBlockDim> {
     let query = this.createQueryBuilder('tbd')
-      .select(this.getColumns(isStreamed))
+      .select(this.getColumns())
       .innerJoin('tbd.transactionFact', 'tf')
       .innerJoin('tf.buyAccountTypeCd', 'batc')
       .innerJoin('tf.sellAccountTypeCd', 'satc')

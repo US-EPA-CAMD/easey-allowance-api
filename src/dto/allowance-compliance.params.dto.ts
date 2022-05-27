@@ -4,19 +4,15 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import {
   AllowanceProgram,
-  ExcludeAllowanceCompliance,
 } from '@us-epa-camd/easey-common/enums';
 import {
   IsYearFormat,
   IsInDateRange,
-  IsInEnum,
-  IsInResponse,
 } from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { ComplianceParamsDTO } from './compliance.params.dto';
-import { fieldMappings } from '../constants/field-mappings';
 import { Page, PerPage } from '../utils/validator.const';
 
 export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
@@ -74,22 +70,4 @@ export class PaginatedAllowanceComplianceParamsDTO extends AllowanceCompliancePa
   })
   @PerPage()
   perPage: number;
-}
-
-export class StreamAllowanceComplianceParamsDTO extends AllowanceComplianceParamsDTO {
-  @ApiProperty({
-    enum: ExcludeAllowanceCompliance,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeAllowanceCompliance, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.compliance.allowanceNbpOtc.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeAllowanceCompliance[];
 }
