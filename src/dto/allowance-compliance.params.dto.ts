@@ -75,21 +75,3 @@ export class PaginatedAllowanceComplianceParamsDTO extends AllowanceCompliancePa
   @PerPage()
   perPage: number;
 }
-
-export class StreamAllowanceComplianceParamsDTO extends AllowanceComplianceParamsDTO {
-  @ApiProperty({
-    enum: ExcludeAllowanceCompliance,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeAllowanceCompliance, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.compliance.allowanceNbpOtc.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeAllowanceCompliance[];
-}

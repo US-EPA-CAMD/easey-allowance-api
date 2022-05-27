@@ -6,26 +6,20 @@ import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import {
   AllowanceHoldingsParamsDTO,
   PaginatedAllowanceHoldingsParamsDTO,
-  StreamAllowanceHoldingsParamsDTO,
 } from '../dto/allowance-holdings.params.dto';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { ReadStream } from 'fs';
 
 @EntityRepository(AllowanceHoldingDim)
 export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
-  getStreamQuery(params: StreamAllowanceHoldingsParamsDTO) {
-    return this.buildQuery(params, true).getQueryAndParameters();
-  }
-
   async getAllowanceHoldings(
     paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingDim[]> {
     const { page, perPage } = paginatedAllowanceHoldingsParamsDTO;
 
-    const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO, false);
+    const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -69,7 +63,7 @@ export class AllowanceHoldingDimRepository extends Repository<
     return query.getRawMany();
   }
 
-  private getColumns(isStreamed: boolean): string[] {
+  private getColumns(): string[] {
     const columns = [
       'ahd.accountNumber',
       'ahd.accountName',
@@ -86,31 +80,14 @@ export class AllowanceHoldingDimRepository extends Repository<
       'atc.accountTypeDescription',
     ];
 
-    const newCol = columns.map(col => {
-      if (isStreamed) {
-        if (col === 'atc.accountTypeDescription') {
-          return `${col} AS "accountType"`;
-        } else {
-          return `${col} AS "${col.split('.')[1]}"`;
-        }
-      } else {
-        return col;
-      }
-    });
-
-    if (isStreamed) {
-      newCol.splice(columns.indexOf('af.accountType'), 1);
-    }
-
-    return newCol;
+    return columns;
   }
 
   private buildQuery(
     params: AllowanceHoldingsParamsDTO | PaginatedAllowanceHoldingsParamsDTO,
-    isStreamed = false,
   ): SelectQueryBuilder<AllowanceHoldingDim> {
     let query = this.createQueryBuilder('ahd')
-      .select(this.getColumns(isStreamed))
+      .select(this.getColumns())
       .innerJoin('ahd.accountFact', 'af')
       .innerJoin('af.accountTypeCd', 'atc');
 

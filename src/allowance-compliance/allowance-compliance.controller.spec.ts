@@ -2,23 +2,18 @@ import { Test } from '@nestjs/testing';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamableFile } from '@nestjs/common';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceController } from './allowance-compliance.controller';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { AllowanceComplianceDTO } from '../dto/allowance-compliance.dto';
-import {
-  PaginatedAllowanceComplianceParamsDTO,
-  StreamAllowanceComplianceParamsDTO,
-} from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { OwnerYearDimRepository } from './owner-year-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -36,7 +31,7 @@ describe('-- Allowance Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule],
       controllers: [AllowanceComplianceController],
       providers: [
         AllowanceComplianceService,
@@ -96,25 +91,6 @@ describe('-- Allowance Compliance Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceComplianceController.getAllApplicableAllowanceComplianceAttributes(),
-      ).toBe(expectedResults);
-    });
-  });
-
-  describe('* streamAllowanceCompliance', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
-
-    it('should call the service and return all allowance compliance data ', async () => {
-      const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new StreamAllowanceComplianceParamsDTO();
-      jest
-        .spyOn(allowanceComplianceService, 'streamAllowanceCompliance')
-        .mockResolvedValue(expectedResults);
-      expect(
-        await allowanceComplianceService.streamAllowanceCompliance(
-          req,
-          paramsDTO,
-        ),
       ).toBe(expectedResults);
     });
   });

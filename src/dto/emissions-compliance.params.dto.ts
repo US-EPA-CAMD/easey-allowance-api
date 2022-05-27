@@ -59,21 +59,3 @@ export class PaginatedEmissionsComplianceParamsDTO extends EmissionsCompliancePa
   @PerPage()
   perPage: number;
 }
-
-export class StreamEmissionsComplianceParamsDTO extends EmissionsComplianceParamsDTO {
-  @ApiProperty({
-    enum: ExcludeEmissionsCompliance,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeEmissionsCompliance, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.compliance.emissions.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeEmissionsCompliance[];
-}

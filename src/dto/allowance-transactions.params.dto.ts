@@ -107,21 +107,3 @@ export class PaginatedAllowanceTransactionsParamsDTO extends AllowanceTransactio
   @PerPage()
   perPage: number;
 }
-
-export class StreamAllowanceTransactionsParamsDTO extends AllowanceTransactionsParamsDTO {
-  @ApiProperty({
-    enum: ExcludeAllowanceTransactions,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeAllowanceTransactions, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.allowances.transactions.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeAllowanceTransactions[];
-}

@@ -4,29 +4,16 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
-import {
-  AllowanceTransactionsParamsDTO,
-  StreamAllowanceTransactionsParamsDTO,
-} from '../dto/allowance-transactions.params.dto';
+import { AllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { TransactionOwnerDim } from '../entities/transaction-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
-import { StreamableFile } from '@nestjs/common';
 
 const mockTransactionBlockDimRepository = () => ({
   getAllowanceTransactions: jest.fn(),
   getAllApplicableAllowanceTransactionsAttributes: jest.fn(),
-  getStreamQuery: jest.fn(),
 });
-
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -71,14 +58,6 @@ describe('-- Allowance Transactions Service --', () => {
       providers: [
         AllowanceTransactionsService,
         {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: TransactionBlockDimRepository,
           useFactory: mockTransactionBlockDimRepository,
         },
@@ -100,28 +79,6 @@ describe('-- Allowance Transactions Service --', () => {
     allowanceTransactionsMap = module.get(AllowanceTransactionsMap);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
-  });
-
-  describe('streamAllowanceTransactions', () => {
-    it('streams all allowance transactions', async () => {
-      transactionBlockDimRepository.getStreamQuery.mockResolvedValue('');
-
-      let filters = new StreamAllowanceTransactionsParamsDTO();
-
-      req.headers.accept = '';
-
-      let result = await allowanceTransactionsService.streamAllowanceTransactions(
-        req,
-        filters,
-      );
-
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="allowance-transactions-${0}.json"`,
-        }),
-      );
-    });
   });
 
   describe('getAllowanceTransactions', () => {

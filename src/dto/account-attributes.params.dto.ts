@@ -53,21 +53,3 @@ export class PaginatedAccountAttributesParamsDTO extends AccountAttributesParams
   })
   perPage: number;
 }
-
-export class StreamAccountAttributesParamsDTO extends AccountAttributesParamsDTO {
-  @ApiProperty({
-    enum: ExcludeAccountAttributes,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeAccountAttributes, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.allowances.accountAttributes.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeAccountAttributes[];
-}

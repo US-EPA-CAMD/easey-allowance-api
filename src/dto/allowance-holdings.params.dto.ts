@@ -74,21 +74,3 @@ export class PaginatedAllowanceHoldingsParamsDTO extends AllowanceHoldingsParams
   })
   perPage: number;
 }
-
-export class StreamAllowanceHoldingsParamsDTO extends AllowanceHoldingsParamsDTO {
-  @ApiProperty({
-    enum: ExcludeAllowanceHoldings,
-    description: propertyMetadata.exclude.description,
-  })
-  @IsOptional()
-  @IsInEnum(ExcludeAllowanceHoldings, {
-    each: true,
-    message: ErrorMessages.RemovableParameter(),
-  })
-  @IsInResponse(fieldMappings.allowances.holdings.data, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
-  @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  exclude?: ExcludeAllowanceHoldings[];
-}

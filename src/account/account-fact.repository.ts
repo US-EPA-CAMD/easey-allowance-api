@@ -8,7 +8,6 @@ import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import {
   AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
-  StreamAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
 
 @EntityRepository(AccountFact)
@@ -21,17 +20,13 @@ export class AccountFactRepository extends Repository<AccountFact> {
     return query.getMany();
   }
 
-  getStreamQuery(params: StreamAccountAttributesParamsDTO) {
-    return this.buildQuery(params, true).getQueryAndParameters();
-  }
-
   async getAllAccountAttributes(
     paginatedAccountAttributesParamsDTO,
     req: Request,
   ): Promise<AccountFact[]> {
     const { page, perPage } = paginatedAccountAttributesParamsDTO;
 
-    const query = this.buildQuery(paginatedAccountAttributesParamsDTO, false);
+    const query = this.buildQuery(paginatedAccountAttributesParamsDTO);
 
     if (page && perPage) {
       const totalCount = await query.getCount();
@@ -71,7 +66,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
     return query.getRawMany();
   }
 
-  private getColumns(isStreamed: boolean): string[] {
+  private getColumns(): string[] {
     const columns = [
       'af.accountNumber',
       'af.accountName',
@@ -85,25 +80,14 @@ export class AccountFactRepository extends Repository<AccountFact> {
       'af.nercRegion',
     ];
 
-    return columns.map(col => {
-      if (isStreamed) {
-        if (col === 'atc.accountTypeDescription') {
-          return `${col} AS "accountType"`;
-        } else {
-          return `${col} AS "${col.split('.')[1]}"`;
-        }
-      } else {
-        return col;
-      }
-    });
+    return columns;
   }
 
   private buildQuery(
     params: AccountAttributesParamsDTO | PaginatedAccountAttributesParamsDTO,
-    isStreamed = false,
   ): SelectQueryBuilder<AccountFact> {
     let query = this.createQueryBuilder('af')
-      .select(this.getColumns(isStreamed))
+      .select(this.getColumns())
       .innerJoin('af.accountTypeCd', 'atc');
 
     query = QueryBuilderHelper.createAccountQuery(

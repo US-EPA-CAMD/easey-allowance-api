@@ -1,12 +1,5 @@
 import { Request } from 'express';
-import {
-  Get,
-  Controller,
-  UseInterceptors,
-  Query,
-  Req,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Controller, UseInterceptors, Query, Req } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -20,15 +13,11 @@ import {
   ApiQueryComplianceMultiSelect,
   BadRequestResponse,
   NotFoundResponse,
-  ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
-import {
-  PaginatedEmissionsComplianceParamsDTO,
-  StreamEmissionsComplianceParamsDTO,
-} from '../dto/emissions-compliance.params.dto';
+import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
@@ -74,39 +63,6 @@ export class EmissionsComplianceController {
     return this.emissionsComplianceService.getEmissionsCompliance(
       paginatedEmissionsComplianceParamsDTO,
       req,
-    );
-  }
-
-  @Get('stream')
-  @ApiOkResponse({
-    description: 'Streams Allowance Emissions Data per filter criteria',
-    content: {
-      'application/json': {
-        schema: {
-          $ref: getSchemaPath(EmissionsComplianceDTO),
-        },
-      },
-      'text/csv': {
-        schema: {
-          type: 'string',
-          example: fieldMappings.compliance.emissions.data
-            .map(i => i.label)
-            .join(','),
-        },
-      },
-    },
-  })
-  @BadRequestResponse()
-  @NotFoundResponse()
-  @ApiQueryComplianceMultiSelect()
-  @ExcludeQuery()
-  streamEmissionsCompliance(
-    @Req() req: Request,
-    @Query() params: StreamEmissionsComplianceParamsDTO,
-  ): Promise<StreamableFile> {
-    return this.emissionsComplianceService.streamEmissionsCompliance(
-      req,
-      params,
     );
   }
 
