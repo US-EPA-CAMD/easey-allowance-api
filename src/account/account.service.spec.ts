@@ -9,18 +9,12 @@ import { AccountOwnerDim } from '../entities/account-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import {
-  PaginatedAccountAttributesParamsDTO,
-  StreamAccountAttributesParamsDTO,
-} from '../dto/account-attributes.params.dto';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
-import { StreamableFile } from '@nestjs/common';
+import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 
 const mockAccountFactRepository = () => ({
   getAllAccounts: jest.fn(),
   getAllAccountAttributes: jest.fn(),
   getAllApplicableAccountAttributes: jest.fn(),
-  getStreamQuery: jest.fn(),
 });
 
 const mockAccountMap = () => ({
@@ -30,12 +24,6 @@ const mockAccountMap = () => ({
 const mockAccountOwnerDimRepository = () => ({
   getAllOwnerOperators: jest.fn(),
 });
-
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -74,14 +62,6 @@ describe('-- Account Service --', () => {
         {
           provide: AccountFactRepository,
           useFactory: mockAccountFactRepository,
-        },
-        {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
         },
         {
           provide: AccountOwnerDimRepository,
@@ -156,28 +136,6 @@ describe('-- Account Service --', () => {
 
       expect(accountOwnerDimRepository.getAllOwnerOperators).toHaveBeenCalled();
       expect(result).toEqual([ownerOperatorsDTO]);
-    });
-  });
-
-  describe('streamAccountAttributes', () => {
-    it('streams all account attributes', async () => {
-      accountFactRepository.getStreamQuery.mockResolvedValue('');
-
-      let filters = new StreamAccountAttributesParamsDTO();
-
-      req.headers.accept = '';
-
-      let result = await accountService.streamAllAccountAttributes(
-        req,
-        filters,
-      );
-
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="account-attributes-${0}.json"`,
-        }),
-      );
     });
   });
 });

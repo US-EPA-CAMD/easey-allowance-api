@@ -11,7 +11,6 @@ import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 @Module({
   imports: [
@@ -20,7 +19,6 @@ import { StreamModule } from '@us-epa-camd/easey-common/stream';
       OwnerYearDimRepository,
       UnitComplianceDimRepository,
     ]),
-    StreamModule,
   ],
   controllers: [EmissionsComplianceController],
   providers: [

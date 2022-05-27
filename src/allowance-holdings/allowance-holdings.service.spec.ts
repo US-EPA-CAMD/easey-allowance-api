@@ -4,31 +4,12 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
-import {
-  PaginatedAllowanceHoldingsParamsDTO,
-  StreamAllowanceHoldingsParamsDTO,
-} from '../dto/allowance-holdings.params.dto';
-import {
-  AccountType,
-  ActiveAllowanceProgram,
-  ExcludeAllowanceHoldings,
-  State,
-} from '@us-epa-camd/easey-common/enums';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
-import { StreamableFile } from '@nestjs/common';
+import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 
 const mockAllowanceHoldingDimRepository = () => ({
   getAllowanceHoldings: jest.fn(),
-  streamAllowanceHoldings: jest.fn(),
   getAllApplicableAllowanceHoldingsAttributes: jest.fn(),
-  getStreamQuery: jest.fn(),
 });
-
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
 
 const mockAllowanceHoldingsMap = () => ({
   many: jest.fn(),
@@ -68,14 +49,6 @@ describe('-- Allowance Holdings Service --', () => {
       providers: [
         AllowanceHoldingsService,
         {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: AllowanceHoldingDimRepository,
           useFactory: mockAllowanceHoldingDimRepository,
         },
@@ -106,28 +79,6 @@ describe('-- Allowance Holdings Service --', () => {
       );
       expect(allowanceHoldingsMap.many).toHaveBeenCalled();
       expect(result).toEqual('mapped DTOs');
-    });
-  });
-
-  describe('streamAllowanceHoldings', () => {
-    it('streams all allowance holdings', async () => {
-      allowanceHoldingDimRepository.getStreamQuery.mockResolvedValue('');
-
-      let filters = new StreamAllowanceHoldingsParamsDTO();
-
-      req.headers.accept = '';
-
-      let result = await allowanceHoldingsService.streamAllowanceHoldings(
-        req,
-        filters,
-      );
-
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="allowance-holdings-${0}.json"`,
-        }),
-      );
     });
   });
 });

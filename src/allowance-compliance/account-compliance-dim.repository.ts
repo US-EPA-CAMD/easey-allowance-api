@@ -9,7 +9,6 @@ import { UnitFact } from '../entities/unit-fact.entity';
 import {
   AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
-  StreamAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
 import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { AccountFact } from '../entities/account-fact.entity';
@@ -19,11 +18,6 @@ import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
 export class AccountComplianceDimRepository extends Repository<
   AccountComplianceDim
 > {
-  getStreamQuery(params: StreamAllowanceComplianceParamsDTO) {
-    const isOtcNbp = includesOtcNbp(params);
-    return this.buildQuery(params, isOtcNbp, true).getQueryAndParameters();
-  }
-
   async getAllowanceCompliance(
     params: PaginatedAllowanceComplianceParamsDTO,
     req: Request,
@@ -44,7 +38,7 @@ export class AccountComplianceDimRepository extends Repository<
     return results;
   }
 
-  private getColumns(isStreamed: boolean, isOTCNBP: boolean): string[] {
+  private getColumns(isOTCNBP: boolean): string[] {
     let columns;
     if (isOTCNBP) {
       columns = [
@@ -92,22 +86,15 @@ export class AccountComplianceDimRepository extends Repository<
       ];
     }
 
-    return columns.map(col => {
-      if (isStreamed) {
-        return `${col} AS "${col.split('.')[1]}"`;
-      } else {
-        return col;
-      }
-    });
+    return columns;
   }
 
   private buildQuery(
     params: AllowanceComplianceParamsDTO,
     isOtcNbp,
-    isStreamed = false,
   ): SelectQueryBuilder<AccountComplianceDim> {
     let query = this.createQueryBuilder('acd')
-      .select(this.getColumns(isStreamed, isOtcNbp))
+      .select(this.getColumns(isOtcNbp))
       .innerJoin('acd.accountFact', 'af');
 
     query = QueryBuilderHelper.createAccountQuery(

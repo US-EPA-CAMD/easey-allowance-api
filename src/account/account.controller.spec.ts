@@ -1,5 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { StreamableFile } from '@nestjs/common';
 
 import { AccountMap } from '../maps/account.map';
 import { AccountFactRepository } from './account-fact.repository';
@@ -10,13 +9,9 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
-import {
-  PaginatedAccountAttributesParamsDTO,
-  StreamAccountAttributesParamsDTO,
-} from '../dto/account-attributes.params.dto';
+import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -33,7 +28,7 @@ describe('-- Account Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule],
       controllers: [AccountController],
       providers: [
         AccountService,
@@ -59,22 +54,6 @@ describe('-- Account Controller --', () => {
         .spyOn(accountService, 'getAllAccounts')
         .mockResolvedValue(expectedResult);
       expect(await accountController.getAllAccounts()).toBe(expectedResult);
-    });
-  });
-
-  describe('* streamAllAccountAttributes', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
-
-    it('should call the service and return all account attributes ', async () => {
-      const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new StreamAccountAttributesParamsDTO();
-      jest
-        .spyOn(accountService, 'streamAllAccountAttributes')
-        .mockResolvedValue(expectedResults);
-      expect(
-        await accountController.streamAllAccountAttributes(req, paramsDTO),
-      ).toBe(expectedResults);
     });
   });
 

@@ -1,6 +1,5 @@
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamableFile } from '@nestjs/common';
 
 import { AllowanceHoldingsController } from './allowance-holdings.controller';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
@@ -15,7 +14,6 @@ import { AccountFactRepository } from '../account/account-fact.repository';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -33,7 +31,7 @@ describe('-- Allowance Holdings Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule],
       controllers: [AllowanceHoldingsController],
       providers: [
         AllowanceHoldingsService,
@@ -68,25 +66,6 @@ describe('-- Allowance Holdings Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceHoldingsController.getAllowanceHoldings(paramsDTO, req),
-      ).toBe(expectedResults);
-    });
-  });
-
-  describe('* getAllowanceHoldingsStream', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
-
-    it('should call the service and return allowance holdings ', async () => {
-      const expectedResults: StreamableFile = undefined;
-      const paramsDTO = new PaginatedAllowanceHoldingsParamsDTO();
-      jest
-        .spyOn(allowanceHoldingsService, 'streamAllowanceHoldings')
-        .mockResolvedValue(expectedResults);
-      expect(
-        await allowanceHoldingsController.streamAllowanceHoldings(
-          req,
-          paramsDTO,
-        ),
       ).toBe(expectedResults);
     });
   });

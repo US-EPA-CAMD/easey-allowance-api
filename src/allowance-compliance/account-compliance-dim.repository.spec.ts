@@ -3,10 +3,7 @@ import { SelectQueryBuilder } from 'typeorm';
 
 import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 
-import {
-  PaginatedAllowanceComplianceParamsDTO,
-  StreamAllowanceComplianceParamsDTO,
-} from '../dto/allowance-compliance.params.dto';
+import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
@@ -24,7 +21,6 @@ const mockQueryBuilder = () => ({
   skip: jest.fn(),
   take: jest.fn(),
   distinctOn: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
@@ -88,7 +84,6 @@ describe('-- AccountComplianceDimRepository --', () => {
     ]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
     queryBuilder.getQueryAndParameters.mockReturnValue('');
   });
 
@@ -144,16 +139,6 @@ describe('-- AccountComplianceDimRepository --', () => {
 
     expect(ResponseHeaders.setPagination).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAllowanceCompliance');
-  });
-
-  describe('streamAllowanceCompliance', () => {
-    it('streams all allowance compliance', async () => {
-      const result = repository.getStreamQuery(
-        new StreamAllowanceComplianceParamsDTO(),
-      );
-
-      expect(result).toEqual('');
-    });
   });
 
   describe('getAllApplicableAllowanceComplianceAttributes', () => {

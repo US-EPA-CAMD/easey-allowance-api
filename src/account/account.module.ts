@@ -8,7 +8,6 @@ import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 @Module({
   imports: [
@@ -17,7 +16,6 @@ import { StreamModule } from '@us-epa-camd/easey-common/stream';
       AccountOwnerDimRepository,
     ]),
     LoggerModule,
-    StreamModule,
   ],
   controllers: [AccountController],
   providers: [AccountService, AccountMap, OwnerOperatorsMap],
