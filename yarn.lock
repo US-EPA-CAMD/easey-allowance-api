@@ -1059,10 +1059,10 @@
     "@typescript-eslint/types" "5.1.0"
     eslint-visitor-keys "^3.0.0"
 
-"@us-epa-camd/easey-common@^5.1.0":
-  version "5.1.0"
-  resolved "https://npm.pkg.github.com/download/@us-epa-camd/easey-common/5.1.0/c01be3e5e5847224b91030bff7a4d3296edac1f57d73d9a57a56b39b7a6a2b6e#e47eda5af2ff2e03e597ee20d45ecdaf122d6354"
-  integrity sha512-esL1X200oj3MR31wjq85teMADpEfPELd2TB3RZqfQII4DUkPPFuaz2GscFB9hxCGH+Y0nh+2spC+Q2GKuZI6Yw==
+"@us-epa-camd/easey-common@^5.3.0":
+  version "5.3.0"
+  resolved "https://npm.pkg.github.com/download/@us-epa-camd/easey-common/5.3.0/28e9451ff9430603072cec1eae7f453cd87b267fdb8d49bfcd5e06d23e1f951f#b811c64c533429498dd8af42ff528662b93ed9bc"
+  integrity sha512-VaKTMi/sgvY6BVUX1vuxtOdm8vIX9ipdBgHHoeaTqIG2uAlSRQuVXiU7lDHLIXVfXcYdzyWiaASLNWTplfTVlg==
   dependencies:
     "@nestjs/axios" "0.0.3"
     "@nestjs/common" "^8.1.1"
@@ -4895,7 +4895,7 @@ semver@7.x, semver@^7.3.2, semver@^7.3.5:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.7.tgz#12c5b649afdbf9049707796e22a4028814ce523f"
   integrity sha512-QlYTucUYOews+WeEujDoEGziz4K6c47V/Bd+LjSSYcA94p+DmINdf7ncaUinThfvZyu13lN9OY1XDxt8C0Tw0g==
   dependencies:
-    lru-cache "^7.4.0"
+    lru-cache "^6.0.0"
 
 semver@^6.0.0, semver@^6.3.0:
   version "6.3.0"
