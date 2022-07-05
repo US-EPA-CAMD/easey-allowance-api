@@ -6,12 +6,10 @@ import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
-import { UnitFact } from '../entities/unit-fact.entity';
 import {
   AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
-import { OwnerYearDim } from '../entities/owner-year-dim.entity';
 import { AccountFact } from '../entities/account-fact.entity';
 import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
 
@@ -147,7 +145,7 @@ export class AccountComplianceDimRepository extends Repository<
         'af.stateCode',
         'aod.own_display',
       ]);
-      
+
     return query.getRawMany();
   }
 }
