@@ -1,3 +1,4 @@
+import { AccountOwnerDim } from './../entities/account-owner-dim.entity';
 import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { Request } from 'express';
 
@@ -127,7 +128,7 @@ export class AccountComplianceDimRepository extends Repository<
         'af.programCodeInfo',
         'af.facilityId',
         'af.stateCode',
-        'oyd.ownerOperator',
+        'aod.ownerOperator',
       ])
       .innerJoin(
         AccountFact,
@@ -135,17 +136,16 @@ export class AccountComplianceDimRepository extends Repository<
         ' af.accountNumber = acd.accountNumber AND af.programCodeInfo = acd.programCodeInfo',
       )
       .leftJoin(
-        UnitFact,
-        'uf',
-        'uf.year = acd.year AND uf.facilityId = af.facilityId',
+        AccountOwnerDim,
+        'aod',
+        'aod.accountNumber = acd.accountNumber AND aod.programCodeInfo = acd.programCodeInfo',
       )
-      .leftJoin(OwnerYearDim, 'oyd', 'oyd.year = uf.year AND oyd.id = uf.id')
       .distinctOn([
         'acd.op_year',
         'af.prg_code',
         'af.orispl_code',
         'af.stateCode',
-        'oyd.own_display',
+        'aod.own_display',
       ]);
 
     return query.getRawMany();

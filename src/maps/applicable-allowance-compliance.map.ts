@@ -18,7 +18,7 @@ export class ApplicableAllowanceComplianceAttributesMap extends BaseMap<
         : entity.af_orispl_code,
       [propertyMetadata.stateCode.fieldLabels.value]: entity.af_state,
       [propertyMetadata.ownerOperator.fieldLabels.value]:
-        entity?.oyd_own_display || null,
+        entity?.aod_own_display || null,
     };
   }
 }
