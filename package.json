@@ -42,7 +42,7 @@
     "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "nest-router": "^1.0.9",
     "pg": "^8.3.0",
     "pg-pool": "^3.5.1",
