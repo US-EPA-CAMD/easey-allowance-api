@@ -1,7 +1,12 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Logger } from '@us-epa-camd/easey-common/logger';
+import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
 import { plainToClass } from 'class-transformer';
 
 import { AccountFactRepository } from './account-fact.repository';
@@ -38,7 +43,7 @@ export class AccountService {
     try {
       query = await this.accountFactRepository.getAllAccounts();
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message, true);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.info('Got all accounts');
     return this.accountFactMap.many(query);
@@ -56,7 +61,7 @@ export class AccountService {
         req,
       );
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message, true);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.info('Got all account attributes');
 
@@ -83,7 +88,7 @@ export class AccountService {
     try {
       query = await this.accountFactRepository.getAllApplicableAccountAttributes();
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message, true);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.info('Got all applicable account attributes');
 
@@ -100,7 +105,7 @@ export class AccountService {
     try {
       query = await this.accountOwnerDimRepository.getAllOwnerOperators();
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message, true);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.info('Got all owner operators');
 
