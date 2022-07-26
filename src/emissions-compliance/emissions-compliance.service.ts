@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Logger } from '@us-epa-camd/easey-common/logger';
@@ -14,6 +18,7 @@ import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
+import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
 
 @Injectable()
 export class EmissionsComplianceService {
@@ -36,7 +41,7 @@ export class EmissionsComplianceService {
         req,
       );
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -59,7 +64,7 @@ export class EmissionsComplianceService {
     try {
       query = await this.unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes();
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return query.map(item => {
