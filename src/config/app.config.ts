@@ -21,6 +21,8 @@ if (host === 'localhost') {
 export default registerAs('app', () => ({
   name: 'account-api',
   title: process.env.EASEY_ACCOUNT_API_TITLE || 'Account Management',
+  description:
+    'Account management API endpoints for account information, allowance holdings, transactions, and compliance',
   path,
   host,
   apiHost: process.env.EASEY_API_GATEWAY_HOST || 'api.epa.gov/easey/dev',
@@ -28,13 +30,8 @@ export default registerAs('app', () => ({
   uri,
   env: process.env.EASEY_ACCOUNT_API_ENV || 'local-dev',
   enableCors: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_CORS, true),
-  enableApiKey: parseBool(
-    process.env.EASEY_ACCOUNT_API_ENABLE_API_KEY,
-    true,
-  ),
-  enableAuthToken: parseBool(
-    process.env.EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN,
-  ),
+  enableApiKey: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_API_KEY, true),
+  enableAuthToken: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN),
   enableGlobalValidationPipes: parseBool(
     process.env.EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE,
     true,
