@@ -39,4 +39,8 @@ export default registerAs('app', () => ({
   version: process.env.EASEY_ACCOUNT_API_VERSION || 'v0.0.0',
   published: process.env.EASEY_ACCOUNT_API_PUBLISHED || 'local',
   perPageLimit: PAGINATION_MAX_PER_PAGE,
+  enableSecretToken: parseBool(
+    process.env.EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN,
+    false,
+  ),
 }));
