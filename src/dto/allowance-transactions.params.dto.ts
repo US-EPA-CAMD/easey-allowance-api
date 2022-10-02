@@ -29,7 +29,7 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @IsAllowanceProgram(false, {
     each: true,
     message:
-      ErrorMessages.AccountCharacteristics(true, 'programCodeInfo') +
+      ErrorMessages.AccountCharacteristics(true, 'program-code') +
       '?allowanceUIFilter=true',
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
@@ -62,7 +62,7 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @IsOptional()
   @IsTransactionType({
     each: true,
-    message: ErrorMessages.AccountCharacteristics(true, 'transactionType'),
+    message: ErrorMessages.AccountCharacteristics(true, 'transaction-type-code'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   transactionType?: TransactionType[];

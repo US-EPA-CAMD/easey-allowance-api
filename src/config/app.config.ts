@@ -1,16 +1,23 @@
-require('dotenv').config();
 import { registerAs } from '@nestjs/config';
-import { parseBool } from '@us-epa-camd/easey-common/utilities';
+import {
+  getConfigValue,
+  getConfigValueNumber,
+  getConfigValueBoolean,
+} from '@us-epa-camd/easey-common/utilities';
 
-const path = process.env.EASEY_ACCOUNT_API_PATH || 'account-mgmt';
-const host = process.env.EASEY_ACCOUNT_API_HOST || 'localhost';
-const port = +process.env.EASEY_ACCOUNT_API_PORT || 8030;
+require('dotenv').config();
 
-export const PAGINATION_MAX_PER_PAGE =
-  +process.env.EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE || 25000;
+const path = getConfigValue('EASEY_ACCOUNT_API_PATH', 'account-mgmt');
+const host = getConfigValue('EASEY_ACCOUNT_API_HOST', 'localhost');
+const port = getConfigValueNumber('EASEY_ACCOUNT_API_PORT', 8030);
 
-export const TRANSACTION_DATE_LIMIT_YEARS =
-  +process.env.EASEY_ACCOUNT_API_TRANSACTION_DATE_LIMIT_YEARS || 2;
+export const PAGINATION_MAX_PER_PAGE = getConfigValueNumber(
+  'EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE', 25000,
+);
+
+export const TRANSACTION_DATE_LIMIT_YEARS = getConfigValueNumber(
+  'EASEY_ACCOUNT_API_TRANSACTION_DATE_LIMIT_YEARS', 2
+);
 
 let uri = `https://${host}/${path}`;
 
@@ -20,27 +27,41 @@ if (host === 'localhost') {
 
 export default registerAs('app', () => ({
   name: 'account-api',
-  title: process.env.EASEY_ACCOUNT_API_TITLE || 'Account Management',
-  description:
-    'Account management API endpoints for account information, allowance holdings, transactions, and compliance',
-  path,
-  host,
-  apiHost: process.env.EASEY_API_GATEWAY_HOST || 'api.epa.gov/easey/dev',
-  port,
-  uri,
-  env: process.env.EASEY_ACCOUNT_API_ENV || 'local-dev',
-  enableCors: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_CORS, true),
-  enableApiKey: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_API_KEY, true),
-  enableAuthToken: parseBool(process.env.EASEY_ACCOUNT_API_ENABLE_AUTH_TOKEN),
-  enableGlobalValidationPipes: parseBool(
-    process.env.EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE,
-    true,
+  host, port, path, uri,
+  title: getConfigValue(
+    'EASEY_ACCOUNT_API_TITLE', 'Account Management',
   ),
-  version: process.env.EASEY_ACCOUNT_API_VERSION || 'v0.0.0',
-  published: process.env.EASEY_ACCOUNT_API_PUBLISHED || 'local',
+  description: getConfigValue(
+    'EASEY_ACCOUNT_API_DESCRIPTION',
+    'Account management API endpoints for account information, allowance holdings, transactions, and compliance',
+  ),
+  apiHost: getConfigValue(
+    'EASEY_API_GATEWAY_HOST', 'api.epa.gov/easey/dev',
+  ),
+  env: getConfigValue(
+    'EASEY_ACCOUNT_API_ENV', 'local-dev',
+  ),
+  enableCors: getConfigValueBoolean(
+    'EASEY_ACCOUNT_API_ENABLE_CORS', true,
+  ),
+  enableApiKey: getConfigValueBoolean(
+    'EASEY_ACCOUNT_API_ENABLE_API_KEY',
+  ),
+  enableGlobalValidationPipes: getConfigValueBoolean(
+    'EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE', true,
+  ),
+  version: getConfigValue(
+    'EASEY_ACCOUNT_API_VERSION', 'v0.0.0',
+  ),
+  published: getConfigValue(
+    'EASEY_ACCOUNT_API_PUBLISHED', 'local',
+  ),
   perPageLimit: PAGINATION_MAX_PER_PAGE,
-  enableSecretToken: parseBool(
-    process.env.EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN,
-    false,
+  enableSecretToken: getConfigValueBoolean(
+    'EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN',
+  ),
+  // ENABLES DEBUG CONSOLE LOGS
+  enableDebug: getConfigValueBoolean(
+    'EASEY_ACCOUNT_API_ENABLE_DEBUG',
   ),
 }));
