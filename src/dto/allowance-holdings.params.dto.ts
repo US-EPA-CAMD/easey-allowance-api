@@ -46,7 +46,7 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
   @IsAllowanceProgram(false, {
     each: true,
     message:
-      ErrorMessages.AccountCharacteristics(true, 'programCodeInfo') +
+      ErrorMessages.AccountCharacteristics(true, 'program-code') +
       '?allowanceUIFilter=true&isActive=true',
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
