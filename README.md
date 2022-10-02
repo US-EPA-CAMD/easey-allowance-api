@@ -35,7 +35,7 @@ Follow these [instructions](https://github.com/US-EPA-CAMD/devops/blob/master/GE
     $ yarn install
     ```
 ## Configuration
-The Facilities API uses a number of environment variables to properly configure the api. The following is the list of configureble values and their default setting.
+The Account API uses a number of environment variables to properly configure the api. The following is the list of configureble values and their default setting.
 
 | Typescript Var Name | Environment Var Name | Default Value | Comment |
 | :------------------ | :------------------- | :------------ | :------ |
