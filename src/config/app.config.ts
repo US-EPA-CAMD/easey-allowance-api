@@ -12,7 +12,7 @@ const host = getConfigValue('EASEY_ACCOUNT_API_HOST', 'localhost');
 const port = getConfigValueNumber('EASEY_ACCOUNT_API_PORT', 8030);
 
 export const PAGINATION_MAX_PER_PAGE = getConfigValueNumber(
-  'EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE', 25000,
+  'EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE', 500,
 );
 
 export const TRANSACTION_DATE_LIMIT_YEARS = getConfigValueNumber(
@@ -57,6 +57,7 @@ export default registerAs('app', () => ({
     'EASEY_ACCOUNT_API_PUBLISHED', 'local',
   ),
   perPageLimit: PAGINATION_MAX_PER_PAGE,
+  transactionDateYearsLimit: TRANSACTION_DATE_LIMIT_YEARS,
   enableSecretToken: getConfigValueBoolean(
     'EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN',
   ),
