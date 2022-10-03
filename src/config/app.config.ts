@@ -61,6 +61,9 @@ export default registerAs('app', () => ({
   enableSecretToken: getConfigValueBoolean(
     'EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN',
   ),
+  secretToken: getConfigValue(
+    'EASEY_ACCOUNT_API_SECRET_TOKEN',
+  ),
   // ENABLES DEBUG CONSOLE LOGS
   enableDebug: getConfigValueBoolean(
     'EASEY_ACCOUNT_API_ENABLE_DEBUG',
