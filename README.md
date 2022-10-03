@@ -40,9 +40,9 @@ The Account API uses a number of environment variables to properly configure the
 | Typescript Var Name | Environment Var Name | Default Value | Comment |
 | :------------------ | :------------------- | :------------ | :------ |
 | name | N/A | account-api | Fixed value |
-| host | EASEY_ACCOUNT_HOST | localhost | Configurable
-| port | EASEY_ACCOUNT_PORT | 8030 | Configurable |
-| path | EASEY_ACCOUNT_PATH | account-mgmt | Configurable |
+| host | EASEY_ACCOUNT_API_HOST | localhost | Configurable
+| port | EASEY_ACCOUNT_API_PORT | 8030 | Configurable |
+| path | EASEY_ACCOUNT_API_PATH | account-mgmt | Configurable |
 | uri | N/A | N/A | Determined by host, port, & path |
 | title | EASEY_ACCOUNT_API_TITLE | Account Management | Configurable |
 | description | EASEY_ACCOUNT_API_DESCRIPTION | Account management API endpoints for account information, allowance holdings, transactions, and compliance | Configurable |
@@ -55,6 +55,7 @@ The Account API uses a number of environment variables to properly configure the
 | published | EASEY_ACCOUNT_API_PUBLISHED | local | Dynamically set by CI/CD workflow |
 | perPageLimit | EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE | 500 | Configurable |
 | transactionDateYearsLimit | EASEY_ACCOUNT_API_TRANSACTION_DATE_LIMIT_YEARS | 2 | Configurable |
+| secretToken | EASEY_ACCOUNT_API_SECRET_TOKEN | N/A | Dynamically set by CI/CD workflow |
 | enableSecretToken | EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN | false | Configurable |
 | enableDebug | EASEY_ACCOUNT_API_ENABLE_DEBUG | false | Configurable |
 
