@@ -43,28 +43,31 @@ The Account API uses a number of environment variables to properly configure the
 | host | EASEY_ACCOUNT_API_HOST | localhost | Configurable
 | port | EASEY_ACCOUNT_API_PORT | 8030 | Configurable |
 | path | EASEY_ACCOUNT_API_PATH | account-mgmt | Configurable |
-| uri | N/A | N/A | Determined by host, port, & path |
 | title | EASEY_ACCOUNT_API_TITLE | Account Management | Configurable |
 | description | EASEY_ACCOUNT_API_DESCRIPTION | Account management API endpoints for account information, allowance holdings, transactions, and compliance | Configurable |
-| apiHost | EASEY_API_GATEWAY_HOST | api.epa.gov/easey/dev | Configurable |
 | env | EASEY_ACCOUNT_API_ENV | local-dev | Configurable |
-| enableCors | EASEY_ACCOUNT_API_ENABLE_CORS | true | Configurable |
 | enableApiKey | EASEY_ACCOUNT_API_ENABLE_API_KEY | false | Configurable |
+| secretToken | EASEY_ACCOUNT_API_SECRET_TOKEN | *** | Dynamically set by CI/CD workflow |
+| enableSecretToken | EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN | false | Configurable |
+| enableCors | EASEY_ACCOUNT_API_ENABLE_CORS | true | Configurable |
 | enableGlobalValidationPipes | EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE | true | Configurable |
 | version | EASEY_ACCOUNT_API_VERSION | v0.0.0 | Dynamically set by CI/CD workflow |
 | published | EASEY_ACCOUNT_API_PUBLISHED | local | Dynamically set by CI/CD workflow |
-| perPageLimit | EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE | 500 | Configurable |
 | transactionDateYearsLimit | EASEY_ACCOUNT_API_TRANSACTION_DATE_LIMIT_YEARS | 2 | Configurable |
-| secretToken | EASEY_ACCOUNT_API_SECRET_TOKEN | N/A | Dynamically set by CI/CD workflow |
-| enableSecretToken | EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN | false | Configurable |
+| perPageLimit | EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE | 500 | Configurable |
 | enableDebug | EASEY_ACCOUNT_API_ENABLE_DEBUG | false | Configurable |
+| apiHost | EASEY_API_GATEWAY_HOST | api.epa.gov/easey/dev | Configurable |
 
 ## Environment Variables File
 Database credentials are injected into the cloud.gov environments as part of the CI/CD deployment process therefore they do not need to be configured. However, when running locally for local development the following environment variables are required to be configured using a local .env file in the root of the project. **PLEASE DO NOT commit the .env file to source control.**
 
-- EASEY_ACCOUNT_API_ENABLE_DEBUG=true
-- EASEY_ACCOUNT_API_ENABLE_API_KEY=false
-- EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN=false
+- EASEY_ACCOUNT_API_ENABLE_DEBUG=true|false
+- EASEY_ACCOUNT_API_ENABLE_API_KEY=true|false
+  - IF ABOVE IS TRUE THEN SET
+    - EASEY_ACCOUNT_API_KEY={ask project dev/tech lead}
+- EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN=true|false
+  - IF ABOVE IS TRUE THEN SET
+    - EASEY_ACCOUNT_API_SECRET_TOKEN={ask project dev/tech lead}
 
 **Please refer to our [Getting Started](https://github.com/US-EPA-CAMD/devops/blob/master/GETTING-STARTED.md) instructions on how to configure the following environment variables & connect to the database.**
 - EASEY_DB_HOST
@@ -103,7 +106,9 @@ $ yarn start
 
 ## API Endpoints
 Please refer to the account Management API Swagger Documentation for descriptions of the endpoints.<br>
-[Dev Environment](https://api.epa.gov/easey/dev/account-mgmt/swagger/) | [Test Environment](https://api.epa.gov/easey/test/account-mgmt/swagger/) | [Beta Environment](https://api.epa.gov/easey/beta/account-mgmt/swagger/) | [Staging Environment](https://api.epa.gov/easey/staging/account-mgmt/swagger/)
+[Dev Environment](https://api.epa.gov/easey/dev/account-mgmt/swagger/) | [Test Environment](https://api.epa.gov/easey/test/account-mgmt/swagger/) | 
+[Performance Environment](https://api.epa.gov/easey/perf/account-mgmt/swagger/) |
+[Beta Environment](https://api.epa.gov/easey/beta/account-mgmt/swagger/) | [Staging Environment](https://api.epa.gov/easey/staging/account-mgmt/swagger/)
 
 ## License & Contributing
 This project is licensed under the MIT License. We encourage you to read this project’s [License](LICENSE), [Contributing Guidelines](CONTRIBUTING.md), and [Code of Conduct](CODE-OF-CONDUCT.md).

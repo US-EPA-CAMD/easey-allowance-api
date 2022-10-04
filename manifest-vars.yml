@@ -1,11 +1,12 @@
 #THIS FILE SHOULD CONTAIN DEV SETTINGS AND CI/CD WORKFLOW WILL CHANGE SETTINGS BASED ON ENV
-name: account-api
-title: Account Management
-path: account-mgmt
-port: 8080
-memory: 1024
 disk: 1024
+memory: 1024
 instances: 1
-environment: development
+name: account-api
 host: api-easey-dev.app.cloud.gov
+port: 8080
+path: account-mgmt
+title: Account Management
+description: Account management API endpoints for account information, allowance holdings, transactions, and compliance
+environment: development
 apiHost: api.epa.gov/easey/dev
