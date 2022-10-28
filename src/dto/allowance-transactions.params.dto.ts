@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,
@@ -18,9 +18,6 @@ import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
-  @ApiHideProperty()
-  currentDate: Date = this.getCurrentDate;
-
   @ApiProperty({
     enum: AllowanceProgram,
     description: propertyMetadata.programCodeInfo.description,
@@ -82,10 +79,6 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   vintageYear?: number[];
-
-  private get getCurrentDate(): Date {
-    return new Date();
-  }
 }
 
 export class PaginatedAllowanceTransactionsParamsDTO extends AllowanceTransactionsParamsDTO {
