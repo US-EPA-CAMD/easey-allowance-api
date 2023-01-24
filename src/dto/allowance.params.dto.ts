@@ -20,7 +20,7 @@ export class AllowanceParamsDTO {
   @IsOptional()
   @IsAccountType({
     each: true,
-    message: ErrorMessages.AccountCharacteristics(true, 'accountType'),
+    message: ErrorMessages.AccountCharacteristics(true, 'account-type-code'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   accountType?: AccountType[];
@@ -56,7 +56,7 @@ export class AllowanceParamsDTO {
   @IsOptional()
   @IsStateCode({
     each: true,
-    message: ErrorMessages.AccountCharacteristics(true, 'stateCode'),
+    message: ErrorMessages.AccountCharacteristics(true, 'state-code'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   stateCode?: State[];

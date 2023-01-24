@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { plainToClass } from 'class-transformer';
@@ -14,6 +18,7 @@ import {
 } from '../constants/field-mappings';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
 
 @Injectable()
 export class AllowanceHoldingsService {
@@ -35,7 +40,7 @@ export class AllowanceHoldingsService {
         req,
       );
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message, true);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -58,7 +63,7 @@ export class AllowanceHoldingsService {
     try {
       query = await this.allowanceHoldingsRepository.getAllApplicableAllowanceHoldingsAttributes();
     } catch (e) {
-      this.logger.error(InternalServerErrorException, e.message, true);
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     this.logger.info('Got all applicable allowance holding attributes');
