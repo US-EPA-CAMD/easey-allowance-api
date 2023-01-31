@@ -18,7 +18,7 @@ import {
 export function BeginDate() {
   return applyDecorators(
     IsInDateRange(
-      [new Date('1993-03-23'), 'currentDate'],
+      new Date('1993-03-23'),
       false,
       false,
       false,
@@ -55,7 +55,7 @@ export function EndDate() {
       ),
     }),
     IsInDateRange(
-      [new Date('1993-03-23'), 'currentDate'],
+      new Date('1993-03-23'),
       false,
       false,
       false,
