@@ -1,14 +1,9 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsArray, IsNumber, IsNumberString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
-import {
-  AllowanceProgram,
-} from '@us-epa-camd/easey-common/enums';
-import {
-  IsYearFormat,
-  IsInDateRange,
-} from '@us-epa-camd/easey-common/pipes';
+import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import { IsYearFormat, IsInDateRange } from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
@@ -47,6 +42,7 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
       'a year between 1995 and this year',
     ),
   })
+  @IsArray()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   year?: number[];
 }
