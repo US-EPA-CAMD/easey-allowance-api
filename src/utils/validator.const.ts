@@ -17,19 +17,13 @@ import {
 
 export function BeginDate() {
   return applyDecorators(
-    IsInDateRange(
-      new Date('1993-03-23'),
-      false,
-      false,
-      false,
-      {
-        message: ErrorMessages.DateRange(
-          'transactionBeginDate',
-          false,
-          `a date between 03/23/1993 and the current date`,
-        ),
-      },
-    ),
+    IsInDateRange(new Date('1993-03-23'), false, false, false, {
+      message: ErrorMessages.DateRange(
+        'transactionBeginDate',
+        false,
+        `a date between 03/23/1993 and the current date`,
+      ),
+    }),
     IsValidDate({
       message: ErrorMessages.DateValidity(),
     }),
@@ -48,25 +42,23 @@ export function EndDate() {
     IsDateGreaterThanEqualTo('transactionBeginDate', {
       message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
-    IsDateInRangeLimit('transactionBeginDate', Number(TRANSACTION_DATE_LIMIT_YEARS), {
-      message: ErrorMessages.DateRangeLimit(
-        'transactionBeginDate',
-        Number(TRANSACTION_DATE_LIMIT_YEARS),
-      ),
-    }),
-    IsInDateRange(
-      new Date('1993-03-23'),
-      false,
-      false,
-      false,
+    IsDateInRangeLimit(
+      'transactionBeginDate',
+      Number(TRANSACTION_DATE_LIMIT_YEARS),
       {
-        message: ErrorMessages.DateRange(
-          'transactionEndDate',
-          false,
-          `a date between 03/23/1993 and the current date`,
+        message: ErrorMessages.DateRangeLimit(
+          'transactionBeginDate',
+          Number(TRANSACTION_DATE_LIMIT_YEARS),
         ),
       },
     ),
+    IsInDateRange(new Date('1993-03-23'), false, false, false, {
+      message: ErrorMessages.DateRange(
+        'transactionEndDate',
+        false,
+        `a date between 03/23/1993 and the current date`,
+      ),
+    }),
     IsValidDate({
       message: ErrorMessages.DateValidity(),
     }),
@@ -93,7 +85,11 @@ export function PerPage() {
   return applyDecorators(
     IsNotEmpty({ message: ErrorMessages.RequiredProperty() }),
     IsInRange(1, Number(PAGINATION_MAX_PER_PAGE), {
-      message: ErrorMessages.Between('perPage', 1, Number(PAGINATION_MAX_PER_PAGE)),
+      message: ErrorMessages.Between(
+        'perPage',
+        1,
+        Number(PAGINATION_MAX_PER_PAGE),
+      ),
     }),
   );
 }
