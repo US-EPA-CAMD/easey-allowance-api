@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsArray, IsNumber, IsNumberString, IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
