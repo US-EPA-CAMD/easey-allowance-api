@@ -670,7 +670,7 @@
     webpack "5.73.0"
     webpack-node-externals "3.0.0"
 
-"@nestjs/common@^8.1.1":
+"@nestjs/common@^8.4.7":
   version "8.4.7"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.4.7.tgz#fc4a575b797e230bb5a0bcab6da8b796aa88d605"
   integrity sha512-m/YsbcBal+gA5CFrDpqXqsSfylo+DIQrkFY3qhVIltsYRfu8ct8J9pqsTO6OPf3mvqdOpFGrV5sBjoyAzOBvsw==
@@ -690,7 +690,7 @@
     lodash "4.17.21"
     uuid "8.3.2"
 
-"@nestjs/core@^8.1.1":
+"@nestjs/core@^8.4.7":
   version "8.4.7"
   resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.4.7.tgz#fbec7fa744ac8749a4b966f759a6656c1cf43883"
   integrity sha512-XB9uexHqzr2xkPo6QSiQWJJttyYYLmvQ5My64cFvWFi7Wk2NIus0/xUNInwX3kmFWB6pF1ab5Y2ZBvWdPwGBhw==
@@ -708,7 +708,7 @@
   resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-1.0.1.tgz#78b62041c7a407db4a90eb140567321602bed18e"
   integrity sha512-NFvofzSinp00j5rzUd4tf+xi9od6383iY0JP7o0Bnu1fuItAUkWBgc4EKuIQ3D+c2QI3i9pG1kDWAeY27EMGtg==
 
-"@nestjs/platform-express@^8.1.1":
+"@nestjs/platform-express@^8.4.7":
   version "8.4.7"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.4.7.tgz#402a3d3c47327a164bb3867615f423c29d1a6cd9"
   integrity sha512-lPE5Ltg2NbQGRQIwXWY+4cNrXhJdycbxFDQ8mNxSIuv+LbrJBIdEB/NONk+LLn9N/8d2+I2LsIETGQrPvsejBg==
@@ -1142,16 +1142,16 @@
     "@typescript-eslint/types" "5.1.0"
     eslint-visitor-keys "^3.0.0"
 
-"@us-epa-camd/easey-common@15.5.1":
-  version "15.5.1"
-  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/15.5.1/dc1abcc0a9fb9a09e5e15e7eafa754b1fa6c6be0#dc1abcc0a9fb9a09e5e15e7eafa754b1fa6c6be0"
-  integrity sha512-2GFlhdXO5CRN0lhSyECkit+JGV7I2usF6mFhlyDU/+JEv26H31Y+hConhYui5+04MmfOb6gwXU9hX76qV3+a2A==
+"@us-epa-camd/easey-common@15.5.2":
+  version "15.5.2"
+  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/15.5.2/493f4ba7508a9ce7a1e3f86d20e18f025e5b64ef#493f4ba7508a9ce7a1e3f86d20e18f025e5b64ef"
+  integrity sha512-QpMzV3LYbs+fsKVuecECNIQTo+Nyo/l+Uhv4cjORqbLxz8EVA4OxF5oJ2eJdelEn+hEQovpvPn8T/WzsKD82mw==
   dependencies:
     "@golevelup/ts-jest" "^0.3.4"
     "@nestjs/axios" "0.0.3"
-    "@nestjs/common" "^8.1.1"
+    "@nestjs/common" "^8.4.7"
     "@nestjs/config" "^1.0.2"
-    "@nestjs/core" "^8.1.1"
+    "@nestjs/core" "^8.4.7"
     "@nestjs/swagger" "^5.1.2"
     class-validator "^0.14.0"
     dotenv "^10.0.0"
