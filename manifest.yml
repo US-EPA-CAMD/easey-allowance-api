@@ -20,6 +20,7 @@ applications:
       EASEY_ACCOUNT_API_TRANSACTION_DATE_LIMIT_YEARS: 2
       EASEY_ACCOUNT_API_PAGINATION_MAX_PER_PAGE: 500
       EASEY_API_GATEWAY_HOST: ((apiHost))
+      TZ: America/New_York
     routes:
       - route: ((host))/((path))
     services:
