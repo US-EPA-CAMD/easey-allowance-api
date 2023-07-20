@@ -49,7 +49,7 @@ export class AllowanceTransactionsService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -78,7 +78,7 @@ export class AllowanceTransactionsService {
         applicableAllowanceTransactionsAttributesParamsDTO,
       );
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return query.map(item => {

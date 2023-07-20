@@ -52,7 +52,7 @@ export class AllowanceComplianceService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     if (includesOtcNbp(paginatedAllowanceComplianceParamsDTO)) {
@@ -86,7 +86,7 @@ export class AllowanceComplianceService {
     try {
       query = await this.accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes();
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return this.applicableAllowanceComplianceAttributesMap.many(query);

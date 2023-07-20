@@ -40,7 +40,7 @@ export class AllowanceHoldingsService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -63,7 +63,7 @@ export class AllowanceHoldingsService {
     try {
       query = await this.allowanceHoldingsRepository.getAllApplicableAllowanceHoldingsAttributes();
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     this.logger.log('Got all applicable allowance holding attributes');

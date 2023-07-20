@@ -43,7 +43,7 @@ export class AccountService {
     try {
       query = await this.accountFactRepository.getAllAccounts();
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.log('Got all accounts');
     return this.accountFactMap.many(query);
@@ -61,7 +61,7 @@ export class AccountService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.log('Got all account attributes');
 
@@ -88,7 +88,7 @@ export class AccountService {
     try {
       query = await this.accountFactRepository.getAllApplicableAccountAttributes();
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.log('Got all applicable account attributes');
 
@@ -105,7 +105,7 @@ export class AccountService {
     try {
       query = await this.accountOwnerDimRepository.getAllOwnerOperators();
     } catch (e) {
-      throw new EaseyException(new Error(e.message), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     this.logger.log('Got all owner operators');
     return this.ownerOperatorsMap.many(query);
