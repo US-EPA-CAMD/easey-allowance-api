@@ -23,7 +23,7 @@ import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
-import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
+import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 
 @Injectable()
 export class AllowanceTransactionsService {
@@ -41,7 +41,7 @@ export class AllowanceTransactionsService {
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
-    this.logger.info('Getting allowance transactions');
+    this.logger.log('Getting allowance transactions');
     let entities: TransactionBlockDim[];
     try {
       entities = await this.transactionBlockDimRepository.getAllowanceTransactions(
@@ -49,7 +49,7 @@ export class AllowanceTransactionsService {
         req,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -60,7 +60,7 @@ export class AllowanceTransactionsService {
       excludableColumnHeader,
       JSON.stringify(fieldMappings.allowances.transactions.excludableColumns),
     );
-    this.logger.info('Got allowance transactions');
+    this.logger.log('Got allowance transactions');
     return this.allowanceTransactionsMap.many(entities);
   }
 
@@ -78,7 +78,7 @@ export class AllowanceTransactionsService {
         applicableAllowanceTransactionsAttributesParamsDTO,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return query.map(item => {

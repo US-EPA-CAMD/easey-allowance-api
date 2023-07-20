@@ -18,7 +18,7 @@ import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
 import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
-import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
+import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 
 @Injectable()
 export class EmissionsComplianceService {
@@ -33,7 +33,7 @@ export class EmissionsComplianceService {
     paginatedEmissionsComplianceParamsDTO: PaginatedEmissionsComplianceParamsDTO,
     req: Request,
   ): Promise<EmissionsComplianceDTO[]> {
-    this.logger.info('Getting emissions compliance');
+    this.logger.log('Getting emissions compliance');
     let query;
     try {
       query = await this.unitComplianceDimRepository.getEmissionsCompliance(
@@ -41,7 +41,7 @@ export class EmissionsComplianceService {
         req,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -53,7 +53,7 @@ export class EmissionsComplianceService {
       JSON.stringify(fieldMappings.compliance.emissions.excludableColumns),
     );
 
-    this.logger.info('Got emissions Compliance');
+    this.logger.log('Got emissions Compliance');
     return this.emissionsComplianceMap.many(query);
   }
 
@@ -64,7 +64,7 @@ export class EmissionsComplianceService {
     try {
       query = await this.unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes();
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return query.map(item => {
