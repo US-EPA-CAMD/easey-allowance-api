@@ -24,15 +24,19 @@ export class AccountFactRepository extends Repository<AccountFact> {
     paginatedAccountAttributesParamsDTO,
     req: Request,
   ): Promise<AccountFact[]> {
+    let totalCount: number;
+    let results: AccountFact[];
     const { page, perPage } = paginatedAccountAttributesParamsDTO;
 
     const query = this.buildQuery(paginatedAccountAttributesParamsDTO);
 
     if (page && perPage) {
-      const totalCount = await query.getCount();
+      [results, totalCount] = await query.getManyAndCount();
       ResponseHeaders.setPagination(req, page, perPage, totalCount);
+    } else {
+      results = await query.getMany();
     }
-    return query.getMany();
+    return results;
   }
 
   async getAllApplicableAccountAttributes(): Promise<any> {
