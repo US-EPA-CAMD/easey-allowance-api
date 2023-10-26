@@ -17,16 +17,20 @@ export class AllowanceHoldingDimRepository extends Repository<
     paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingDim[]> {
+    let totalCount: number;
+    let results: AllowanceHoldingDim[];
     const { page, perPage } = paginatedAllowanceHoldingsParamsDTO;
 
     const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO);
 
     if (page && perPage) {
-      const totalCount = await query.getCount();
+      [results, totalCount] = await query.getManyAndCount();
       ResponseHeaders.setPagination(req, page, perPage, totalCount);
+    } else {
+      results = await query.getMany();
     }
 
-    return query.getMany();
+    return results;;
   }
 
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<any> {
