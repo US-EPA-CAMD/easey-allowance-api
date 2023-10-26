@@ -31,7 +31,7 @@ export class AllowanceComplianceMap extends BaseMap<
       totalAllowancesDeducted: entity.totalAllowancesDeducted,
       carriedOver: entity.carriedOver,
       excessEmissions: entity.excessEmissions,
-      ownerOperator: entity.accountFact.ownerOperator,
+      ownerOperator: entity.accountFact.ownerOperator.replace(",", "|"),
       stateCode: entity.accountFact.stateCode,
     };
   }
