@@ -9,7 +9,7 @@
     "url": "git+https://github.com/US-EPA-CAMD/easey-account-api.git"
   },
   "engines": {
-    "node": "16.x"
+    "node": ">= 20.8.0"
   },
   "scripts": {
     "prebuild": "rimraf dist",
