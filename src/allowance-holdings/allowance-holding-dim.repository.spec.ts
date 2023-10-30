@@ -17,6 +17,7 @@ const mockQueryBuilder = () => ({
   getMany: jest.fn(),
   getManyAndCount: jest.fn(),
   getRawMany: jest.fn(),
+  getManyAndCount: jest.fn(),
   select: jest.fn(),
   innerJoin: jest.fn(),
   leftJoin: jest.fn(),
@@ -114,7 +115,6 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       ResponseHeaders.setPagination = jest
         .fn()
         .mockReturnValue('paginated results');
-
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;

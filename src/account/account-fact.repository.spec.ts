@@ -120,7 +120,6 @@ describe('AccountFactRepository', () => {
       ResponseHeaders.setPagination = jest
         .fn()
         .mockReturnValue('paginated results');
-
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
