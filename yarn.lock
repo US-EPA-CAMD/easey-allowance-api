@@ -1177,10 +1177,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@us-epa-camd/easey-common@11.0.0":
-  version "11.0.0"
-  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/11.0.0/2fa975e8915ee489a4a006af25689656d617a1e3#2fa975e8915ee489a4a006af25689656d617a1e3"
-  integrity sha512-dVudFjz+dIBa3t2e8HMDTEISX5huBSFwRgLkwX11cmpBvYWljamgMwuhBUlgV4vY7aCYG2rcu9UD4zEkBoNXMg==
+"@us-epa-camd/easey-common@11.4.0":
+  version "11.4.0"
+  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/11.4.0/1d6e9ca0e3fac6b766d61bea4f5a3246b24576c2#1d6e9ca0e3fac6b766d61bea4f5a3246b24576c2"
+  integrity sha512-A6wbNpBcY0eoBSSPObr8UhzBkbDJhJSpRKji4Xoj6VX+11DP8tawOzn3EGZdz4F8A7u3ySGbHUQuQL9LQO05+Q==
   dependencies:
     "@nestjs/axios" "0.0.3"
     "@nestjs/common" "^8.1.1"
@@ -1189,7 +1189,7 @@
     "@nestjs/swagger" "^5.1.2"
     class-validator "^0.13.1"
     dotenv "^10.0.0"
-    express "^4.17.1"
+    express "^4.17.3"
     helmet "^4.6.0"
     json2csv "^5.0.6"
     prettier "^2.7.1"
@@ -2765,7 +2765,7 @@ express@4.18.1:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-express@^4.17.1:
+express@^4.17.1, express@^4.17.3:
   version "4.18.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.2.tgz#3fabe08296e930c796c19e3c516979386ba9fd59"
   integrity sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==
