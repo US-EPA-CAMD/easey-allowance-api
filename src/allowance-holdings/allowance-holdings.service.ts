@@ -18,7 +18,7 @@ import {
 } from '../constants/field-mappings';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
-import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
+import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
 
 @Injectable()
 export class AllowanceHoldingsService {
@@ -32,7 +32,7 @@ export class AllowanceHoldingsService {
     paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,
   ): Promise<AllowanceHoldingsDTO[]> {
-    this.logger.log('Getting allowance holdings');
+    this.logger.info('Getting allowance holdings');
     let query;
     try {
       query = await this.allowanceHoldingsRepository.getAllowanceHoldings(
@@ -40,7 +40,7 @@ export class AllowanceHoldingsService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new LoggingException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -51,22 +51,22 @@ export class AllowanceHoldingsService {
       excludableColumnHeader,
       JSON.stringify(fieldMappings.allowances.holdings.excludableColumns),
     );
-    this.logger.log('Got allowance holdings');
+    this.logger.info('Got allowance holdings');
     return this.allowanceHoldingsMap.many(query);
   }
 
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<
     ApplicableAllowanceHoldingsAttributesDTO[]
   > {
-    this.logger.log('Getting all applicable allowance holding attributes');
+    this.logger.info('Getting all applicable allowance holding attributes');
     let query;
     try {
       query = await this.allowanceHoldingsRepository.getAllApplicableAllowanceHoldingsAttributes();
     } catch (e) {
-      throw new EaseyException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new LoggingException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    this.logger.log('Got all applicable allowance holding attributes');
+    this.logger.info('Got all applicable allowance holding attributes');
 
     return query.map(item => {
       return plainToClass(ApplicableAllowanceHoldingsAttributesDTO, item, {
