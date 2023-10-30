@@ -28,7 +28,8 @@ export class AllowanceHoldingDimRepository extends Repository<
     } else {
       results = await query.getMany();
     }
-    return results;
+
+    return query.getMany();
   }
 
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<any> {

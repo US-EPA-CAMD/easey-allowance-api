@@ -1,6 +1,6 @@
 {
   "name": "easey-account-api",
-  "version": "2.0",
+  "version": "1.3",
   "description": "EPA CAMD Account Management API",
   "license": "MIT",
   "private": true,
@@ -9,8 +9,7 @@
     "url": "git+https://github.com/US-EPA-CAMD/easey-account-api.git"
   },
   "engines": {
-    "node": "16.x",
-    "yarn": "1.x"
+    "node": ">= 20.8.0"
   },
   "scripts": {
     "prebuild": "rimraf dist",

@@ -33,7 +33,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
     if (page && perPage) {
       [results, totalCount] = await query.getManyAndCount();
       ResponseHeaders.setPagination(req, page, perPage, totalCount);
-    } else {
+    }else{
       results = await query.getMany();
     }
     return results;

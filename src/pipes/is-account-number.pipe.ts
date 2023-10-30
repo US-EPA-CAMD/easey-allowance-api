@@ -15,7 +15,7 @@ export function IsAccountNumber(validationOptions?: ValidationOptions) {
       validator: {
         validate(value: any, args: ValidationArguments) {
           return isAlphanumeric(value) && value.length === 12;
-        },
+        },//
       },
     });
   };

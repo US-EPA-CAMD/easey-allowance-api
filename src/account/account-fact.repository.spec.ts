@@ -107,20 +107,16 @@ describe('AccountFactRepository', () => {
       const emptyFilters: PaginatedAccountAttributesParamsDTO = new PaginatedAccountAttributesParamsDTO();
 
       let result = await accountFactRepository.getAllAccountAttributes(
-        emptyFilters, req
+        emptyFilters,
       );
 
-      result = await accountFactRepository.getAllAccountAttributes(filters, req);
+      result = await accountFactRepository.getAllAccountAttributes(filters);
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(result).toEqual('mockAccount');
     });
 
     it('calls createQueryBuilder and gets page 1 of AccountAttributes paginated results from the repository', async () => {
-      ResponseHeaders.setPagination = jest
-        .fn()
-        .mockReturnValue('paginated results');
-
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
@@ -134,10 +130,6 @@ describe('AccountFactRepository', () => {
     });
   });
   it('calls createQueryBuilder and gets page 2 of AccountAttributes paginated results from the repository', async () => {
-    ResponseHeaders.setPagination = jest
-      .fn()
-      .mockReturnValue('paginated results');
-
     let paginatedFilters = filters;
     paginatedFilters.page = 2;
     paginatedFilters.perPage = 5;

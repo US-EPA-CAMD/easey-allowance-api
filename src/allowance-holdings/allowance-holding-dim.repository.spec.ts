@@ -99,11 +99,11 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       const emptyFilters: PaginatedAllowanceHoldingsParamsDTO = new PaginatedAllowanceHoldingsParamsDTO();
 
       let result = await allowanceHoldingDimRepository.getAllowanceHoldings(
-        emptyFilters, req
+        emptyFilters,
       );
 
       result = await allowanceHoldingDimRepository.getAllowanceHoldings(
-        filters, req
+        filters,
       );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
@@ -111,10 +111,6 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     });
 
     it('calls createQueryBuilder and gets page 1 of AllowanceHoldingDim paginated results from the repository', async () => {
-      ResponseHeaders.setPagination = jest
-        .fn()
-        .mockReturnValue('paginated results');
-
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
