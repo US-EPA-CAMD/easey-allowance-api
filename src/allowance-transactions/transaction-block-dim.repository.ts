@@ -53,6 +53,8 @@ export class TransactionBlockDimRepository extends Repository<
           'tf.transactionTypeCode',
           'tod.ownerOperator',
         ].map(col => {
+          if(col === 'tod.ownerOperator')
+            return `REPLACE( ${col}, ',', ' | ')"`
           if (col === 'tf.programCodeInfo') {
             return `${col} AS "programCode"`;
           } else {

@@ -18,6 +18,7 @@ const mockQueryBuilder = () => ({
   getRawMany: jest.fn(),
   getManyAndCount: jest.fn(),
   select: jest.fn(),
+  addSelect: jest.fn(),
   innerJoin: jest.fn(),
   leftJoin: jest.fn(),
   orderBy: jest.fn(),
@@ -76,6 +77,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       .fn()
       .mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
+    queryBuilder.addSelect.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.leftJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);

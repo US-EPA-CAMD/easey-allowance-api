@@ -29,7 +29,8 @@ export class AccountFactRepository extends Repository<AccountFact> {
     const { page, perPage } = paginatedAccountAttributesParamsDTO;
 
     const query = this.buildQuery(paginatedAccountAttributesParamsDTO);
-
+    query.addSelect(`REPLACE( "af"."own_display", ',', ' | ') AS "af_own_display"`)
+    
     if (page && perPage) {
       [results, totalCount] = await query.getManyAndCount();
       ResponseHeaders.setPagination(req, page, perPage, totalCount);
