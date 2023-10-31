@@ -14,6 +14,7 @@ import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.p
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
+  addSelect: jest.fn(),
   distinctOn: jest.fn(),
   andWhere: jest.fn(),
   getMany: jest.fn(),
@@ -76,6 +77,7 @@ describe('AccountFactRepository', () => {
       .fn()
       .mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
+    queryBuilder.addSelect.mockReturnValue(queryBuilder);
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.leftJoin.mockReturnValue(queryBuilder);
