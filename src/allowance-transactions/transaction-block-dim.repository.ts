@@ -54,7 +54,7 @@ export class TransactionBlockDimRepository extends Repository<
           'tod.ownerOperator',
         ].map(col => {
           if(col === 'tod.ownerOperator')
-            return `REPLACE( ${col}, ',', ' | ')"`
+            return `REPLACE( ${col}, '),', ') | ')"`
           if (col === 'tf.programCodeInfo') {
             return `${col} AS "programCode"`;
           } else {
