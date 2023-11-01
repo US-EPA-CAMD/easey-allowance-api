@@ -22,7 +22,7 @@ export class AllowanceHoldingDimRepository extends Repository<
     const { page, perPage } = paginatedAllowanceHoldingsParamsDTO;
 
     const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO);
-    query.addSelect(`REPLACE( "af"."own_display", ',', ' | ') AS "af_own_display"`)
+    query.addSelect(`REPLACE( "af"."own_display", '),', ') | ') AS "af_own_display"`)
     
 
     if (page && perPage) {
@@ -32,7 +32,7 @@ export class AllowanceHoldingDimRepository extends Repository<
       results = await query.getMany();
     }
 
-    return results;;
+    return results;
   }
 
   async getAllApplicableAllowanceHoldingsAttributes(): Promise<any> {
