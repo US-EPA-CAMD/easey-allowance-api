@@ -22,7 +22,6 @@ export class AllowanceHoldingDimRepository extends Repository<
     const { page, perPage } = paginatedAllowanceHoldingsParamsDTO;
 
     const query = this.buildQuery(paginatedAllowanceHoldingsParamsDTO);
-    query.addSelect(`REPLACE( "af"."own_display", '),', ') | ') AS "af_own_display"`)
     
 
     if (page && perPage) {
