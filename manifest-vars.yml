@@ -10,3 +10,4 @@ title: Account Management
 description: Account management API endpoints for account information, allowance holdings, transactions, and compliance
 environment: development
 apiHost: api.epa.gov/easey/dev
+dbSvc: camd-pg-db
