@@ -19,7 +19,7 @@ export class EmissionsComplianceMap extends BaseMap<
       .slice(0, -1)
       .split('),');
     const ownOprUniqueList = [...new Set(ownOprList)];
-    const ownerOperator = ownOprUniqueList.join('),');
+    const ownerOperator = ownOprUniqueList.join(') | ');
     return {
       year: entity.year,
       facilityName: entity.unitFact?.facilityName || null,
