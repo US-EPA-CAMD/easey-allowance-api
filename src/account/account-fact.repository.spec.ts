@@ -6,6 +6,7 @@ import {
   AccountType,
   AllowanceProgram,
 } from '@us-epa-camd/easey-common/enums';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
@@ -16,6 +17,7 @@ const mockQueryBuilder = () => ({
   distinctOn: jest.fn(),
   andWhere: jest.fn(),
   getMany: jest.fn(),
+  getManyAndCount: jest.fn(),
   getRawMany: jest.fn(),
   innerJoin: jest.fn(),
   leftJoin: jest.fn(),
@@ -48,8 +50,9 @@ let filters: PaginatedAccountAttributesParamsDTO = {
 };
 
 describe('AccountFactRepository', () => {
-  let accountFactRepository;
-  let queryBuilder;
+  let accountFactRepository: AccountFactRepository;
+  let queryBuilder:any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -66,6 +69,8 @@ describe('AccountFactRepository', () => {
     queryBuilder = module.get<SelectQueryBuilder<AccountFact>>(
       SelectQueryBuilder,
     );
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
 
     accountFactRepository.createQueryBuilder = jest
       .fn()
@@ -79,6 +84,10 @@ describe('AccountFactRepository', () => {
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAccount');
+    queryBuilder.getManyAndCount.mockReturnValue([
+      'mockAccount',
+      0,
+    ]);
     queryBuilder.getRawMany.mockReturnValue('mockRawAccount');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
@@ -98,44 +107,44 @@ describe('AccountFactRepository', () => {
       const emptyFilters: PaginatedAccountAttributesParamsDTO = new PaginatedAccountAttributesParamsDTO();
 
       let result = await accountFactRepository.getAllAccountAttributes(
-        emptyFilters,
+        emptyFilters,req
       );
 
-      result = await accountFactRepository.getAllAccountAttributes(filters);
+      result = await accountFactRepository.getAllAccountAttributes(filters,req);
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(result).toEqual('mockAccount');
     });
 
     it('calls createQueryBuilder and gets page 1 of AccountAttributes paginated results from the repository', async () => {
+      ResponseHeaders.setPagination = jest
+        .fn()
+        .mockReturnValue('paginated results');
       let paginatedFilters = filters;
       paginatedFilters.page = 1;
       paginatedFilters.perPage = 5;
-      let req: any = mockRequest(
-        `/accounts/attributes?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-      );
-      req.res.setHeader.mockReturnValue();
-      let paginatedResult = await accountFactRepository.getAllAccountAttributes(
+
+      const paginatedResult = await accountFactRepository.getAllAccountAttributes(
         paginatedFilters,
         req,
       );
-      expect(queryBuilder.getMany).toHaveBeenCalled();
+      expect(ResponseHeaders.setPagination).toHaveBeenCalled();
       expect(paginatedResult).toEqual('mockAccount');
     });
   });
   it('calls createQueryBuilder and gets page 2 of AccountAttributes paginated results from the repository', async () => {
+    ResponseHeaders.setPagination = jest
+    .fn()
+    .mockReturnValue('paginated results');
     let paginatedFilters = filters;
     paginatedFilters.page = 2;
     paginatedFilters.perPage = 5;
-    let req: any = mockRequest(
-      `/accounts/attributes?page=${paginatedFilters.page}&perPage=${paginatedFilters.perPage}`,
-    );
-    req.res.setHeader.mockReturnValue();
-    let paginatedResult = await accountFactRepository.getAllAccountAttributes(
+
+    const paginatedResult = await accountFactRepository.getAllAccountAttributes(
       paginatedFilters,
       req,
     );
-    expect(queryBuilder.getMany).toHaveBeenCalled();
+    expect(ResponseHeaders.setPagination).toHaveBeenCalled();
     expect(paginatedResult).toEqual('mockAccount');
   });
 
