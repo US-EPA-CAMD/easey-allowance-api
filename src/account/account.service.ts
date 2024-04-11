@@ -1,37 +1,30 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
-import { Logger } from '@us-epa-camd/easey-common/logger';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
+import { Logger } from '@us-epa-camd/easey-common/logger';
 import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
 
-import { AccountFactRepository } from './account-fact.repository';
-import { AccountOwnerDimRepository } from './account-owner-dim.repository';
+import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { AccountDTO } from '../dto/account.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { AccountAttributesDTO } from '../dto/account-attributes.dto';
+import { AccountFactRepository } from './account-fact.repository';
+import { AccountOwnerDimRepository } from './account-owner-dim.repository';
 
-import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import {
   excludableColumnHeader,
   fieldMappingHeader,
   fieldMappings,
 } from '../constants/field-mappings';
+import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 
 @Injectable()
 export class AccountService {
   constructor(
-    @InjectRepository(AccountFactRepository)
     private readonly accountFactRepository: AccountFactRepository,
     private readonly accountFactMap: AccountMap,
-    @InjectRepository(AccountOwnerDimRepository)
     private readonly accountOwnerDimRepository: AccountOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly logger: Logger,

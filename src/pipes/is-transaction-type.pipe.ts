@@ -1,11 +1,6 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-import { getManager, ILike } from 'typeorm';
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
-import { TransactionTypeCode } from '../entities/transaction-type-code.entity';
+import { IsTransactionTypeValidator } from '../validators/is-transaction-type.validator';
 
 export function IsTransactionType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -14,17 +9,7 @@ export function IsTransactionType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(TransactionTypeCode, {
-            transactionTypeDescription: ILike(value),
-          });
-
-          return found != null;
-        },
-      },
+      validator: IsTransactionTypeValidator,
     });
   };
 }

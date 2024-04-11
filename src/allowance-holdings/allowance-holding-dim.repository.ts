@@ -1,18 +1,23 @@
-import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
-import { Request } from 'express';
+import { Injectable } from '@nestjs/common';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { Request } from 'express';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import {
   AllowanceHoldingsParamsDTO,
   PaginatedAllowanceHoldingsParamsDTO,
 } from '../dto/allowance-holdings.params.dto';
+import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { QueryBuilderHelper } from '../utils/query-builder.helper';
 
-@EntityRepository(AllowanceHoldingDim)
+@Injectable()
 export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
+  constructor(entityManager: EntityManager) {
+    super(AllowanceHoldingDim, entityManager);
+  }
+
   async getAllowanceHoldings(
     paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     req: Request,

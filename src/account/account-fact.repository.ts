@@ -1,17 +1,21 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
-import { Request } from 'express';
-
+import { Injectable } from '@nestjs/common';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { Request } from 'express';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { AccountFact } from '../entities/account-fact.entity';
-import { QueryBuilderHelper } from '../utils/query-builder.helper';
 import {
   AccountAttributesParamsDTO,
   PaginatedAccountAttributesParamsDTO,
 } from '../dto/account-attributes.params.dto';
+import { AccountFact } from '../entities/account-fact.entity';
+import { QueryBuilderHelper } from '../utils/query-builder.helper';
 
-@EntityRepository(AccountFact)
+@Injectable()
 export class AccountFactRepository extends Repository<AccountFact> {
+  constructor(entityManager: EntityManager) {
+    super(AccountFact, entityManager);
+  }
+
   async getAllAccounts(): Promise<AccountFact[]> {
     const query = this.createQueryBuilder('af')
       .select(['af.accountNumber', 'af.accountName'])
