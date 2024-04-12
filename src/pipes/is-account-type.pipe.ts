@@ -1,6 +1,12 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
+import { ILike } from 'typeorm';
 
-import { IsAccountTypeValidator } from '../validators/is-account-type.validator';
+import { AccountTypeCode } from '../entities/account-type-code.entity';
 
 export function IsAccountType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -9,7 +15,18 @@ export function IsAccountType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsAccountTypeValidator,
+      constraints: [
+        {
+          type: AccountTypeCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              accountTypeDescription: ILike(args.value),
+            },
+          }),
+        },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }

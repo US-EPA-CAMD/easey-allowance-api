@@ -1,6 +1,11 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
 
-import { IsStateCodeValidator } from '../validators/is-state-code.validator';
+import { StateCode } from '../entities/state-code.entity';
 
 export function IsStateCode(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -9,7 +14,18 @@ export function IsStateCode(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsStateCodeValidator,
+      constraints: [
+        {
+          type: StateCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              stateCd: args.value.toUpperCase(),
+            },
+          }),
+        },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }

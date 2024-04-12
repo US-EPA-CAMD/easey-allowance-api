@@ -6,13 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from '@us-epa-camd/easey-common/config';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { CorsOptionsModule } from '@us-epa-camd/easey-common/cors-options';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
 
-import {
-  IsAccountTypeValidator,
-  IsAllowanceProgramValidator,
-  IsStateCodeValidator,
-  IsTransactionTypeValidator,
-} from './validators';
+import { IsAllowanceProgramValidator } from './validators';
 import routes from './routes';
 import appConfig from './config/app.config';
 import { TypeOrmConfigService } from './config/typeorm.config';
@@ -40,11 +36,6 @@ import { EmissionsComplianceModule } from './emissions-compliance/emissions-comp
     AllowanceComplianceModule,
     EmissionsComplianceModule,
   ],
-  providers: [
-    IsAccountTypeValidator,
-    IsAllowanceProgramValidator,
-    IsStateCodeValidator,
-    IsTransactionTypeValidator,
-  ],
+  providers: [DbLookupValidator, IsAllowanceProgramValidator],
 })
 export class AppModule {}
