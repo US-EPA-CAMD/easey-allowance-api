@@ -1,37 +1,30 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 import { Logger } from '@us-epa-camd/easey-common/logger';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
 
 import {
   excludableColumnHeader,
   fieldMappingHeader,
   fieldMappings,
 } from '../constants/field-mappings';
-import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
-import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
-import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
-import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
-import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
+import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 
 @Injectable()
 export class AllowanceTransactionsService {
   constructor(
-    @InjectRepository(TransactionBlockDimRepository)
     private readonly transactionBlockDimRepository: TransactionBlockDimRepository,
     private readonly allowanceTransactionsMap: AllowanceTransactionsMap,
-    @InjectRepository(TransactionOwnerDimRepository)
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly logger: Logger,

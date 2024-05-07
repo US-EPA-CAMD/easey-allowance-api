@@ -1,9 +1,9 @@
 import {
   registerDecorator,
-  ValidationOptions,
   ValidationArguments,
+  ValidationOptions,
 } from 'class-validator';
-import { getManager } from 'typeorm';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
 
 import { StateCode } from '../entities/state-code.entity';
 
@@ -14,16 +14,18 @@ export function IsStateCode(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(StateCode, {
-            stateCd: value.toUpperCase(),
-          });
-          return found != null;
+      constraints: [
+        {
+          type: StateCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              stateCd: args.value.toUpperCase(),
+            },
+          }),
         },
-      },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }
