@@ -1,9 +1,10 @@
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
 import {
   registerDecorator,
-  ValidationOptions,
   ValidationArguments,
+  ValidationOptions,
 } from 'class-validator';
-import { getManager, ILike } from 'typeorm';
+import { ILike } from 'typeorm';
 
 import { TransactionTypeCode } from '../entities/transaction-type-code.entity';
 
@@ -14,17 +15,18 @@ export function IsTransactionType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(TransactionTypeCode, {
-            transactionTypeDescription: ILike(value),
-          });
-
-          return found != null;
+      constraints: [
+        {
+          type: TransactionTypeCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              transactionTypeDescription: ILike(args.value),
+            },
+          }),
         },
-      },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }

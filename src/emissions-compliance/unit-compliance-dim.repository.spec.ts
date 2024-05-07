@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
@@ -51,6 +51,7 @@ describe('-- UnitComplianceDimRepository --', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         UnitComplianceDimRepository,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],

@@ -1,19 +1,20 @@
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
-import { AllowanceHoldingsController } from './allowance-holdings.controller';
-import { AllowanceHoldingsService } from './allowance-holdings.service';
-import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
-import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
+import { AccountFactRepository } from '../account/account-fact.repository';
+import { AccountOwnerDimRepository } from '../account/account-owner-dim.repository';
+import { AccountService } from '../account/account.service';
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
-import { AccountService } from '../account/account.service';
-import { AccountOwnerDimRepository } from '../account/account-owner-dim.repository';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { AccountFactRepository } from '../account/account-fact.repository';
+import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { AccountMap } from '../maps/account.map';
-import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
+import { AllowanceHoldingsMap } from '../maps/allowance-holdings.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
+import { AllowanceHoldingsController } from './allowance-holdings.controller';
+import { AllowanceHoldingsService } from './allowance-holdings.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -42,6 +43,7 @@ describe('-- Allowance Holdings Controller --', () => {
         OwnerOperatorsMap,
         AccountFactRepository,
         AccountMap,
+        EntityManager,
       ],
     }).compile();
 
