@@ -10,22 +10,21 @@ export class EmissionsComplianceMap extends BaseMap<
   EmissionsComplianceDTO
 > {
   public async one(entity: UnitComplianceDim): Promise<any> {
-    const array = entity.ownerDisplayFact
-      ? [entity.ownerDisplayFact.owner, entity.ownerDisplayFact.operator]
-      : [];
-    const ownOprList = array
-      .filter(e => e)
-      .join(',')
-      .slice(0, -1)
-      .split('),');
-    const ownOprUniqueList = [...new Set(ownOprList)];
-    const ownerOperator = ownOprUniqueList.join(')|');
+    const splitOwnWithPipe = entity.ownerDisplayFact?.owner?.split('|');
+    const splitOprWithPipe = entity.ownerDisplayFact?.operator?.split('|');
+
+    const uniqueOwn = [...new Set(splitOwnWithPipe)].join('|');
+    const uniqueOpr = [...new Set(splitOprWithPipe)].join('|');
+
+    const uniqueOwnOprList = [uniqueOwn, uniqueOpr];
+    const ownerOperator = uniqueOwnOprList.filter(e => e).join('|');
+
     return {
       year: entity.year,
       facilityName: entity.unitFact?.facilityName || null,
       facilityId: entity.unitFact?.facilityId,
       unitId: entity.unitFact?.unitId || null,
-      ownerOperator: ownerOperator.length > 0 ? `${ownerOperator})` : null,
+      ownerOperator: ownerOperator.length > 0 ? `${ownerOperator}` : null,
       stateCode: entity.unitFact?.stateCode || null,
       complianceApproach: entity.complianceApproach,
       avgPlanId: entity.avgPlanId,
