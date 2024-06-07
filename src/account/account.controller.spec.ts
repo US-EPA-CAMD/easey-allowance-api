@@ -1,17 +1,18 @@
 import { Test } from '@nestjs/testing';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
-import { AccountMap } from '../maps/account.map';
-import { AccountFactRepository } from './account-fact.repository';
-import { AccountDTO } from '../dto/account.dto';
-import { AccountController } from './account.controller';
-import { AccountService } from './account.service';
-import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
-import { AccountOwnerDimRepository } from './account-owner-dim.repository';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
-import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { AccountDTO } from '../dto/account.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { AccountMap } from '../maps/account.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { AccountFactRepository } from './account-fact.repository';
+import { AccountOwnerDimRepository } from './account-owner-dim.repository';
+import { AccountController } from './account.controller';
+import { AccountService } from './account.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -35,6 +36,7 @@ describe('-- Account Controller --', () => {
         AccountMap,
         AccountFactRepository,
         AccountOwnerDimRepository,
+        EntityManager,
         OwnerOperatorsMap,
       ],
     }).compile();

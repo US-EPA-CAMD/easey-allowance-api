@@ -21,9 +21,11 @@ import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-a
   ],
   controllers: [AllowanceComplianceController],
   providers: [
+    AccountComplianceDimRepository,
     AllowanceComplianceMap,
     AllowanceComplianceService,
     OwnerOperatorsMap,
+    OwnerYearDimRepository,
     ConfigService,
     ApplicableAllowanceComplianceAttributesMap,
   ],

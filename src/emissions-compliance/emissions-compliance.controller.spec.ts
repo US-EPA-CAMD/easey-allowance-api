@@ -1,21 +1,22 @@
 import { Test } from '@nestjs/testing';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
-import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
-import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { EmissionsComplianceController } from './emissions-compliance.controller';
-import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { AccountComplianceDimRepository } from '../allowance-compliance/account-compliance-dim.repository';
+import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.repository';
-import { EmissionsComplianceService } from './emissions-compliance.service';
+import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
-import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
-import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
-import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
+import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { EmissionsComplianceController } from './emissions-compliance.controller';
+import { EmissionsComplianceService } from './emissions-compliance.service';
+import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 const mockRequest = (url: string) => {
   return {
@@ -38,6 +39,7 @@ describe('-- Emissions Compliance Controller --', () => {
       providers: [
         AllowanceComplianceService,
         EmissionsComplianceService,
+        EntityManager,
         AllowanceComplianceMap,
         EmissionsComplianceMap,
         AccountComplianceDimRepository,
