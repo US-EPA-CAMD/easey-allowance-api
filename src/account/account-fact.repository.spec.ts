@@ -1,16 +1,15 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
-
 import {
-  State,
   AccountType,
   AllowanceProgram,
+  State,
 } from '@us-epa-camd/easey-common/enums';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
-import { AccountFactRepository } from './account-fact.repository';
-import { AccountFact } from '../entities/account-fact.entity';
 import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { AccountFact } from '../entities/account-fact.entity';
+import { AccountFactRepository } from './account-fact.repository';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -51,13 +50,14 @@ let filters: PaginatedAccountAttributesParamsDTO = {
 
 describe('AccountFactRepository', () => {
   let accountFactRepository: AccountFactRepository;
-  let queryBuilder:any;
+  let queryBuilder: any;
   let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         AccountFactRepository,
+        EntityManager,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],
     }).compile();
@@ -84,10 +84,7 @@ describe('AccountFactRepository', () => {
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAccount');
-    queryBuilder.getManyAndCount.mockReturnValue([
-      'mockAccount',
-      0,
-    ]);
+    queryBuilder.getManyAndCount.mockReturnValue(['mockAccount', 0]);
     queryBuilder.getRawMany.mockReturnValue('mockRawAccount');
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
@@ -107,10 +104,14 @@ describe('AccountFactRepository', () => {
       const emptyFilters: PaginatedAccountAttributesParamsDTO = new PaginatedAccountAttributesParamsDTO();
 
       let result = await accountFactRepository.getAllAccountAttributes(
-        emptyFilters,req
+        emptyFilters,
+        req,
       );
 
-      result = await accountFactRepository.getAllAccountAttributes(filters,req);
+      result = await accountFactRepository.getAllAccountAttributes(
+        filters,
+        req,
+      );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(result).toEqual('mockAccount');
@@ -134,8 +135,8 @@ describe('AccountFactRepository', () => {
   });
   it('calls createQueryBuilder and gets page 2 of AccountAttributes paginated results from the repository', async () => {
     ResponseHeaders.setPagination = jest
-    .fn()
-    .mockReturnValue('paginated results');
+      .fn()
+      .mockReturnValue('paginated results');
     let paginatedFilters = filters;
     paginatedFilters.page = 2;
     paginatedFilters.perPage = 5;

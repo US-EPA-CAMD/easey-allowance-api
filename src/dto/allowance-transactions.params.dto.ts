@@ -5,7 +5,7 @@ import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
-import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
+import { IsYearGreater, IsYearFormat } from '@us-epa-camd/easey-common/pipes';
 import {
   TransactionType,
   AllowanceProgram,
@@ -15,7 +15,6 @@ import { AllowanceParamsDTO } from './allowance.params.dto';
 import { BeginDate, EndDate, Page, PerPage } from '../utils/validator.const';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
-import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({

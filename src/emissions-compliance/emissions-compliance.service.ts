@@ -1,29 +1,23 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
 
+import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 import {
   excludableColumnHeader,
   fieldMappingHeader,
   fieldMappings,
 } from '../constants/field-mappings';
-import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
-import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
-import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
-import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
-import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
+import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
+import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
+import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 @Injectable()
 export class EmissionsComplianceService {
   constructor(
-    @InjectRepository(UnitComplianceDimRepository)
     private readonly unitComplianceDimRepository: UnitComplianceDimRepository,
     private readonly emissionsComplianceMap: EmissionsComplianceMap,
     private readonly logger: Logger,
@@ -41,7 +35,7 @@ export class EmissionsComplianceService {
         req,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     req.res.setHeader(
@@ -64,7 +58,7 @@ export class EmissionsComplianceService {
     try {
       query = await this.unitComplianceDimRepository.getAllApplicableEmissionsComplianceAttributes();
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return query.map(item => {

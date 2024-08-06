@@ -1,16 +1,16 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
 import {
-  State,
   AccountType,
   AllowanceProgram,
+  State,
   TransactionType,
 } from '@us-epa-camd/easey-common/enums';
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
-import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
-import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 
 const mockQueryBuilder = () => ({
   where: jest.fn(),
@@ -65,6 +65,7 @@ describe('-- TransactionBlockDimRepository --', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         TransactionBlockDimRepository,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],

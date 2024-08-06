@@ -24,6 +24,9 @@ import { ConfigService } from '@nestjs/config';
   ],
   controllers: [AllowanceHoldingsController],
   providers: [
+    AllowanceHoldingDimRepository,
+    AccountOwnerDimRepository,
+    AccountFactRepository,
     AllowanceHoldingsService,
     AccountService,
     AllowanceHoldingsMap,

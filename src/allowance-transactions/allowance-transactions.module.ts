@@ -1,14 +1,14 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
-import { AllowanceTransactionsController } from './allowance-transactions.controller';
 import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
-import { AllowanceTransactionsService } from './allowance-transactions.service';
-import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { HttpModule } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
+import { AllowanceTransactionsController } from './allowance-transactions.controller';
+import { AllowanceTransactionsService } from './allowance-transactions.service';
+import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 
 @Module({
   imports: [
@@ -24,6 +24,8 @@ import { ConfigService } from '@nestjs/config';
     AllowanceTransactionsMap,
     OwnerOperatorsMap,
     ConfigService,
+    TransactionBlockDimRepository,
+    TransactionOwnerDimRepository,
   ],
 })
 export class AllowanceTransactionsModule {}

@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
-import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
-import { TransactionOwnerDim } from '../entities/transaction-owner-dim.entity';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { TransactionOwnerDim } from '../entities/transaction-owner-dim.entity';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -21,6 +21,7 @@ describe('TransactionOwnerDimRepository', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         TransactionOwnerDimRepository,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],

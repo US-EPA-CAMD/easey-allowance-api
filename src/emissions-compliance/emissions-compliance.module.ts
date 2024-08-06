@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { EmissionsComplianceController } from './emissions-compliance.controller';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
-import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AccountComplianceDimRepository } from '../allowance-compliance/account-compliance-dim.repository';
+import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { OwnerYearDimRepository } from '../allowance-compliance/owner-year-dim.repository';
-import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
-import { EmissionsComplianceService } from './emissions-compliance.service';
-import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
+import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
+import { EmissionsComplianceMap } from '../maps/emissions-compliance.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { EmissionsComplianceController } from './emissions-compliance.controller';
+import { EmissionsComplianceService } from './emissions-compliance.service';
+import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 @Module({
   imports: [
@@ -22,12 +22,15 @@ import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-a
   ],
   controllers: [EmissionsComplianceController],
   providers: [
-    AllowanceComplianceService,
-    EmissionsComplianceService,
+    AccountComplianceDimRepository,
     AllowanceComplianceMap,
-    OwnerOperatorsMap,
-    EmissionsComplianceMap,
+    AllowanceComplianceService,
     ApplicableAllowanceComplianceAttributesMap,
+    EmissionsComplianceMap,
+    EmissionsComplianceService,
+    OwnerOperatorsMap,
+    OwnerYearDimRepository,
+    UnitComplianceDimRepository,
   ],
 })
 export class EmissionsComplianceModule {}

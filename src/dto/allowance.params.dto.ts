@@ -6,11 +6,10 @@ import {
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
 import { State, AccountType } from '@us-epa-camd/easey-common/enums';
-import { IsOrisCode } from '@us-epa-camd/easey-common/pipes';
+import { IsAccountNumber, IsOrisCode } from '@us-epa-camd/easey-common/pipes';
 
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsAccountType } from '../pipes/is-account-type.pipe';
-import { IsAccountNumber } from '../pipes/is-account-number.pipe';
 
 export class AllowanceParamsDTO {
   @ApiProperty({

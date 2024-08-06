@@ -1,19 +1,24 @@
-import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
-import { Request } from 'express';
+import { Injectable } from '@nestjs/common';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { Request } from 'express';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
 import {
   AllowanceTransactionsParamsDTO,
   PaginatedAllowanceTransactionsParamsDTO,
 } from '../dto/allowance-transactions.params.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
+import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
+import { QueryBuilderHelper } from '../utils/query-builder.helper';
 
-@EntityRepository(TransactionBlockDim)
+@Injectable()
 export class TransactionBlockDimRepository extends Repository<
   TransactionBlockDim
 > {
+  constructor(entityManager: EntityManager) {
+    super(TransactionBlockDim, entityManager);
+  }
+
   async getAllowanceTransactions(
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
