@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Logger } from '@us-epa-camd/easey-common/logger';
+import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
 
@@ -31,14 +31,17 @@ export class AccountService {
   ) {}
 
   async getAllAccounts(): Promise<AccountDTO[]> {
-    this.logger.info('Getting all accounts');
+    this.logger.log('Getting all accounts');
     let query;
     try {
       query = await this.accountFactRepository.getAllAccounts();
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    this.logger.info('Got all accounts');
+    this.logger.log('Got all accounts');
     return this.accountFactMap.many(query);
   }
 
@@ -46,7 +49,7 @@ export class AccountService {
     paginatedAccountAttributesParamsDTO: PaginatedAccountAttributesParamsDTO,
     req: Request,
   ): Promise<AccountAttributesDTO[]> {
-    this.logger.info('Getting all account attributes');
+    this.logger.log('Getting all account attributes');
     let query;
     try {
       query = await this.accountFactRepository.getAllAccountAttributes(
@@ -54,9 +57,12 @@ export class AccountService {
         req,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    this.logger.info('Got all account attributes');
+    this.logger.log('Got all account attributes');
 
     req.res.setHeader(
       fieldMappingHeader,
@@ -76,14 +82,17 @@ export class AccountService {
   async getAllApplicableAccountAttributes(): Promise<
     ApplicableAccountAttributesDTO[]
   > {
-    this.logger.info('Getting all applicable account attributes');
+    this.logger.log('Getting all applicable account attributes');
     let query;
     try {
       query = await this.accountFactRepository.getAllApplicableAccountAttributes();
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    this.logger.info('Got all applicable account attributes');
+    this.logger.log('Got all applicable account attributes');
 
     return query.map(item => {
       return plainToClass(ApplicableAccountAttributesDTO, item, {
@@ -93,14 +102,17 @@ export class AccountService {
   }
 
   async getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    this.logger.info('Getting all owner operators');
+    this.logger.log('Getting all owner operators');
     let query;
     try {
       query = await this.accountOwnerDimRepository.getAllOwnerOperators();
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    this.logger.info('Got all owner operators');
+    this.logger.log('Got all owner operators');
 
     return this.ownerOperatorsMap.many(query);
   }

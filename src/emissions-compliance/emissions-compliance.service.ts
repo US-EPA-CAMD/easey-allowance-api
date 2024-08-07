@@ -27,7 +27,7 @@ export class EmissionsComplianceService {
     paginatedEmissionsComplianceParamsDTO: PaginatedEmissionsComplianceParamsDTO,
     req: Request,
   ): Promise<EmissionsComplianceDTO[]> {
-    this.logger.info('Getting emissions compliance');
+    this.logger.log('Getting emissions compliance');
     let query;
     try {
       query = await this.unitComplianceDimRepository.getEmissionsCompliance(
@@ -47,7 +47,7 @@ export class EmissionsComplianceService {
       JSON.stringify(fieldMappings.compliance.emissions.excludableColumns),
     );
 
-    this.logger.info('Got emissions Compliance');
+    this.logger.log('Got emissions Compliance');
     return this.emissionsComplianceMap.many(query);
   }
 

@@ -34,7 +34,7 @@ export class AllowanceTransactionsService {
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
-    this.logger.info('Getting allowance transactions');
+    this.logger.log('Getting allowance transactions');
     let entities: TransactionBlockDim[];
     try {
       entities = await this.transactionBlockDimRepository.getAllowanceTransactions(
@@ -42,7 +42,10 @@ export class AllowanceTransactionsService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     req.res.setHeader(
@@ -53,7 +56,7 @@ export class AllowanceTransactionsService {
       excludableColumnHeader,
       JSON.stringify(fieldMappings.allowances.transactions.excludableColumns),
     );
-    this.logger.info('Got allowance transactions');
+    this.logger.log('Got allowance transactions');
     return this.allowanceTransactionsMap.many(entities);
   }
 
@@ -71,7 +74,10 @@ export class AllowanceTransactionsService {
         applicableAllowanceTransactionsAttributesParamsDTO,
       );
     } catch (e) {
-      throw new EaseyException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     return query.map(item => {
