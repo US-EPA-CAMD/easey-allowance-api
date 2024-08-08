@@ -1,22 +1,26 @@
-import { AccountOwnerDim } from './../entities/account-owner-dim.entity';
-import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
-import { Request } from 'express';
-
+import { Injectable } from '@nestjs/common';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { Request } from 'express';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import {
   AllowanceComplianceParamsDTO,
   PaginatedAllowanceComplianceParamsDTO,
 } from '../dto/allowance-compliance.params.dto';
+import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import { AccountFact } from '../entities/account-fact.entity';
 import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
+import { QueryBuilderHelper } from '../utils/query-builder.helper';
+import { AccountOwnerDim } from './../entities/account-owner-dim.entity';
 
-@EntityRepository(AccountComplianceDim)
+@Injectable()
 export class AccountComplianceDimRepository extends Repository<
   AccountComplianceDim
 > {
+  constructor(entityManager: EntityManager) {
+    super(AccountComplianceDim, entityManager);
+  }
+
   async getAllowanceCompliance(
     params: PaginatedAllowanceComplianceParamsDTO,
     req: Request,

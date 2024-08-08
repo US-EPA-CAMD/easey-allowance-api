@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 
@@ -55,6 +55,7 @@ describe('-- AccountComplianceDimRepository --', () => {
     const module = await Test.createTestingModule({
       providers: [
         AccountComplianceDimRepository,
+        EntityManager,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],
     }).compile();

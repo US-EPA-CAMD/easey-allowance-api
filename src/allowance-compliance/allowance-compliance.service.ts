@@ -1,5 +1,4 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 
@@ -24,10 +23,8 @@ import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 @Injectable()
 export class AllowanceComplianceService {
   constructor(
-    @InjectRepository(AccountComplianceDimRepository)
     private readonly accountComplianceDimRepository: AccountComplianceDimRepository,
     private readonly allowanceComplianceMap: AllowanceComplianceMap,
-    @InjectRepository(OwnerYearDimRepository)
     private readonly ownerYearDimRepository: OwnerYearDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly applicableAllowanceComplianceAttributesMap: ApplicableAllowanceComplianceAttributesMap,
