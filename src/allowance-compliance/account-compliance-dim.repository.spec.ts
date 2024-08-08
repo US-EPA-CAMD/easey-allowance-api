@@ -1,11 +1,11 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
-import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
+import { AllowanceProgram, State } from '@us-epa-camd/easey-common/enums';
 
+import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
-import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
@@ -55,6 +55,7 @@ describe('-- AccountComplianceDimRepository --', () => {
     const module = await Test.createTestingModule({
       providers: [
         AccountComplianceDimRepository,
+        EntityManager,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],
     }).compile();

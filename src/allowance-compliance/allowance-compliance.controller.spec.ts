@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { State } from '@us-epa-camd/easey-common/enums';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
 import { AllowanceComplianceMap } from '../maps/allowance-compliance.map';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
@@ -37,6 +38,7 @@ describe('-- Allowance Compliance Controller --', () => {
         AllowanceComplianceService,
         AllowanceComplianceMap,
         AccountComplianceDimRepository,
+        EntityManager,
         OwnerYearDimRepository,
         OwnerOperatorsMap,
         ApplicableAllowanceComplianceAttributesMap,
