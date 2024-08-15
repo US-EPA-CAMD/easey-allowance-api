@@ -1,16 +1,21 @@
-import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
-import { Request } from 'express';
+import { Injectable } from '@nestjs/common';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { Request } from 'express';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { QueryBuilderHelper } from '../utils/query-builder.helper';
-import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import {
   EmissionsComplianceParamsDTO,
   PaginatedEmissionsComplianceParamsDTO,
 } from '../dto/emissions-compliance.params.dto';
+import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
+import { QueryBuilderHelper } from '../utils/query-builder.helper';
 
-@EntityRepository(UnitComplianceDim)
+@Injectable()
 export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
+  constructor(entityManager: EntityManager) {
+    super(UnitComplianceDim, entityManager);
+  }
+
   async getEmissionsCompliance(
     params: PaginatedEmissionsComplianceParamsDTO,
     req: Request,

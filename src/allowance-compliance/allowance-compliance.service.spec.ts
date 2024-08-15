@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { State, AllowanceProgram } from '@us-epa-camd/easey-common/enums';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceService } from './allowance-compliance.service';
@@ -60,6 +61,7 @@ describe('-- Allowance Compliance Service --', () => {
       imports: [LoggerModule],
       providers: [
         AllowanceComplianceService,
+        EntityManager,
         {
           provide: AccountComplianceDimRepository,
           useFactory: mockAccountComplianceDimRepository,

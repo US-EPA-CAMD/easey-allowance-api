@@ -1,17 +1,18 @@
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
-import { AllowanceTransactionsController } from './allowance-transactions.controller';
-import { AllowanceTransactionsService } from './allowance-transactions.service';
-import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
-import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
-import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
-import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { AllowanceTransactionsController } from './allowance-transactions.controller';
+import { AllowanceTransactionsService } from './allowance-transactions.service';
+import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 
 const mockRequest = (url: string) => {
   return {
@@ -33,6 +34,7 @@ describe('-- Allowance Transactions Controller --', () => {
       providers: [
         AllowanceTransactionsService,
         AllowanceTransactionsMap,
+        EntityManager,
         TransactionBlockDimRepository,
         TransactionOwnerDimRepository,
         OwnerOperatorsMap,

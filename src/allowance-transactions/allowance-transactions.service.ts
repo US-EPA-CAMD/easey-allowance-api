@@ -1,37 +1,30 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Logger } from '@us-epa-camd/easey-common/logger';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
 
+import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
 import {
   excludableColumnHeader,
   fieldMappingHeader,
   fieldMappings,
 } from '../constants/field-mappings';
-import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
-import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
-import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
-import { OwnerOperatorsMap } from '../maps/owner-operators.map';
-import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
-import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
+import { PaginatedAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { ApplicableAllowanceTransactionsAttributesDTO } from '../dto/applicable-allowance-transactions-attributes.dto';
 import { ApplicableAllowanceTransactionsAttributesParamsDTO } from '../dto/applicable-allowance-transactions-attributes.params.dto';
+import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
-import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
+import { AllowanceTransactionsMap } from '../maps/allowance-transactions.map';
+import { OwnerOperatorsMap } from '../maps/owner-operators.map';
+import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
+import { TransactionOwnerDimRepository } from './transaction-owner-dim.repository';
 
 @Injectable()
 export class AllowanceTransactionsService {
   constructor(
-    @InjectRepository(TransactionBlockDimRepository)
     private readonly transactionBlockDimRepository: TransactionBlockDimRepository,
     private readonly allowanceTransactionsMap: AllowanceTransactionsMap,
-    @InjectRepository(TransactionOwnerDimRepository)
     private readonly transactionOwnerDimRepository: TransactionOwnerDimRepository,
     private readonly ownerOperatorsMap: OwnerOperatorsMap,
     private readonly logger: Logger,
@@ -41,7 +34,7 @@ export class AllowanceTransactionsService {
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     req: Request,
   ): Promise<AllowanceTransactionsDTO[]> {
-    this.logger.info('Getting allowance transactions');
+    this.logger.log('Getting allowance transactions');
     let entities: TransactionBlockDim[];
     try {
       entities = await this.transactionBlockDimRepository.getAllowanceTransactions(
@@ -49,7 +42,10 @@ export class AllowanceTransactionsService {
         req,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     req.res.setHeader(
@@ -60,7 +56,7 @@ export class AllowanceTransactionsService {
       excludableColumnHeader,
       JSON.stringify(fieldMappings.allowances.transactions.excludableColumns),
     );
-    this.logger.info('Got allowance transactions');
+    this.logger.log('Got allowance transactions');
     return this.allowanceTransactionsMap.many(entities);
   }
 
@@ -78,7 +74,10 @@ export class AllowanceTransactionsService {
         applicableAllowanceTransactionsAttributesParamsDTO,
       );
     } catch (e) {
-      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new EaseyException(
+        new Error(e.message),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     return query.map(item => {

@@ -1,16 +1,15 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
-
 import {
-  State,
-  ActiveAllowanceProgram,
   AccountType,
+  ActiveAllowanceProgram,
+  State,
 } from '@us-epa-camd/easey-common/enums';
 import { ResponseHeaders } from '@us-epa-camd/easey-common/utilities';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { PaginatedAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
-import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
+import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
@@ -52,13 +51,14 @@ let filters: PaginatedAllowanceHoldingsParamsDTO = {
 
 describe('-- AllowanceHoldingDimRepository --', () => {
   let allowanceHoldingDimRepository: AllowanceHoldingDimRepository;
-  let queryBuilder:any;
+  let queryBuilder: any;
   let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         AllowanceHoldingDimRepository,
+        EntityManager,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],
     }).compile();
@@ -85,10 +85,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.getMany.mockReturnValue('mockAllowanceHoldings');
     queryBuilder.getRawMany.mockReturnValue('mockRawAllowanceHoldings');
-    queryBuilder.getManyAndCount.mockReturnValue([
-      'mockAllowanceHoldings',
-      0,
-    ]);
+    queryBuilder.getManyAndCount.mockReturnValue(['mockAllowanceHoldings', 0]);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getCount.mockReturnValue('mockCount');
     queryBuilder.getQueryAndParameters.mockReturnValue('');
@@ -99,11 +96,13 @@ describe('-- AllowanceHoldingDimRepository --', () => {
       const emptyFilters: PaginatedAllowanceHoldingsParamsDTO = new PaginatedAllowanceHoldingsParamsDTO();
 
       let result = await allowanceHoldingDimRepository.getAllowanceHoldings(
-        emptyFilters,req
+        emptyFilters,
+        req,
       );
 
       result = await allowanceHoldingDimRepository.getAllowanceHoldings(
-        filters,req
+        filters,
+        req,
       );
 
       expect(queryBuilder.getMany).toHaveBeenCalled();
