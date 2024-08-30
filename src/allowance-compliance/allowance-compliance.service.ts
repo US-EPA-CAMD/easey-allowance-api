@@ -18,7 +18,7 @@ import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-al
 import { ApplicableAllowanceComplianceAttributesMap } from '../maps/applicable-allowance-compliance.map';
 import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
-import { EaseyException } from '@us-epa-camd/easey-common/exceptions';
+import { LoggingException } from '@us-epa-camd/easey-common/exceptions';
 
 @Injectable()
 export class AllowanceComplianceService {
@@ -35,7 +35,7 @@ export class AllowanceComplianceService {
     paginatedAllowanceComplianceParamsDTO: PaginatedAllowanceComplianceParamsDTO,
     req: Request,
   ): Promise<AllowanceComplianceDTO[]> {
-    this.logger.log('Getting allowance compliance');
+    this.logger.info('Getting allowance compliance');
     let entities: AccountComplianceDim[];
     let fieldMapping;
     let excludableColumns;
@@ -45,10 +45,7 @@ export class AllowanceComplianceService {
         req,
       );
     } catch (e) {
-      throw new EaseyException(
-        new Error(e.message),
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     if (includesOtcNbp(paginatedAllowanceComplianceParamsDTO)) {
@@ -59,14 +56,14 @@ export class AllowanceComplianceService {
       fieldMapping = fieldMappings.compliance.allowance.data;
       excludableColumns = fieldMappings.compliance.allowance.excludableColumns;
     }
-    this.logger.log('Setting header without program code info');
+    this.logger.info('Setting header without program code info');
     req.res.setHeader(fieldMappingHeader, JSON.stringify(fieldMapping));
     req.res.setHeader(
       excludableColumnHeader,
       JSON.stringify(excludableColumns),
     );
 
-    this.logger.log('Got allowance compliance');
+    this.logger.info('Got allowance compliance');
     return this.allowanceComplianceMap.many(entities);
   }
 
@@ -82,10 +79,7 @@ export class AllowanceComplianceService {
     try {
       query = await this.accountComplianceDimRepository.getAllApplicableAllowanceComplianceAttributes();
     } catch (e) {
-      throw new EaseyException(
-        new Error(e.message),
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new LoggingException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return this.applicableAllowanceComplianceAttributesMap.many(query);
