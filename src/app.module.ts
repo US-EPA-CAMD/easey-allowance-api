@@ -1,5 +1,5 @@
+import { RouterModule } from '@nestjs/core';
 import { Module } from '@nestjs/common';
-import { RouterModule } from 'nest-router';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -20,7 +20,7 @@ import { EmissionsComplianceModule } from './emissions-compliance/emissions-comp
 
 @Module({
   imports: [
-    RouterModule.forRoutes(routes),
+    RouterModule.register(routes),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [dbConfig, appConfig],
