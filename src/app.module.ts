@@ -1,12 +1,14 @@
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
-import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HttpModule } from '@nestjs/axios';
 
 import { dbConfig } from '@us-epa-camd/easey-common/config';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { CorsOptionsModule } from '@us-epa-camd/easey-common/cors-options';
 import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
+import { MaintenanceMiddleware } from '@us-epa-camd/easey-common/middleware/maintenance.middleware';
 
 import { IsAllowanceProgramValidator } from './validators';
 import routes from './routes';
@@ -35,7 +37,12 @@ import { EmissionsComplianceModule } from './emissions-compliance/emissions-comp
     AccountModule,
     AllowanceComplianceModule,
     EmissionsComplianceModule,
+    HttpModule
   ],
   providers: [DbLookupValidator, IsAllowanceProgramValidator],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(MaintenanceMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL })
+  }
+}

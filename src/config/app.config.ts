@@ -68,4 +68,8 @@ export default registerAs('app', () => ({
   transactionDateYearsLimit: TRANSACTION_DATE_LIMIT_YEARS,
   perPageLimit: PAGINATION_MAX_PER_PAGE,
   apiHost: apiHost,
+  authApi: {
+    uri: getConfigValue('EASEY_AUTH_API', `https://${apiHost}/auth-mgmt`),
+  },
+  apiKey: getConfigValue('EASEY_ACCOUNT_API_KEY'),
 }));
