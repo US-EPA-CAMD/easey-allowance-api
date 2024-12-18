@@ -48,6 +48,7 @@ The Account API uses a number of environment variables to properly configure the
 | env | EASEY_ACCOUNT_API_ENV | local-dev | Configurable |
 | enableApiKey | EASEY_ACCOUNT_API_ENABLE_API_KEY | false | Configurable |
 | secretToken | EASEY_ACCOUNT_API_SECRET_TOKEN | *** | Dynamically set by CI/CD workflow |
+| apiKey | EASEY_ACCOUNT_API_KEY | *** | Dynamically set by CI/CD workflow |
 | enableSecretToken | EASEY_ACCOUNT_API_ENABLE_SECRET_TOKEN | false | Configurable |
 | enableCors | EASEY_ACCOUNT_API_ENABLE_CORS | true | Configurable |
 | enableGlobalValidationPipes | EASEY_ACCOUNT_API_ENABLE_GLOBAL_VALIDATION_PIPE | true | Configurable |
