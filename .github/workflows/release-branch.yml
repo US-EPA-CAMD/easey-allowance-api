@@ -82,6 +82,7 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           ACCOUNT_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+          ACCOUNT_API_KEY: ${{ secrets.API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -121,6 +122,7 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           ACCOUNT_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+          ACCOUNT_API_KEY: ${{ secrets.API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -160,6 +162,7 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           ACCOUNT_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+          ACCOUNT_API_KEY: ${{ secrets.API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
   Performance-Deployment:
@@ -198,5 +201,6 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           ACCOUNT_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+          ACCOUNT_API_KEY: ${{ secrets.API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
