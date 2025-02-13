@@ -21,6 +21,7 @@ import { PaginatedAllowanceComplianceParamsDTO } from '../dto/allowance-complian
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceComplianceAttributesDTO } from '../dto/applicable-allowance-compliance-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { ArrayResponse } from '@us-epa-camd/easey-common/interfaces/common.interface';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -60,15 +61,19 @@ export class AllowanceComplianceController {
     explode: false,
   })
   @UseInterceptors(Json2CsvInterceptor)
-  getAllowanceCompliance(
+  async getAllowanceCompliance(
     @Query()
     paginatedAllowanceComplianceParamsDTO: PaginatedAllowanceComplianceParamsDTO,
     @Req() req: Request,
-  ): Promise<AllowanceComplianceDTO[]> {
-    return this.allowanceComplianceService.getAllowanceCompliance(
+  ): Promise<ArrayResponse<AllowanceComplianceDTO>> {
+    const allowanceComplianceDTOS =  await this.allowanceComplianceService.getAllowanceCompliance(
       paginatedAllowanceComplianceParamsDTO,
       req,
     );
+
+    return  {
+      items: allowanceComplianceDTOS
+    };
   }
 
   @Get('attributes/applicable')
@@ -79,10 +84,12 @@ export class AllowanceComplianceController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(ApplicableAllowanceComplianceAttributesDTO)
-  getAllApplicableAllowanceComplianceAttributes(): Promise<
-    ApplicableAllowanceComplianceAttributesDTO[]
-  > {
-    return this.allowanceComplianceService.getAllApplicableAllowanceComplianceAttributes();
+  async getAllApplicableAllowanceComplianceAttributes(): Promise<ArrayResponse<ApplicableAllowanceComplianceAttributesDTO>> {
+    const applicableAllowanceComplianceAttributesDTOS =  await this.allowanceComplianceService.getAllApplicableAllowanceComplianceAttributes();
+
+    return  {
+      items: applicableAllowanceComplianceAttributesDTOS
+    };
   }
 
   @Get('owner-operators')
@@ -92,7 +99,11 @@ export class AllowanceComplianceController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(OwnerOperatorsDTO)
-  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    return this.allowanceComplianceService.getAllOwnerOperators();
+  async getAllOwnerOperators(): Promise<ArrayResponse<OwnerOperatorsDTO>> {
+    const ownerOperatorsDTOS =  await this.allowanceComplianceService.getAllOwnerOperators();
+
+    return  {
+      items: ownerOperatorsDTOS
+    };
   }
 }

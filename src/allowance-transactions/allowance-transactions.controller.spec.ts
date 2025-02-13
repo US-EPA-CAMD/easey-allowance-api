@@ -66,7 +66,7 @@ describe('-- Allowance Transactions Controller --', () => {
           paramsDTO,
           req,
         ),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults });
     });
   });
 
@@ -76,8 +76,8 @@ describe('-- Allowance Transactions Controller --', () => {
       jest
         .spyOn(allowanceTransactionsService, 'getAllOwnerOperators')
         .mockResolvedValue(expectedResults);
-      expect(await allowanceTransactionsController.getAllOwnerOperators()).toBe(
-        expectedResults,
+      expect(await allowanceTransactionsController.getAllOwnerOperators()).toStrictEqual( { items:
+        expectedResults,}
       );
     });
   });
@@ -96,7 +96,7 @@ describe('-- Allowance Transactions Controller --', () => {
         await allowanceTransactionsController.getAllApplicableAllowanceTransactionsAttributes(
           paramsDTO,
         ),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults});
     });
   });
 });

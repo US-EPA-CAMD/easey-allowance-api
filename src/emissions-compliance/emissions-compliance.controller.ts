@@ -21,6 +21,7 @@ import { PaginatedEmissionsComplianceParamsDTO } from '../dto/emissions-complian
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { ApplicableComplianceAttributesDTO } from '../dto/applicable-compliance-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { ArrayResponse } from '@us-epa-camd/easey-common/interfaces/common.interface';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -55,15 +56,19 @@ export class EmissionsComplianceController {
   @NotFoundResponse()
   @ApiQueryComplianceMultiSelect()
   @UseInterceptors(Json2CsvInterceptor)
-  getEmissionsCompliance(
+  async getEmissionsCompliance(
     @Query()
     paginatedEmissionsComplianceParamsDTO: PaginatedEmissionsComplianceParamsDTO,
     @Req() req: Request,
-  ): Promise<EmissionsComplianceDTO[]> {
-    return this.emissionsComplianceService.getEmissionsCompliance(
+  ): Promise<ArrayResponse<EmissionsComplianceDTO>> {
+    const complianceDTOS =  await this.emissionsComplianceService.getEmissionsCompliance(
       paginatedEmissionsComplianceParamsDTO,
       req,
     );
+
+    return  {
+      items: complianceDTOS
+    };
   }
 
   @Get('attributes/applicable')
@@ -74,10 +79,12 @@ export class EmissionsComplianceController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(ApplicableComplianceAttributesDTO)
-  getAllApplicableEmissionsComplianceAttributes(): Promise<
-    ApplicableComplianceAttributesDTO[]
-  > {
-    return this.emissionsComplianceService.getAllApplicableEmissionsComplianceAttributes();
+  async getAllApplicableEmissionsComplianceAttributes(): Promise<ArrayResponse<ApplicableComplianceAttributesDTO>> {
+    const attributesDTOS =  await this.emissionsComplianceService.getAllApplicableEmissionsComplianceAttributes();
+
+    return  {
+      items: attributesDTOS
+    };
   }
 
   @Get('owner-operators')
@@ -87,7 +94,11 @@ export class EmissionsComplianceController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(OwnerOperatorsDTO)
-  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    return this.allowanceComplianceService.getAllOwnerOperators();
+  async getAllOwnerOperators(): Promise<ArrayResponse<OwnerOperatorsDTO>> {
+    const ownerOperatorsDTOS =  await this.allowanceComplianceService.getAllOwnerOperators();
+
+    return  {
+      items: ownerOperatorsDTOS
+    };
   }
 }
