@@ -21,6 +21,7 @@ import { AccountAttributesDTO } from '../dto/account-attributes.dto';
 import { PaginatedAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { ApplicableAccountAttributesDTO } from '../dto/applicable-account-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { ArrayResponse } from '@us-epa-camd/easey-common/interfaces/common.interface';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -36,8 +37,12 @@ export class AccountController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(AccountDTO)
-  getAllAccounts(): Promise<AccountDTO[]> {
-    return this.accountService.getAllAccounts();
+  async getAllAccounts(): Promise<ArrayResponse<AccountDTO>> {
+    const accountDTOS =  await this.accountService.getAllAccounts();
+
+    return  {
+      items: accountDTOS
+    };
   }
 
   @Get('attributes')
@@ -63,15 +68,19 @@ export class AccountController {
   @NotFoundResponse()
   @ApiQueryMultiSelect()
   @UseInterceptors(Json2CsvInterceptor)
-  getAllAccountAttributes(
+  async getAllAccountAttributes(
     @Query()
     paginatedAccountAttributesParamsDTO: PaginatedAccountAttributesParamsDTO,
     @Req() req: Request,
-  ): Promise<AccountAttributesDTO[]> {
-    return this.accountService.getAllAccountAttributes(
+  ): Promise<ArrayResponse<AccountAttributesDTO>> {
+    const accountAttributesDTOS =  await this.accountService.getAllAccountAttributes(
       paginatedAccountAttributesParamsDTO,
       req,
     );
+
+    return  {
+      items: accountAttributesDTOS
+    };
   }
 
   @Get('attributes/applicable')
@@ -82,10 +91,12 @@ export class AccountController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(ApplicableAccountAttributesDTO)
-  getAllApplicableAccountAttributes(): Promise<
-    ApplicableAccountAttributesDTO[]
-  > {
-    return this.accountService.getAllApplicableAccountAttributes();
+  async getAllApplicableAccountAttributes(): Promise<ArrayResponse<ApplicableAccountAttributesDTO>> {
+    const applicableAccountAttributesDTOS =  await this.accountService.getAllApplicableAccountAttributes();
+
+    return  {
+      items: applicableAccountAttributesDTOS
+    };
   }
 
   @Get('owner-operators')
@@ -96,7 +107,11 @@ export class AccountController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(OwnerOperatorsDTO)
-  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    return this.accountService.getAllOwnerOperators();
+  async getAllOwnerOperators(): Promise<ArrayResponse<OwnerOperatorsDTO>> {
+    const ownerOperatorsDTOS =  await this.accountService.getAllOwnerOperators();
+
+    return  {
+      items: ownerOperatorsDTOS
+    };
   }
 }

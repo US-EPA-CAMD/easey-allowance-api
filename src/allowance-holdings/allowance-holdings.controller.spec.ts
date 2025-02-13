@@ -68,7 +68,7 @@ describe('-- Allowance Holdings Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceHoldingsController.getAllowanceHoldings(paramsDTO, req),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults} );
     });
   });
 
@@ -78,9 +78,7 @@ describe('-- Allowance Holdings Controller --', () => {
       jest
         .spyOn(accountService, 'getAllOwnerOperators')
         .mockResolvedValue(expectedResults);
-      expect(await allowanceHoldingsController.getAllOwnerOperators()).toBe(
-        expectedResults,
-      );
+      expect(await allowanceHoldingsController.getAllOwnerOperators()).toStrictEqual( { items:expectedResults,});
     });
   });
 
@@ -95,7 +93,7 @@ describe('-- Allowance Holdings Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceHoldingsController.getAllApplicableAllowanceHoldingsAttributes(),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults });
     });
   });
 });

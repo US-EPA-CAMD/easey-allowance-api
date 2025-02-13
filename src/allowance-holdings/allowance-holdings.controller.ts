@@ -22,6 +22,7 @@ import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { OwnerOperatorsDTO } from '../dto/owner-operators.dto';
 import { ApplicableAllowanceHoldingsAttributesDTO } from '../dto/applicable-allowance-holdings-attributes.dto';
 import { fieldMappings } from '../constants/field-mappings';
+import { ArrayResponse } from '@us-epa-camd/easey-common/interfaces/common.interface';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -62,15 +63,19 @@ export class AllowanceHoldingsController {
     explode: false,
   })
   @UseInterceptors(Json2CsvInterceptor)
-  getAllowanceHoldings(
+  async getAllowanceHoldings(
     @Query()
     paginatedAllowanceHoldingsParamsDTO: PaginatedAllowanceHoldingsParamsDTO,
     @Req() req: Request,
-  ): Promise<AllowanceHoldingsDTO[]> {
-    return this.allowanceService.getAllowanceHoldings(
+  ): Promise<ArrayResponse<AllowanceHoldingsDTO>> {
+    const holdingsDTOs =  await this.allowanceService.getAllowanceHoldings(
       paginatedAllowanceHoldingsParamsDTO,
       req,
     );
+
+    return  {
+      items: holdingsDTOs
+    };
   }
 
   @Get('attributes/applicable')
@@ -81,10 +86,12 @@ export class AllowanceHoldingsController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(ApplicableAllowanceHoldingsAttributesDTO)
-  getAllApplicableAllowanceHoldingsAttributes(): Promise<
-    ApplicableAllowanceHoldingsAttributesDTO[]
-  > {
-    return this.allowanceService.getAllApplicableAllowanceHoldingsAttributes();
+  async getAllApplicableAllowanceHoldingsAttributes(): Promise<ArrayResponse<ApplicableAllowanceHoldingsAttributesDTO>> {
+    const attributesDTOs =  await this.allowanceService.getAllApplicableAllowanceHoldingsAttributes();
+
+    return  {
+      items: attributesDTOs
+    };
   }
 
   @Get('owner-operators')
@@ -94,7 +101,11 @@ export class AllowanceHoldingsController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(OwnerOperatorsDTO)
-  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    return this.accountService.getAllOwnerOperators();
+  async getAllOwnerOperators(): Promise<ArrayResponse<OwnerOperatorsDTO>> {
+    const operatorsDTOs =  await this.accountService.getAllOwnerOperators();
+
+    return  {
+      items: operatorsDTOs
+    };
   }
 }

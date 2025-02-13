@@ -55,7 +55,7 @@ describe('-- Account Controller --', () => {
       jest
         .spyOn(accountService, 'getAllAccounts')
         .mockResolvedValue(expectedResult);
-      expect(await accountController.getAllAccounts()).toBe(expectedResult);
+      expect(await accountController.getAllAccounts()).toStrictEqual({ items:expectedResult});
     });
   });
 
@@ -71,7 +71,7 @@ describe('-- Account Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await accountController.getAllAccountAttributes(paramsDTO, req),
-      ).toBe(expectedResults);
+      ).toStrictEqual({ items:expectedResults });
     });
   });
 
@@ -81,8 +81,8 @@ describe('-- Account Controller --', () => {
       jest
         .spyOn(accountService, 'getAllApplicableAccountAttributes')
         .mockResolvedValue(expectedResults);
-      expect(await accountController.getAllApplicableAccountAttributes()).toBe(
-        expectedResults,
+      expect(await accountController.getAllApplicableAccountAttributes()).toStrictEqual(
+        { items:expectedResults},
       );
     });
   });
@@ -93,8 +93,8 @@ describe('-- Account Controller --', () => {
       jest
         .spyOn(accountService, 'getAllOwnerOperators')
         .mockResolvedValue(expectedResults);
-      expect(await accountController.getAllOwnerOperators()).toBe(
-        expectedResults,
+      expect(await accountController.getAllOwnerOperators()).toStrictEqual(
+        { items:expectedResults },
       );
     });
   });

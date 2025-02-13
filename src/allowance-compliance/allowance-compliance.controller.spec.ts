@@ -76,7 +76,7 @@ describe('-- Allowance Compliance Controller --', () => {
           paramsDTO,
           req,
         ),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items: expectedResults });
     });
   });
 
@@ -91,7 +91,7 @@ describe('-- Allowance Compliance Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await allowanceComplianceController.getAllApplicableAllowanceComplianceAttributes(),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults });
     });
   });
 
@@ -101,9 +101,7 @@ describe('-- Allowance Compliance Controller --', () => {
       jest
         .spyOn(allowanceComplianceService, 'getAllOwnerOperators')
         .mockResolvedValue(expectedResults);
-      expect(await allowanceComplianceController.getAllOwnerOperators()).toBe(
-        expectedResults,
-      );
+      expect(await allowanceComplianceController.getAllOwnerOperators()).toStrictEqual( { items:expectedResults,});
     });
   });
 });

@@ -81,7 +81,7 @@ describe('-- Emissions Compliance Controller --', () => {
           paramsDTO,
           req,
         ),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults});
     });
   });
 
@@ -96,7 +96,7 @@ describe('-- Emissions Compliance Controller --', () => {
         .mockResolvedValue(expectedResults);
       expect(
         await emissionsComplianceController.getAllApplicableEmissionsComplianceAttributes(),
-      ).toBe(expectedResults);
+      ).toStrictEqual( { items:expectedResults});
     });
   });
 
@@ -106,8 +106,8 @@ describe('-- Emissions Compliance Controller --', () => {
       jest
         .spyOn(allowanceComplianceService, 'getAllOwnerOperators')
         .mockResolvedValue(expectedResults);
-      expect(await emissionsComplianceController.getAllOwnerOperators()).toBe(
-        expectedResults,
+      expect(await emissionsComplianceController.getAllOwnerOperators()).toStrictEqual( { items:
+        expectedResults,}
       );
     });
   });

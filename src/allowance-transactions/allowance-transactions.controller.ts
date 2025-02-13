@@ -22,6 +22,7 @@ import {
   ApiQueryMultiSelect,
 } from '../utils/swagger-decorator.const';
 import { fieldMappings } from '../constants/field-mappings';
+import { ArrayResponse } from '@us-epa-camd/easey-common/interfaces/common.interface';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -67,15 +68,19 @@ export class AllowanceTransactionsController {
     explode: false,
   })
   @UseInterceptors(Json2CsvInterceptor)
-  getAllowanceTransactions(
+  async getAllowanceTransactions(
     @Query()
     paginatedAllowanceTransactionsParamsDTO: PaginatedAllowanceTransactionsParamsDTO,
     @Req() req: Request,
-  ): Promise<AllowanceTransactionsDTO[]> {
-    return this.allowanceTransactionsService.getAllowanceTransactions(
+  ): Promise<ArrayResponse<AllowanceTransactionsDTO>> {
+    const transactionsDTOS =  await this.allowanceTransactionsService.getAllowanceTransactions(
       paginatedAllowanceTransactionsParamsDTO,
       req,
     );
+
+    return  {
+      items: transactionsDTOS
+    };
   }
 
   @Get('attributes/applicable')
@@ -86,13 +91,17 @@ export class AllowanceTransactionsController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(ApplicableAllowanceTransactionsAttributesDTO)
-  getAllApplicableAllowanceTransactionsAttributes(
+  async getAllApplicableAllowanceTransactionsAttributes(
     @Query()
     applicableAllowanceTransactionsAttributesParamsDTO: ApplicableAllowanceTransactionsAttributesParamsDTO,
-  ): Promise<ApplicableAllowanceTransactionsAttributesDTO[]> {
-    return this.allowanceTransactionsService.getAllApplicableAllowanceTransactionsAttributes(
+  ): Promise<ArrayResponse<ApplicableAllowanceTransactionsAttributesDTO>> {
+    const attributesDTOS =  await this.allowanceTransactionsService.getAllApplicableAllowanceTransactionsAttributes(
       applicableAllowanceTransactionsAttributesParamsDTO,
     );
+
+    return  {
+      items: attributesDTOS
+    };
   }
 
   @Get('owner-operators')
@@ -102,7 +111,11 @@ export class AllowanceTransactionsController {
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiExtraModels(OwnerOperatorsDTO)
-  getAllOwnerOperators(): Promise<OwnerOperatorsDTO[]> {
-    return this.allowanceTransactionsService.getAllOwnerOperators();
+  async getAllOwnerOperators(): Promise<ArrayResponse<OwnerOperatorsDTO>> {
+    const ownerOperatorsDTOS =  await this.allowanceTransactionsService.getAllOwnerOperators();
+
+    return  {
+      items: ownerOperatorsDTOS
+    };
   }
 }
